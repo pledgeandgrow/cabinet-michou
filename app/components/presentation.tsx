@@ -11,7 +11,7 @@ const Presentation: React.FC = () => {
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div>
                     <Badge className="mb-4">Le cabinet</Badge>
-                    <h1 className="text-4xl font-medium mb-4">
+                    <h1 className="text-5xl font-bold mb-4">
                         Présent à Paris depuis 1952
                     </h1>
                     <p className="text-lg text-gray-500 mb-4">

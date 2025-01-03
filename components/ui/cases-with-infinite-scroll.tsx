@@ -52,7 +52,7 @@ function Case() {
                     <div className="flex justify-around">
                       <Badge variant={"outline"} className="m-2">à partir de $1200 / mois</Badge>
                       <Badge className="m-2">50m²</Badge>
-                      <Badge className="m-2">2 pièces</Badge>
+                      <Badge className="m-2">2 pc</Badge>
                     </div>
                   </Card>
                 </CarouselItem>

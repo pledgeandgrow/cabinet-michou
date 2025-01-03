@@ -1,8 +1,14 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import * as React from "react";
+import { TabsTransitionPanel } from "../components/tabs-transition-panel";
+import BannerInformative from "../components/banner-informative";
+import { Feature } from "@/components/ui/feature";
+import { Separator } from "@/components/ui/separator";
+import BannerDocument from "../components/banner-document";
+import { Button } from "@/components/ui/button";
 
 const GestionLocative: React.FC = () => {
     return (
@@ -18,9 +24,21 @@ const GestionLocative: React.FC = () => {
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
-            <div className="w-full m-auto">
-                <Badge className="mt-12 mb-4">GESTION LOCATIVE</Badge>
-                <h1 className="text-4xl">3 expertises dans l'immobilier</h1>
+            <div className="w-full my-24 flex flex-col items-center">
+                <div className="w-full m-auto text-center">
+                    <Badge className="mt-12 m-auto mb-4">GESTION LOCATIVE</Badge>
+                    <h1 className="text-7xl font-bold">3 expertises dans l'immobilier</h1>
+                </div>
+                <TabsTransitionPanel />
+            </div>
+            <Separator />
+            <BannerInformative type="gestion-proprio" />
+            <Feature />
+            <Separator />
+            <BannerInformative type="gestion-locative" />
+            <BannerDocument />
+            <div className="w-full flex justify-center my-24">
+                <Button>Voir nos annonces</Button>
             </div>
         </>
     );
