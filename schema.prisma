@@ -1,0 +1,439 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model actualites {
+  id      Int     @id @default(autoincrement())
+  titre   String  @db.VarChar(150)
+  contenu String  @db.Text
+  lien    String? @db.VarChar(255)
+  publie  Boolean @default(true)
+}
+
+model admin {
+  id       Int     @id @default(autoincrement())
+  login    String? @db.VarChar(150)
+  password String? @db.VarChar(150)
+}
+
+model annonces {
+  id                     Int                 @id @default(autoincrement())
+  transaction_id         Int?
+  typebien_id            Int?
+  sous_typebien_id       Int?
+  reference              String?             @db.VarChar(20)
+  date_dispo             DateTime?           @db.Date
+  nom                    String?             @db.VarChar(64)
+  surface                Float?
+  surface_terrain        Float?
+  terrain_agricole       Boolean?
+  terrain_constructible  Boolean?
+  terrain_rue            Boolean?
+  terrain_viabilise      Boolean?
+  pieces                 Int?                @db.TinyInt
+  chambres               Int?                @db.TinyInt
+  sdb                    Int?                @db.TinyInt
+  sde                    Int?                @db.TinyInt
+  wc                     Int?                @db.TinyInt
+  wc_separe              Boolean?
+  cave                   Boolean?
+  surface_cave           Float?
+  sam                    Boolean?
+  sejour                 Boolean?
+  surface_sejour         Float?
+  salle_a_manger         Boolean?
+  surface_salle_a_manger Float?
+  construction           String?             @db.VarChar(4)
+  recent                 Boolean?
+  refait                 Boolean?
+  travaux                Boolean?
+  box                    Int?                @db.TinyInt
+  parking_disponible     Int?                @db.TinyInt
+  etage                  Int?                @db.TinyInt
+  nb_etages              Int?                @db.TinyInt
+  ascenseur              Boolean?
+  duplex                 Boolean?
+  nb_balcons             Int?                @db.TinyInt
+  surface_balcons        Float?
+  terrasse               Boolean?
+  nb_terrasses           Int?                @db.TinyInt
+  alarme                 Boolean?
+  chauffage_id           Int?
+  cable                  Boolean?
+  piscine                Boolean?
+  entretien              Boolean?
+  cuisine_equipee        Boolean?
+  securite               Boolean?
+  historique             Boolean?
+  parking_inclus         Boolean?
+  lot_neuf               Boolean?
+  cheminee               Boolean?
+  vue                    Boolean?
+  entree                 Boolean?
+  parquet                Boolean?
+  placard                Boolean?
+  nb_couverts            Boolean?
+  nb_lits_doubles        Boolean?
+  nb_lits_simples        Boolean?
+  vis_a_vis              Boolean?
+  calme                  Boolean?
+  congelateur            Boolean?
+  four                   Boolean?
+  lave_vaisselle         Boolean?
+  micro_ondes            Boolean?
+  lave_linge             Boolean?
+  seche_linge            Boolean?
+  internet               Boolean?
+  equipement_bebe        Boolean?
+  telephone              Boolean?
+  proche_lac             Boolean?
+  proche_tennis          Boolean?
+  proche_pistes          Boolean?
+  gardien                Boolean?
+  climatisation          Boolean?
+  handicapes             Boolean?
+  animaux                Boolean?
+  digicode               Boolean?
+  video                  Boolean?
+  interphone             Boolean?
+  cuisine_type_id        Int?
+  situation_id           Int?
+  orientation_sud        Boolean?
+  orientation_est        Boolean?
+  orientation_ouest      Boolean?
+  orientation_nord       Boolean?
+  bilan_conso_id         Int?
+  consos                 Int?
+  version_dpe            String?             @db.VarChar(12)
+  bilan_emission_id      Int?
+  emissions              Int?
+  exclusivite            Boolean?
+  coup_de_coeur          Boolean?
+  bail                   String?             @db.VarChar(150)
+  nature_bail            String?             @db.VarChar(50)
+  duree_bail             Int?
+  droit_au_bail          Float?
+  loyer_murs             Float?
+  is_loyer_cc            String?             @db.VarChar(3)
+  is_loyer_ht            String?             @db.VarChar(3)
+  loyer_hors_charges     Float?
+  charges_mensuelles     Float?
+  complement_loyer       Float?
+  loyer_avec_charges     Float?
+  loyer_m2               Float?
+  loyer_base             Float?
+  loyer_ref_majore       Float?
+  encadrement_des_loyers String?             @db.VarChar(3)
+  charges_info_id        Int?
+  honoraires_locataire   Float?
+  etat_des_lieux         Float?
+  depot_garantie         Float?
+  droit_entree           Float?
+  meuble                 Boolean?
+  prix_masque            Boolean?
+  prix_ht                Boolean?
+  prix_hors_honoraires   Float?
+  prix_avec_honoraires   Float?
+  prix_m2                Float?
+  honoraires_id          Int?
+  honoraires_acheteur    Float?
+  copro                  Boolean?
+  lots                   Int?
+  quote_part             Float?
+  procedure_syndic       Boolean?
+  detail_procedure       String?             @db.VarChar(128)
+  adresse                String?             @db.VarChar(128)
+  quartier               String?             @db.VarChar(64)
+  ligne                  String?             @db.VarChar(5)
+  station                String?             @db.VarChar(32)
+  cp                     String?             @db.VarChar(5)
+  ville                  String?             @db.VarChar(50)
+  cp_reel                String?             @db.VarChar(5)
+  ville_reel             String?             @db.VarChar(50)
+  arrondissement         Int?                @db.TinyInt
+  pays                   String?             @default("France") @db.VarChar(150)
+  latitude               Float?
+  longitude              Float?
+  description            String?             @db.Text
+  panoramique            String?             @db.VarChar(128)
+  visite_virtuelle       String?             @db.VarChar(255)
+  valeur_achat           Float?
+  montant_rapport        String?             @db.VarChar(20)
+  activites_commerciales String?             @db.Text
+  chiffre_affaire        Float?
+  longueur_facade        Float?
+  si_viager_vendu_libre  Boolean?
+  immeuble_type_bureaux  Boolean?
+  commentaires           String?             @db.Text
+  negociateur            String?             @db.VarChar(50)
+  se_loger               String?             @db.VarChar(150)
+  selection              Boolean             @default(false)
+  publie                 Boolean             @default(false)
+  typebien               typebien?           @relation(fields: [typebien_id], references: [id], map: "annonces_ibfk_1")
+  honoraires             honoraires?         @relation(fields: [honoraires_id], references: [id], map: "annonces_ibfk_10")
+  transaction            transaction?        @relation(fields: [transaction_id], references: [id], map: "annonces_ibfk_2")
+  chauffage              chauffage?          @relation(fields: [chauffage_id], references: [id], map: "annonces_ibfk_3")
+  cuisine_type           cuisine?            @relation(fields: [cuisine_type_id], references: [id], map: "annonces_ibfk_4")
+  bilan_conso            bilan_conso?        @relation(fields: [bilan_conso_id], references: [id], map: "annonces_ibfk_5")
+  charges_info           charges?            @relation(fields: [charges_info_id], references: [id], map: "annonces_ibfk_6")
+  situation              situation?          @relation(fields: [situation_id], references: [id], map: "annonces_ibfk_7")
+  bilan_emission         bilan_emission?     @relation(fields: [bilan_emission_id], references: [id], map: "annonces_ibfk_8")
+  sous_typebien          sous_typebien?      @relation(fields: [sous_typebien_id], references: [id], map: "annonces_ibfk_9")
+  annonces_contact       annonces_contact[]
+  annonces_photos        annonces_photos[]
+  commerce               commerce[]
+  location_vacances      location_vacances[]
+  maison_terrain         maison_terrain[]
+  mandat                 mandat[]
+  parking                parking[]
+  terrain                terrain[]
+  viager                 viager[]
+
+  @@index([bilan_conso_id], map: "bilan_conso_id")
+  @@index([bilan_emission_id], map: "bilan_emission_id")
+  @@index([charges_info_id], map: "charges_info_id")
+  @@index([chauffage_id], map: "chauffage_id")
+  @@index([cuisine_type_id], map: "cuisine_type_id")
+  @@index([honoraires_id], map: "honoraires_id")
+  @@index([situation_id], map: "situation_id")
+  @@index([sous_typebien_id], map: "sous_typebien_id")
+  @@index([transaction_id], map: "transaction_id")
+  @@index([typebien_id], map: "type_id")
+}
+
+model annonces_contact {
+  id         Int      @id @default(autoincrement())
+  annonce_id Int
+  contact_id Int
+  annonces   annonces @relation(fields: [annonce_id], references: [id], onDelete: Cascade, map: "annonces_contact_ibfk_1")
+  contact    contact  @relation(fields: [contact_id], references: [id], onDelete: Cascade, map: "annonces_contact_ibfk_2")
+
+  @@index([annonce_id], map: "annonce_id")
+  @@index([contact_id], map: "contact_id")
+}
+
+model annonces_photos {
+  id         Int       @id @default(autoincrement())
+  annonce_id Int?
+  nom        String?   @db.VarChar(150)
+  principale Boolean?  @default(false)
+  annonces   annonces? @relation(fields: [annonce_id], references: [id], onDelete: Cascade, map: "annonces_photos_ibfk_1")
+
+  @@index([annonce_id], map: "annonce_id")
+}
+
+model bilan_conso {
+  id       Int        @id @default(autoincrement())
+  code     String?    @db.VarChar(2)
+  nom      String?    @db.VarChar(10)
+  annonces annonces[]
+}
+
+model bilan_emission {
+  id       Int        @id @default(autoincrement())
+  code     String?    @db.VarChar(2)
+  nom      String?    @db.VarChar(10)
+  annonces annonces[]
+}
+
+model charges {
+  id       Int        @id @default(autoincrement())
+  nom      String?    @db.VarChar(150)
+  annonces annonces[]
+}
+
+model chauffage {
+  id       Int        @id @default(autoincrement())
+  code     Int?
+  nom      String     @db.VarChar(150)
+  annonces annonces[]
+}
+
+model commerce {
+  id                         Int       @id @default(autoincrement())
+  annonce_id                 Int?
+  places_en_salle            Int?
+  monte_charge               Boolean?
+  quai                       Boolean?
+  nb_bureaux                 Int?
+  loyer_annuel_global        Float?
+  charges_annuelles_globales Float?
+  loyer_annuel_m2            Float?
+  charges_annuelles_m2       Float?
+  charges_mensuelles_ht      Boolean?
+  loyer_annuel_cc            Boolean?
+  loyer_annuel_ht            Boolean?
+  charges_annuelles_ht       Boolean?
+  loyer_annuel_m2_cc         Boolean?
+  loyer_annuel_m2_ht         Boolean?
+  charges_annuelles_m2_ht    Boolean?
+  divisible                  Boolean?
+  surface_divisible_min      Float?
+  surface_divisible_max      Float?
+  repartition_ca             String?   @db.VarChar(100)
+  resultat_n2                Int?
+  resultat_n1                Int?
+  resultat_n                 Int?
+  logement                   Boolean?
+  ca_n2                      Int?
+  ca_n1                      Int?
+  conditions_financieres     String?   @db.Text
+  prestations_diverses       String?   @db.Text
+  longueur_facade            Float?
+  nature_bail_commercial     String?   @db.VarChar(50)
+  situation_commerciale      String?   @db.VarChar(64)
+  surface_max_bureau         Float?
+  annonces                   annonces? @relation(fields: [annonce_id], references: [id], onDelete: Cascade, map: "commerce_ibfk_1")
+
+  @@index([annonce_id], map: "annonce_id")
+}
+
+model contact {
+  id               Int                @id @default(autoincrement())
+  nom              String?            @db.VarChar(64)
+  email            String?            @db.VarChar(64)
+  telephone        String?            @db.VarChar(10)
+  annonces_contact annonces_contact[]
+}
+
+model cuisine {
+  id       Int        @id @default(autoincrement())
+  nom      String?    @db.VarChar(150)
+  annonces annonces[]
+}
+
+model honoraires {
+  id       Int        @id @default(autoincrement())
+  code     String?    @db.VarChar(1)
+  nom      String?    @db.VarChar(150)
+  annonces annonces[]
+}
+
+model location_vacances {
+  id                   Int             @id @default(autoincrement())
+  annonce_id           Int?
+  prix_semaine_basse   Float?
+  prix_quinzaine_basse Float?
+  prix_mois_basse      Float?
+  prix_semaine_haute   Float?
+  prix_quinzaine_haute Float?
+  prix_mois_haute      Float?
+  nb_personnes         Boolean?
+  type_residence_id    Int?
+  periodes_dispo       String?         @db.Text
+  periodes_basse       String?         @db.Text
+  periodes_haute       String?         @db.Text
+  residence            Boolean?
+  annonces             annonces?       @relation(fields: [annonce_id], references: [id], onDelete: Cascade, map: "location_vacances_ibfk_1")
+  type_residence       type_residence? @relation(fields: [type_residence_id], references: [id], map: "location_vacances_ibfk_2")
+
+  @@index([annonce_id], map: "annonce_id")
+  @@index([type_residence_id], map: "type_residence_id")
+}
+
+model maison_terrain {
+  id           Int       @id @default(autoincrement())
+  annonce_id   Int?
+  prix_terrain Float?
+  prix_modele  Float?
+  nom_agence   String?   @db.VarChar(255)
+  annonces     annonces? @relation(fields: [annonce_id], references: [id], onDelete: Cascade, map: "maison_terrain_ibfk_1")
+
+  @@index([annonce_id], map: "annonce_id")
+}
+
+model mandat {
+  id             Int       @id @default(autoincrement())
+  annonce_id     Int?
+  numero         String?   @db.VarChar(15)
+  date           DateTime? @db.Date
+  nom            String?   @db.VarChar(64)
+  prenom         String?   @db.VarChar(64)
+  raison_sociale String?   @db.VarChar(64)
+  adresse        String?   @db.VarChar(128)
+  cp             String?   @db.VarChar(5)
+  ville          String?   @db.VarChar(50)
+  telephone      String?   @db.VarChar(10)
+  commentaires   String?   @db.Text
+  annonces       annonces? @relation(fields: [annonce_id], references: [id], onDelete: Cascade, map: "mandat_ibfk_1")
+
+  @@index([annonce_id], map: "annonce_id")
+}
+
+model parking {
+  id           Int       @id @default(autoincrement())
+  annonce_id   Int?
+  nb_vehicules Int?
+  immeuble     Boolean?
+  isole        Boolean?
+  annonces     annonces? @relation(fields: [annonce_id], references: [id], onDelete: Cascade, map: "parking_ibfk_1")
+
+  @@index([annonce_id], map: "annonce_id")
+}
+
+model seloger {
+  id       Int    @id @default(autoincrement())
+  host     String @db.VarChar(150)
+  login    String @db.VarChar(150)
+  password String @db.VarChar(150)
+}
+
+model situation {
+  id       Int        @id @default(autoincrement())
+  nom      String?    @db.VarChar(150)
+  annonces annonces[]
+}
+
+model sous_typebien {
+  id       Int        @id @default(autoincrement())
+  nom      String?    @db.VarChar(150)
+  annonces annonces[]
+}
+
+model terrain {
+  id              Int       @id @default(autoincrement())
+  annonce_id      Int?
+  en_pente        Boolean?
+  plan_eau        Boolean?
+  longueur_facade Float?
+  annonces        annonces? @relation(fields: [annonce_id], references: [id], onDelete: Cascade, map: "terrain_ibfk_1")
+
+  @@index([annonce_id], map: "annonce_id")
+}
+
+model transaction {
+  id       Int        @id @default(autoincrement())
+  nom      String?    @db.VarChar(150)
+  annonces annonces[]
+}
+
+model type_residence {
+  id                Int                 @id @default(autoincrement())
+  code              String?             @db.VarChar(3)
+  nom               String?             @db.VarChar(150)
+  location_vacances location_vacances[]
+}
+
+model typebien {
+  id       Int        @id @default(autoincrement())
+  nom      String?    @db.VarChar(150)
+  url      String?    @db.VarChar(150)
+  annonces annonces[]
+}
+
+model viager {
+  id              Int       @id @default(autoincrement())
+  annonce_id      Int?
+  prix_bouquet    Float?
+  rente_mensuelle Float?
+  age_homme       Boolean?
+  age_femme       Boolean?
+  annonces        annonces? @relation(fields: [annonce_id], references: [id], onDelete: Cascade, map: "viager_ibfk_1")
+
+  @@index([annonce_id], map: "annonce_id")
+}

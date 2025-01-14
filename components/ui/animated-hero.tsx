@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Home, MoveRight, PhoneCall, UserCheck2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "./badge";
+import Link from "next/link";
 
 function Hero() {
   const [titleNumber, setTitleNumber] = useState(0);
@@ -62,7 +63,9 @@ function Hero() {
           </div>
           <div className="flex flex-row gap-3">
             <Button size="lg" className="gap-4" variant="outline">
-              Nos annonces <Home className="w-4 h-4" />
+              <Link href="/annonces" className="flex items-center gap-2">
+                Nos annonces <Home className="w-4 h-4" />
+              </Link>
             </Button>
             <Button size="lg" className="gap-4">
               Espace client <UserCheck2 className="w-4 h-4" />

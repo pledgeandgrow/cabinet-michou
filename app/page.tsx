@@ -1,17 +1,15 @@
 import { Case } from "@/components/ui/cases-with-infinite-scroll";
 import HeroCustom from "./components/hero-custom";
-import { ThemeToggle } from "@/components/theme-toggle";
+import ExpertiseSection from "./components/expertise-section";
 import Presentation from "./components/presentation";
 
-const Home = () => {
+export default function Home() {
   return (
-    <>
-      <ThemeToggle />
+    <main className="container mx-auto px-4 py-8">
       <HeroCustom />
       <Case />
+      <ExpertiseSection />
       <Presentation />
-    </>
+    </main>
   );
 }
-
-export default Home; 

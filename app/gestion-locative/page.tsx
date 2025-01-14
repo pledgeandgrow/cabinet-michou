@@ -27,7 +27,7 @@ const GestionLocative: React.FC = () => {
             <div className="w-full my-24 flex flex-col items-center">
                 <div className="w-full m-auto text-center">
                     <Badge className="mt-12 m-auto mb-4">GESTION LOCATIVE</Badge>
-                    <h1 className="text-7xl font-bold">3 expertises dans l'immobilier</h1>
+                    <h1 className="text-7xl font-bold">Notre équipe</h1>
                 </div>
                 <TabsTransitionPanel />
             </div>
