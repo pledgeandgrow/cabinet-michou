@@ -3,11 +3,11 @@ import { RowDataPacket } from 'mysql2';
 
 export async function createConnection() {
   return await mysql.createConnection({
-    host: 'localhost',
-    port: 8889,
-    user: 'root',
-    password: 'root',
-    database: 'cabinet_michou_db'
+    host: 'mysql-pledgeandgrow.alwaysdata.net',
+    port: 3306,
+    user: '394321',
+    password: 'Lppqcqplo95!',
+    database: 'pledgeandgrow_cabinet-michou'
   });
 }
 
