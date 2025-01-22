@@ -24,7 +24,7 @@ const navigation = [
   { name: 'Syndic', href: '/syndic', icon: Users },
   { name: 'Contact', href: '/contact', icon: MessageSquare },
   { name: 'Mentions Légales', href: '/mentions-legales', icon: FileText },
-  { name: 'Politique de traitement RGPD', href: 'https://www.declarations-juridiques.fr/login', icon: Shield },
+  { name: 'Politique de traitement RGPD', href: 'https://www.declarations-juridiques.fr/processing-policy/cabinet-r-michou-et-cie_562016535', icon: Shield },
   { name: 'Espace client', href: '/espace-client', icon: UserCircle },
 ]
 
