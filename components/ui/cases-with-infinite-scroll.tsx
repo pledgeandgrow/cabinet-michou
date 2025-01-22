@@ -151,6 +151,7 @@ export function Case({ items }: CaseProps) {
               href={`/annonces/${annonce.id}`}
               className="min-w-[300px]"
             >
+            
               <Card className="overflow-hidden hover:shadow-lg transition-shadow">
                 {annonce.photos && annonce.photos.length > 0 ? (
                   <div className="relative">
