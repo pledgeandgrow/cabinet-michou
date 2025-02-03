@@ -22,7 +22,7 @@ const navigation = [
   { name: 'Accueil', href: '/', icon: Home },
   { name: 'Gestion locative', href: '/gestion-locative', icon: Building2 },
   { name: 'Vente', href: '/vente', icon: Building },
-  { name: 'Syndic', href: '/syndic', icon: Users },
+  { name: 'Syndiccc', href: '/syndic', icon: Users },
   { name: 'Contact', href: '/contact', icon: MessageSquare },
   { name: 'Mentions Légales', href: '/mentions-legales', icon: FileText },
   { name: 'Politique de traitement RGPD', href: 'https://www.declarations-juridiques.fr/processing-policy/cabinet-r-michou-et-cie_562016535', icon: Shield },
