@@ -6,9 +6,10 @@ import * as React from "react";
 
 const HeroCustom: React.FC = () => {
     return (
-        <>
+        <div
+        >
             <Hero />
-        </>
+        </div>
     );
 }
 
