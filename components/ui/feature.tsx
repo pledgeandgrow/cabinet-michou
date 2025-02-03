@@ -8,7 +8,7 @@ function Feature() {
   const sections = [
     {
       title: "ASSURER VOTRE GESTION FINANCIÈRE, FISCALE ET COMPTABLE",
-      description: "Nous assurons la tenue de votre comptabilité et vous adressons à la période de votre choix (mensuel ou trimestriel) un relevé de compte de gérance accompagné de votre règlement. À tout moment, vos comptes sont consultables sur Internet (via notre accès client). Nous vous adressons tous les ans un récapitulatif afin de vous aider à réaliser votre déclaration des revenus fonciers. Nous vous proposons une garantie des loyers impayés, une assurance Propriétaire Non Occupant."
+      description: "Nous assurons la tenue de votre comptabilité avec le logiciel Lojii de la société Neoteem et vous adressons à la période de votre choix (mensuel ou trimestriel) un relevé de compte de gérance accompagné de votre règlement. À tout moment, vos comptes sont consultables sur Internet (via notre accès client). Nous vous adressons tous les ans un récapitulatif afin de vous aider à réaliser votre déclaration des revenus fonciers. Nous vous proposons une garantie des loyers impayés, une assurance Propriétaire Non Occupant."
     },
     {
       title: "ASSURER LA GESTION TECHNIQUE DE VOS BIENS",
