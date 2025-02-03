@@ -9,6 +9,7 @@ import { Feature } from "@/components/ui/feature";
 import { Separator } from "@/components/ui/separator";
 import BannerDocument from "../components/banner-document";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const GestionLocative: React.FC = () => {
     return (
