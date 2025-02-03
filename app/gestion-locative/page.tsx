@@ -38,7 +38,9 @@ const GestionLocative: React.FC = () => {
             <BannerInformative type="gestion-locative" />
             <BannerDocument />
             <div className="w-full flex justify-center my-24">
+            <Link href="/annonces" >
                 <Button>Voir nos annonces</Button>
+            </Link>
             </div>
         </>
     );
