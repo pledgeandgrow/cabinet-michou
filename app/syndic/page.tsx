@@ -56,7 +56,7 @@ function page() {
                 intramuros. Notre métier de syndic s'adresse à des clients cherchant une bonne gestion de leur
                 copropriété. Nous sommes facilement joignable et répondons à vos attentes.
               </p>
-              <p className='text-black dark:text-muted'>
+              <p className='text-black dark:text-white'>
                 Vous cherchez un syndic compétent, disponible et accessible pour gérer votre copropriété le cabinet
                 R.MICHOU est là pour répondre à vos demandes.
               </p>
@@ -74,16 +74,16 @@ function page() {
             <Card className="bg-transparent border-none shadow-none">
               <CardContent className="space-y-6 text-gray-600">
 
-                <p>
+                <p className='text-black dark:text-white'>
                   L'équipe qui s'occupe de votre immeuble règle rapidement les interventions, s'occupe des sinistres en
                   lien étroit avec l'assureur, organise vos assemblées générales et gère vos travaux. Le cabinet a une
                   compétence particulière pour la gestion des aspects techniques et des travaux de vos immeubles.
                 </p>
-                <p>
+                <p className='text-black dark:text-white'>
                   Des réunions sont organisées avec le conseil syndical pour le bon suivi de l'immeuble et la bonne
                   préparation de vos assemblées générales.
                 </p>
-                <p>
+                <p className='text-black dark:text-white'>
                   L'ensemble de la comptabilité de vos immeubles et la gestion des gardiens est assurée en interne par
                   nos collaborateurs.
                 </p>
