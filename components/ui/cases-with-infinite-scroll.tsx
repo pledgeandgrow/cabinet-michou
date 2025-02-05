@@ -176,7 +176,7 @@ export function Case({ items }: CaseProps) {
                       {annonce.transaction}
                     </Badge>
                     {annonce.reference && (
-                      <Badge className="absolute top-4 right-4 z-10 bg-background/90 backdrop-blur-sm">
+                      <Badge className="absolute top-4 right-4 z-10 bg-[#00408A] hover:bg-white hover:text-[#F6A831] dark:bg-background/90  backdrop-blur-sm">
                         Réf: {annonce.reference}
                       </Badge>
                     )}

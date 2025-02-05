@@ -16,6 +16,7 @@ import {
   Shield,
   UserCircle
 } from "lucide-react"
+import Map from './Map'
 
 const navigation = [
   { name: 'Accueil', href: '/', icon: Home },
@@ -24,7 +25,7 @@ const navigation = [
   { name: 'Syndic', href: '/syndic', icon: Users },
   { name: 'Contact', href: '/contact', icon: MessageSquare },
   { name: 'Mentions Légales', href: '/mentions-legales', icon: FileText },
-  { name: 'Politique de traitement RGPD', href: 'https://www.declarations-juridiques.fr/login', icon: Shield },
+  { name: 'Politique de traitement RGPD', href: 'https://www.declarations-juridiques.fr/processing-policy/cabinet-r-michou-et-cie_562016535', icon: Shield },
   { name: 'Espace client', href: '/espace-client', icon: UserCircle },
 ]
 
@@ -37,7 +38,9 @@ const contact = [
 
 export default function Footer() {
   return (
-    <footer className="border-t bg-background">
+    <div>
+      <Map/>
+      <footer className="border-t bg-background">
       <div className="container px-4 py-12 mx-auto">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Navigation Links */}
@@ -143,5 +146,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+    </div>
   )
 }

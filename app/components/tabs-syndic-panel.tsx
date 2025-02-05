@@ -12,20 +12,16 @@ const TEAM_ITEMS = [
     "content": "Angélique Mouton-Baboz, diplômée en droit, spécialisée dans la gestion immobilière, supervise la société et le service."
   },
   {
-    "title": "Responsable service gérance",
+    "title": "assistantes de copropriété",
     "subtitle": "1 responsable",
-    "content": "Spécialisée dans la gestion d'appartements, de baux commerciaux et de locaux industriels. Au service de nos clients, elle encadre un service de 8 personnes."
+    "content": "Des collaboratrices qui répondent au quotidien aux questions diverses et variées des copropriétaires, suivent les prestataires et règlent les soucis du quotidien.."
   },
   {
     "title": "Gestionnaire",
     "subtitle": "4 gestionnaires",
     "content": "Des collaboratrices spécialisées dans la gestion à la pointe de la réglementation. Interlocutrices privilégiées de nos propriétaires."
   },
-  {
-    "title": "Assistante gérance",
-    "subtitle": "3 assistantes gérance",
-    "content": "Des collaboratrices qui répondent au quotidien aux questions diverses et variées des locataires, suivent les prestataires et règlent les soucis du quotidien."
-  },
+  
   {
     "title": "Comptable",
     "subtitle": "1 comptable",
@@ -33,7 +29,7 @@ const TEAM_ITEMS = [
   }
 ];
 
-export function TabsTransitionPanel() {
+export function TabsSyndicPanel() {
   return (
     <div className="w-full py-24 px-6 md:px-12 lg:px-24">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

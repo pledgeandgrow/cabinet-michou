@@ -24,10 +24,11 @@ function Hero() {
   }, [titleNumber, titles]);
 
   return (
-    <div className="w-full">
+    <div className="w-full   bg-center flex items-center justify-center"
+    style={{ backgroundImage: "url('https://cabinet-michou.com/images/bandeau.jpg')" }}>
       <div className="container mx-auto">
-        <div className="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col">
-          <Badge variant={"outline"}>Un cabinet à votre écoute</Badge>
+        <div className="flex  gap-8 py-20 px-5 lg:py-40  justify-center flex-col">
+          {/* <Badge className="text-center w-fit" variant={"outline"}>Un cabinet à votre écoute</Badge> */}
           <div className="flex gap-4 flex-col">
             <h1 className="text-5xl md:text-7xl max-w-2xl tracking-tighter text-center font-regular">
               <span className="text-spektr-cyan-50">Nous gérons vos </span>
@@ -57,8 +58,8 @@ function Hero() {
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-center">
-              Le cabinet R. MICHOU vous accompagne dans les différents domaines de la gestion immobilière.
+            <p className="text-lg font-bold text-gray-300 md:text-xl leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-center">
+              Le cabinet R. MICHOU vous accompagne dans les différents domaines <br /> de la gestion immobilière.
             </p>
           </div>
           <div className="flex flex-row gap-3">

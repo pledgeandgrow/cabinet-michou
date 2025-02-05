@@ -97,7 +97,7 @@ export async function getAnnoncePhotos(annonceId: string | number) {
 
   return photos.map((photo: any) => ({
     id: photo.id,
-    url: `/annonces/${annonceId}/${photo.url}`
+    url: `https://cabinet-michou.com/uploads/annonces/${annonceId}/${photo.url}`
   }));
 }
 

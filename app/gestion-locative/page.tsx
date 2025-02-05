@@ -9,6 +9,7 @@ import { Feature } from "@/components/ui/feature";
 import { Separator } from "@/components/ui/separator";
 import BannerDocument from "../components/banner-document";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const GestionLocative: React.FC = () => {
     return (
@@ -38,7 +39,9 @@ const GestionLocative: React.FC = () => {
             <BannerInformative type="gestion-locative" />
             <BannerDocument />
             <div className="w-full flex justify-center my-24">
+            <Link href="/annonces" >
                 <Button>Voir nos annonces</Button>
+            </Link>
             </div>
         </>
     );

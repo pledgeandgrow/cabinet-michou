@@ -5,7 +5,7 @@ import Presentation from "./components/presentation";
 
 export default function Home() {
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className=" mx-0 px-0 " >
       <HeroCustom />
       <Case />
       <ExpertiseSection />

@@ -83,7 +83,7 @@ const mainMenuItems = [
         title: "Annonces SeLoger",
         description: "Voir nos annonces sur SeLoger.com",
         icon: ExternalLink,
-        url: "https://www.seloger.com/professionnel/cabinet-michou"
+        url: "https://www.seloger.com/professionnels/agences-immobilieres/paris-4eme-arrondissement-75004/agence-3801/"
       }
     ]
   },
