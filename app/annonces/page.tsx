@@ -279,7 +279,7 @@ export default function AnnoncesPage() {
                       <Building2 className="h-12 w-12 text-gray-400" />
                     </div>
                   )}
-                  <Badge className="absolute top-4 left-4 bg-background/90 backdrop-blur-sm">
+                  <Badge className="absolute top-4 bg-[#00408A] hover:bg-white hover:text-[#F6A831] dark:bg-background/90 left-4  backdrop-blur-sm">
                     {annonce.transaction}
                   </Badge>
                   {annonce.dpe_conso && (

@@ -22,7 +22,7 @@ function page() {
 			</BreadcrumbItem>
 			<BreadcrumbSeparator />
 			<BreadcrumbItem>
-				<BreadcrumbLink href="/gestion-locative">Gestion locative</BreadcrumbLink>
+				<BreadcrumbLink href="/syndic">Syndic</BreadcrumbLink>
 			</BreadcrumbItem>
 		</BreadcrumbList>
 	</Breadcrumb>
@@ -36,17 +36,11 @@ function page() {
 	<Separator />
 	<Feature />
 	<Separator />
-	<BannerDocument />
-	<div className="w-full flex justify-center my-24">
-	<Link href="/annonces" >
-		<Button>Voir nos annonces</Button>
-	</Link>
 	
-	</div>
 	<section className="container mx-auto px-4 py-16 md:py-24">
         <div className="text-center space-y-6">
-          <h2 className="text-orange-400 font-medium tracking-wide uppercase">Notre savoir-faire</h2>
-          <h1 className="text-blue-900 text-4xl md:text-5xl lg:text-6xl font-bold">Gestion de Copropriété</h1>
+         <Badge className="mt-12 m-auto mb-4">Notre Savoir-Faire</Badge>
+        <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-bold">Gestion de Copropriété</h1>
           <Card className="bg-transparent border-none shadow-none">
             <CardContent className="space-y-6 text-gray-600 text-lg leading-relaxed max-w-4xl mx-auto">
               <p className='text-black dark:text-white'>
@@ -69,8 +63,8 @@ function page() {
       <section className="container mx-auto px-4 py-16 md:py-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
-            <h2 className="text-orange-400 font-medium tracking-wide uppercase">Gestion de copropriété</h2>
-            <h3 className="text-blue-900 text-3xl md:text-4xl lg:text-5xl font-bold">Notre équipe</h3>
+          <Badge className="mt-12 m-auto mb-4 ml-6">Gestion de copropriété</Badge>
+          <h3 className="text-white ml-6 text-3xl md:text-4xl lg:text-5xl font-bold">Notre équipe</h3>
             <Card className="bg-transparent border-none shadow-none">
               <CardContent className="space-y-6 text-gray-600">
 
@@ -90,7 +84,7 @@ function page() {
               </CardContent>
             </Card>
           </div>
-          <div className="relative h-[500px] rounded-lg overflow-hidden">
+          <div className="relative h-[410px] rounded-lg overflow-hidden">
             <img
               src="https://cabinet-michou.com/images/syndic/3.jpg"
               alt="Parisian building with fountain"

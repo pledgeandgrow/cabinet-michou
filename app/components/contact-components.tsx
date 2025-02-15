@@ -7,7 +7,7 @@ export default function ContactComponent() {
         <Badge
           variant={"outline"}
         >Services</Badge>
-        <h2 className="text-3xl font-extrabold text-blue-800 leading-tight">
+        <h2 className="text-3xl font-extrabold text-black dark:text-white leading-tight">
           Nous appeler
         </h2>
       </div>

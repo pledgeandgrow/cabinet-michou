@@ -130,7 +130,7 @@ export function Case({ items }: CaseProps) {
   }, [api]);
 
   return (
-    <div className="space-y-8">
+    <div className="mt-10 py-12 px-6 md:px-12 lg:px-40" >
       {isLoading ? (
         <div className="flex gap-4 overflow-x-auto pb-4">
           {[...Array(6)].map((_, i) => (
@@ -172,7 +172,7 @@ export function Case({ items }: CaseProps) {
                         ))}
                       </CarouselContent>
                     </Carousel>
-                    <Badge className="absolute top-4 left-4 z-10 bg-background/90 backdrop-blur-sm">
+                    <Badge className="absolute top-4 left-4 z-10 bg-background/90 backdrop-blur-sm bg-[#00408A] hover:bg-white hover:text-[#F6A831] dark:bg-background/90">
                       {annonce.transaction}
                     </Badge>
                     {annonce.reference && (

@@ -58,11 +58,11 @@ function Hero() {
               </span>
             </h1>
 
-            <p className="text-lg font-bold text-gray-300 md:text-xl leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-center">
+            <p className="text-lg font-bold  md:text-xl leading-relaxed tracking-tight text-white dark:text-black  max-w-2xl text-center">
               Le cabinet R. MICHOU vous accompagne dans les différents domaines <br /> de la gestion immobilière.
             </p>
           </div>
-          <div className="flex flex-row gap-3">
+          <div className="flex flex-row ml-11 gap-3 lg:ml-36">
             <Button size="lg" className="gap-4" variant="outline">
               <Link href="/annonces" className="flex items-center gap-2">
                 Nos annonces <Home className="w-4 h-4" />

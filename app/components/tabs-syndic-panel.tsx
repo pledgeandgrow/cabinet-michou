@@ -9,23 +9,23 @@ const TEAM_ITEMS = [
   {
     "title": "Dirigeant société",
     "subtitle": "1 responsable",
-    "content": "Angélique Mouton-Baboz, diplômée en droit, spécialisée dans la gestion immobilière, supervise la société et le service."
+    "content": "Alexandre Baboz, diplômé de l'ESPI et de l'I.C.H, spécialisé dans la gestion de copropriété, supervise la société et le service."
   },
   {
-    "title": "assistantes de copropriété",
-    "subtitle": "1 responsable",
-    "content": "Des collaboratrices qui répondent au quotidien aux questions diverses et variées des copropriétaires, suivent les prestataires et règlent les soucis du quotidien.."
+    "title": "Assistantes de copropriété",
+    "subtitle": "3 assistants",
+    "content": "Des collaboratrices qui répondent au quotidien aux questions diverses et variées des copropriétaires, suivent les prestataires et règlent les soucis du quotidien."
   },
   {
     "title": "Gestionnaire",
-    "subtitle": "4 gestionnaires",
-    "content": "Des collaboratrices spécialisées dans la gestion à la pointe de la réglementation. Interlocutrices privilégiées de nos propriétaires."
+    "subtitle": "5 syndics",
+    "content": "Des collaborateurs spécialisés dans la gestion des copropriétés. Mobiles, réactifs, attentifs et à votre écoute."
   },
   
   {
     "title": "Comptable",
-    "subtitle": "1 comptable",
-    "content": "Compte de gérance, avis d'échéance, régularisation des charges, paiement des factures… et ceci n'est qu'une partie de son univers."
+    "subtitle": "4 comptables",
+    "content": "Un service de 4 personnes qui assurent le suivi comptable de votre copropriété, le paiement des factures ainsi que la gestion des gardiens."
   }
 ];
 

@@ -69,7 +69,7 @@ export default function ContactForm() {
         <Badge
           variant={"outline"}
         >Contact</Badge>
-        <h2 className="text-3xl font-extrabold text-blue-800 leading-tight">
+        <h2 className="text-3xl font-extrabold text-black dark:text-white leading-tight">
           Envoyez-nous un message
         </h2>
         <p className="mt-4 text-gray-600">
@@ -176,7 +176,7 @@ export default function ContactForm() {
 
         <div className="flex justify-center">
           <ReCAPTCHA
-            sitekey="6Le4oswZAAAAAHiBVBnjI8A4eRHtabdU4-LYmJox"
+            sitekey="6Ldk9NEqAAAAAMyq1LfunVJcxxby0U42CXQ0p2fx"
             onChange={(token) => setRecaptchaToken(token)}
           />
         </div>
