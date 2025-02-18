@@ -26,3 +26,44 @@ export async function query<T extends RowDataPacket[]>({
     connection.end();
   }
 }
+
+export async function getAllActualites() {
+  const results = await query<RowDataPacket[]>({
+    query: "SELECT * FROM actualites ORDER BY id DESC",
+  })
+  return results
+}
+
+export async function insertActualite(titre: string, contenu: string, lien: string, publie: boolean) {
+  const results = await query<RowDataPacket[]>({
+    query: "INSERT INTO actualites (titre, contenu, lien, publie) VALUES (?, ?, ?, ?)",
+    values: [titre, contenu, lien, publie]
+  });
+  return results;
+}
+
+export async function updateActualite(
+  id: number,
+  titre: string,
+  contenu: string,
+  lien: string,
+  publie: boolean
+) {
+  const results = await query<RowDataPacket[]>({
+    query:
+      'UPDATE actualites SET titre = ?, contenu = ?, lien = ?, publie = ? WHERE id = ?',
+    values: [titre, contenu, lien, publie, id],
+  });
+  return results;
+}
+
+
+export async function deleteActualite(id: number) {
+  const results = await query<RowDataPacket[]>({
+    query: "DELETE FROM actualites WHERE id = ?",
+    values: [id]
+  });
+  return results;
+}
+
+
