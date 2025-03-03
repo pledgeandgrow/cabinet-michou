@@ -83,8 +83,8 @@ const mainMenuItems = [
     ],
   },
   {
-    title: "Le Cabinet",
-    url: "/cabinet",
+    title: "Cabinet Mas Rocher",
+    url: "https://cabinet-mas-rocher.vercel.app",
     icon: Building2,
     description: "Découvrez notre histoire depuis 1952",
   },
