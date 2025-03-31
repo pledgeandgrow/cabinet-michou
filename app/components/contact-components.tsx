@@ -21,7 +21,7 @@ export default function ContactComponent() {
         <ContactItem
           icon="🏢"
           label="Location"
-          number="01 48 87 97 51"
+          number="01 40 09 32 44"
         />
         <ContactItem icon="🛒" label="Vente" number="01 48 87 97 30" />
         <ContactItem icon="👥" label="Syndic" number="01 48 87 56 99" />

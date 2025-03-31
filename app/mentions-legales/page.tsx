@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function MentionsLegales() {
   return (
-    <div className="container py-8 space-y-8">
+    <div className="container px-5 py-8 space-y-8">
       <h1 className="text-3xl font-bold tracking-tight">Mentions Légales</h1>
       
       <div className="grid gap-6">
@@ -61,11 +61,11 @@ export default function MentionsLegales() {
           <CardContent className="pt-6">
             <h2 className="text-2xl font-semibold mb-4">Site réalisé par</h2>
             <div className="space-y-2 text-muted-foreground">
-              <p className="font-medium text-foreground">Imag'In Action</p>
-              <p>62 rue Louis Ampère - 93330 Neuilly sur Marne - France</p>
-              <p>Tél : +33.1.43.81.88.11</p>
-              <p>Adresse e-mail : contact@imagin-action.fr</p>
-              <p>Site web : <a href="http://www.imagin-action.fr" className="text-primary hover:underline">www.imagin-action.fr</a></p>
+              <p className="font-medium text-foreground">Pledge and Grow</p>
+              <p>4 B RUE ALFRED NOBEL 77420 CHAMPS-SUR-MARNE</p>
+              <p>Tél : +33 7 53 69 58 40</p>
+              <p>Adresse e-mail : pledgeandgrow@gmail.com</p>
+              <p>Site web : <a href="https://pledgeandgrow.com/" className="text-primary hover:underline">Pledge and Grow</a></p>
             </div>
           </CardContent>
         </Card>
@@ -128,7 +128,7 @@ export default function MentionsLegales() {
               <p>
                 Pour plus d'informations sur notre politique de traitement des données personnelles, veuillez consulter notre{" "}
                 <a 
-                  href="https://www.declarations-juridiques.fr/login" 
+                  href="https://www.declarations-juridiques.fr/processing-policy/cabinet-r-michou-et-cie_562016535" 
                   className="text-primary hover:underline"
                   target="_blank" 
                   rel="noopener noreferrer"

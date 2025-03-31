@@ -17,10 +17,7 @@ const BannerDocument: React.FC = () => {
                         <Check className="text-green-500" />
                         <span>Carte d’identité</span>
                     </li>
-                    <li className="flex items-center gap-2">
-                        <Check className="text-green-500" />
-                        <span>Relevé d’Identité Bancaire</span>
-                    </li>
+                  
                     <li className="flex items-center gap-2">
                         <Check className="text-green-500" />
                         <span>3 derniers bulletins de salaire</span>

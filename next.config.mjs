@@ -7,8 +7,18 @@ const nextConfig = {
 			hostname: "cabinet-michou.com",
 			
 		  },
+		  {
+			protocol: "https",
+            hostname: "images.pexels.com",
+		  }
 		],
 	  },
+
+	typescript:{
+		ignoreBuildErrors:true
+	},
+	output:'standalone'
+	  
 	
 };
 

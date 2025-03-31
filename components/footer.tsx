@@ -26,13 +26,13 @@ const navigation = [
   { name: 'Contact', href: '/contact', icon: MessageSquare },
   { name: 'Mentions Légales', href: '/mentions-legales', icon: FileText },
   { name: 'Politique de traitement RGPD', href: 'https://www.declarations-juridiques.fr/processing-policy/cabinet-r-michou-et-cie_562016535', icon: Shield },
-  { name: 'Espace client', href: '/espace-client', icon: UserCircle },
+  { name: 'Espace client', href: 'https://michou.neotimm.com/extranet/#/login', icon: UserCircle },
 ]
 
 const contact = [
   { label: 'Syndic', number: '01 48 87 56 99' },
   { label: 'Gestion locative', number: '01 48 87 94 78' },
-  { label: 'Location', number: '01 48 87 97 51' },
+  { label: 'Location', number: '01 40 09 32 44' },
   { label: 'Vente', number: '01 48 87 97 30' },
 ]
 
@@ -111,7 +111,7 @@ export default function Footer() {
               </div>
               
               <div className="space-y-2 text-muted-foreground">
-                <p className="font-medium">Cartes professionnelles :</p>
+                <p className="font-medium">Cartes professionnelles : CPI 7501 2016 000 013 635</p>
                 <p>Gestion : G1321</p>
                 <p>Transaction : T2996</p>
               </div>

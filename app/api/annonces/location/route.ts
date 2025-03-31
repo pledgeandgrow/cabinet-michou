@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { getAnnonces } from '@/lib/annonces';
+export const dynamic = 'force-dynamic';
 
 /* interface AnnonceParams {
   transactionId?: number | null;

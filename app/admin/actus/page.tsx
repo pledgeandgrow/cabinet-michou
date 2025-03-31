@@ -53,29 +53,37 @@ export default function NewsManagement() {
 
   const handleSubmit = async (updatedActualite: Actualite) => {
     const { id, titre, contenu, lien, publie } = updatedActualite;
+  
+    try {
+      const response = await fetch(`/api/actualites/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ titre, contenu, lien, publie }),
+      });
+  
+      if (!response.ok) {
+        const errorMessage = await response.json();
+        console.error('Error from server:', errorMessage);
+        return;
+      }
+  
+      const result = await response.json();
+      console.log('Actualité updated successfully', result);
+      setIsPopupOpen(false)
 
-  try {
-    const response = await fetch(`/api/actualites/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ titre, contenu, lien, publie }),
-    });
-
-    if (!response.ok) {
-      const errorMessage = await response.json(); 
-      console.error('Error from server:', errorMessage);
-      return; 
+  
+      setActualites((prevActualites) => 
+        prevActualites.map((item) =>
+          item.id === id ? { ...item, ...updatedActualite } : item
+        )
+      );
+    } catch (error) {
+      console.error('Error during fetch:', error);
     }
-
-    const result = await response.json();
-    console.log('Actualité updated successfully', result);
-    window.location.reload();
-  } catch (error) {
-    console.error('Error during fetch:', error);
   }
-  }
+  
   const handleDelete = async (id: number) => {
     const response = await fetch(`/api/actualites/${id}`, {
       method: 'DELETE',
@@ -99,7 +107,7 @@ export default function NewsManagement() {
           <span className="mx-2">/</span>
           <span>Gestion des actualités</span>
         </div>
-        <h1 className="text-4xl font-bold text-[#00458E] mb-8">Gestion des actualités</h1>
+        <h1 className="text-4xl font-bold text-black dark:text-white mb-8">Gestion des actualités</h1>
         <div className="text-right">
           <Dialog open={isPopupOpen} onOpenChange={setIsPopupOpen}>
             <DialogTrigger asChild>

@@ -9,26 +9,7 @@ const newsItems = [
     content:
       "Afin de certifier vos locataires, le cabinet Michou s'engage auprès de Good loc de Verlingue, votre garantie loyer impayée",
   },
-  {
-    title: "JEUX OLYMPIQUES- JOURNEE DU 26 JUILLET 2024",
-    content: (
-      <>
-        <p>Chère cliente, cher client,</p>
-        <p>
-          En raison des conditions de sécurité très strictes prévues par les autorités pour les Jeux Olympiques de Paris
-          2024, notre cabinet sera fermé à la réception le vendredi 26 juillet.
-        </p>
-        <p>Nos collaborateurs resteront joignables sur leurs lignes directes pendant cette journée de fermeture.</p>
-        <p>
-          A ce titre, nous vous remercions de les contacter sur leurs lignes directes. Vous trouverez leurs coordonnées
-          téléphoniques sur vos appels de fonds. Vous pouvez également les joindre via leur mail direct et ils vous
-          rappelleront pour traiter votre dossier. Nous vous rappelons également que vous disposez d'un accès client
-          depuis notre site extranet où vous pourrez retrouver votre situation de compte ainsi que les coordonnées de
-          votre gestionnaire.
-        </p>
-      </>
-    ),
-  },
+  
   {
     title: "Pour des vacances sereines",
     content: (
@@ -57,33 +38,11 @@ const newsItems = [
     content: (
       <div className="flex flex-col items-start gap-4">
         <p>Tous nos derniers posts</p>
-        <Link target="_blank" href={'https://www.instagram.com/cabinetmichou'} className={`bg-[#003C7F] hover:bg-[#003C7F]/90 ${buttonVariants()}`}>Cliquez ici</Link>
+        <Link target="_blank" href={'https://www.instagram.com/cabinetrmichou'} className={`bg-[#003C7F] hover:bg-[#003C7F]/90 ${buttonVariants()}`}>Cliquez ici</Link>
       </div>
     ),
   },
-  {
-    title: "Déclaration des biens immobiliers",
-    content: (
-      <>
-        <p>
-          une nouvelle obligation déclarative est à réaliser pour l'ensemble des particuliers propriétaires de locaux
-          d'habitation.
-        </p>
-        <p>Celle-ci sera à produire avant le 30 juin 2023.</p>
-        <p>
-          Lors de la réalisation de cette dernière, il vous sera nécessaire d'y reporter différentes informations. Entre
-          autres, la précision d'occupation du local, le type de bail s'il était loué : de facto les informations
-          relatives à l'occupant (Nom, Prénom, date de naissance, date de début de la location) ainsi que le montant du
-          loyer hors charges (facultatif).
-        </p>
-        <p>
-          Cette démarche est purement déclarative et a pour but d'accompagner l'administration à établir la taxe
-          d'habitation sur les résidences secondaires, la taxe sur les locaux vacants (TLV) et la taxe d'habitation sur
-          les logements vacants (THLV).
-        </p>
-      </>
-    ),
-  },
+  
 ]
 
 export default function NewsSections() {
@@ -105,8 +64,8 @@ export default function NewsSections() {
                   <div className="mb-6">
                     <Badge className="">ACTUALITÉS</Badge>
                   </div>
-                  <h2 className="text-black font-bold text-3xl md:text-4xl mb-6">{item.title}</h2>
-                  <div className="text-gray-600 space-y-4">{item.content}</div>
+                  <h2 className="text-black font-bold text-3xl md:text-4xl mb-6 dark:text-white">{item.title}</h2>
+                  <div className="text-gray-600 space-y-4 dark:text-white">{item.content}</div>
                 </div>
               </CarouselItem>
             ))}

@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import Image from "next/image"
-import { Menu } from "lucide-react"
+import { LogOut, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import {
@@ -20,6 +20,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { useState } from "react"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import DossierPopup from "./Dossier-popup"
+import LogOutForm from "./LogOutForm"
 
 const mainMenuItems = [
   {
@@ -38,12 +39,7 @@ const mainMenuItems = [
         icon: Key,
         url: "/gestion-locative",
       },
-      {
-        title: "Nos dernières annonces",
-        description: "Achat, vente ou location de biens immobiliers",
-        icon: Banknote,
-        url: "/#annonces",
-      },
+    
       {
         title: "Syndic",
         description: "Gestion transparente et efficace de votre copropriété",
@@ -83,7 +79,7 @@ const mainMenuItems = [
     ],
   },
   {
-    title: "Le Cabinet",
+    title: "Cabinet Mas Rocher",
     url: "/cabinet",
     icon: Building2,
     description: "Découvrez notre histoire depuis 1952",
@@ -183,6 +179,9 @@ export function MainNav() {
                   <NavigationMenuItem>
                     <ThemeToggle />
                   </NavigationMenuItem>
+                  <NavigationMenuItem >
+                    <LogOutForm />
+                  </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
@@ -199,7 +198,7 @@ export function MainNav() {
                       {link.title}
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[705px]">
+                  <DialogContent className="sm:max-w-5xl  overflow-y-auto">
                     <DossierPopup />
                   </DialogContent>
                 </Dialog>
@@ -275,7 +274,7 @@ export function MainNav() {
                             {link.title}
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-[425px]">
+                        <DialogContent className="sm:max-w-[625px]">
                           <DossierPopup />
                         </DialogContent>
                       </Dialog>

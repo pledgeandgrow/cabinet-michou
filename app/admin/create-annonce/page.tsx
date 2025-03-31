@@ -80,7 +80,7 @@ interface FormData {
   emissions_ges: string
 }
 
-export default function DossierPopup() {
+export default function CreateListingPage() {
   const [currentStep, setCurrentStep] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -188,7 +188,7 @@ export default function DossierPopup() {
 
       // Convert form data to API format
       const requestBody = {
-        publie:0,
+        publie:1,
         reference: formData.reference,
         transaction_id: Number(formData.transactionType),
         typebien_id: formData.propertyType ? Number(formData.propertyType) : null,
@@ -289,7 +289,7 @@ export default function DossierPopup() {
   }
 
   return (
-    <div className="max-w-[600px] mx-auto py-2 my-10 max-h-[60vh]  mb-10">
+    <div className="max-w-5xl mx-auto py-8">
       <div className="mb-8">
         <div className="text-sm text-muted-foreground mb-4">
           <span className="hover:underline cursor-pointer">Accueil</span>
@@ -299,7 +299,7 @@ export default function DossierPopup() {
           <span>Créer une annonce</span>
         </div>
         <div className="text-orange-400 uppercase tracking-wide text-sm font-semibold mb-2">ANNONCES</div>
-        <h1 className="text-4xl font-bold text-[#00458E] mb-8">Créer une annonce</h1>
+        <h1 className="text-4xl font-bold text-black dark:text-white mb-8">Créer une annonce</h1>
       </div>
 
       <div className="flex gap-8">

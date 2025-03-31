@@ -29,7 +29,7 @@ function page() {
 	<div className="w-full my-24 flex flex-col items-center">
 		<div className="w-full m-auto text-center">
 			<Badge className="mt-12 m-auto mb-4">Syndic</Badge>
-			<h1 className="text-7xl font-bold">Notre équipe</h1>
+			<h1 className="text-7xl font-bold text-black dark:text-white">Notre équipe</h1>
 		</div>
 		<TabsSyndicPanel />
 	</div>
@@ -40,7 +40,7 @@ function page() {
 	<section className="container mx-auto px-4 py-16 md:py-24">
         <div className="text-center space-y-6">
          <Badge className="mt-12 m-auto mb-4">Notre Savoir-Faire</Badge>
-        <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-bold">Gestion de Copropriété</h1>
+        <h1 className="text-black dark:text-white text-4xl md:text-5xl lg:text-6xl font-bold">Notre expertise à votre service pour la gestion de copropriété à paris</h1>
           <Card className="bg-transparent border-none shadow-none">
             <CardContent className="space-y-6 text-gray-600 text-lg leading-relaxed max-w-4xl mx-auto">
               <p className='text-black dark:text-white'>
@@ -64,7 +64,7 @@ function page() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
           <Badge className="mt-12 m-auto mb-4 ml-6">Gestion de copropriété</Badge>
-          <h3 className="text-white ml-6 text-3xl md:text-4xl lg:text-5xl font-bold">Notre équipe</h3>
+          <h3 className="text-black ml-6 text-3xl md:text-4xl lg:text-5xl font-bold dark:text-white">Notre équipe</h3>
             <Card className="bg-transparent border-none shadow-none">
               <CardContent className="space-y-6 text-gray-600">
 

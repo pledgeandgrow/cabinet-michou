@@ -34,7 +34,7 @@ function Feature() {
               </div>
               <div className="flex gap-2 flex-col">
                 <h2 className="text-5xl font-bold lg:text-5xl tracking-tighter max-w-xl text-left font-regular">
-                Nos principaux services
+                Nos services
                 </h2>
               </div>
             </div>

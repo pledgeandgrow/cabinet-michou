@@ -50,7 +50,7 @@ export function TabsSyndicPanel() {
                   </Badge>
                 </div>
                 <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                <p className=" flex-grow">
+                <p className=" flex-grow text-black dark:text-white">
                   {item.content}
                 </p>
               </CardContent>
