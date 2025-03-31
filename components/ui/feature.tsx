@@ -7,20 +7,20 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 function Feature() {
   const sections = [
     {
-      title: "ASSURER VOTRE GESTION FINANCIÈRE, FISCALE ET COMPTABLE",
-      description: "Nous assurons la tenue de votre comptabilité avec le logiciel Lojii de la société Neoteem et vous adressons à la période de votre choix (mensuel ou trimestriel) un relevé de compte de gérance accompagné de votre règlement. À tout moment, vos comptes sont consultables sur Internet (via notre accès client). Nous vous adressons tous les ans un récapitulatif afin de vous aider à réaliser votre déclaration des revenus fonciers. Nous vous proposons une garantie des loyers impayés, une assurance Propriétaire Non Occupant."
+      title: "",
+      description: "Nous assurons la tenue de votre comptabilité avec  le logiciel Lojii de la société Neoteem et vous adressons à la période de votre choix (mensuel ou trimestriel) un relevé de compte de gérance accompagné de votre règlement. À tout moment, vos comptes sont consultables sur Internet (via notre accès client). Nous vous adressons tous les ans un récapitulatif afin de vous aider à réaliser votre déclaration des revenus fonciers. Nous vous proposons une garantie des loyers impayés, une assurance Propriétaire Non Occupant."
     },
     {
-      title: "ASSURER LA GESTION TECHNIQUE DE VOS BIENS",
-      description: "Nous assurons pour votre compte les appels d’offre auprès des entreprises, suivons les travaux d’amélioration ou d’entretien afin de maintenir la valeur locative de votre bien et répondre aux obligations réglementaires. Notre équipe a acquis une réelle compétence dans le suivi des travaux dans les immeubles anciens. Nous assurons le suivi des sinistres de tous ordres et engageons les différentes assurances et garanties dont vous bénéficiez."
+      title: "GESTION DES INTERVENTIONS ET DES SINISTRES",
+      description: "Votre équipe réagit rapidement aux demandes d'intervention, gère les sinistres en étroite collaboration avec l’assureur, organise les assemblées générales et supervise les travaux nécessaires. Cette approche garantit une réactivité optimale et une gestion efficace des incidents."
     },
     {
-      title: "ASSURER LA GESTION LOCATIVE",
-      description: "Nous mettons en location votre bien, au prix du marché. Nous nous occupons de votre bien, de l’entrée de vos locataires jusqu’à leur départ. Nous gérons les sinistres, nous réglons vos litiges. Nous entretenons et valorisons votre patrimoine immobilier."
+      title: "REUNION AVEC LE CONSEIL SYNDICAL",
+      description: "Des réunions sont organisées avec le conseil syndical pour assurer un suivi rigoureux de l’immeuble et préparer efficacement les assemblées générales. Cette collaboration favorise une communication fluide et une prise de décision éclairée."
     },
     {
-      title: "RESPECT DE LA RÉGLEMENTATION",
-      description: "Diagnostic, état des lieux, dépôt de garantie, charges récupérables, travaux récupérables, autant d’obligations et de sources de conflit. Le cabinet veille au respect de ces différentes étapes durant la période pendant laquelle nous gérons votre bien."
+      title: "GESTION COMPTABLE",
+      description: "L’ensemble de la comptabilité de vos immeubles est assuré en interne par vos collaborateurs. Cette organisation garantit une gestion financière transparente et une coordination optimale entre les services."
     }
   ];  
   return (
@@ -30,7 +30,7 @@ function Feature() {
           <div className="flex gap-10 flex-col">
             <div className="flex gap-4 flex-col">
               <div>
-                <Badge variant="default">Propriétaire</Badge>
+                <Badge variant="default">Gestion de Copropriété</Badge>
               </div>
               <div className="flex gap-2 flex-col">
                 <h2 className="text-5xl font-bold lg:text-5xl tracking-tighter max-w-xl text-left font-regular">

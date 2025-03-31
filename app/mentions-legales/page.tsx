@@ -50,7 +50,7 @@ export default function MentionsLegales() {
             <div className="space-y-2 text-muted-foreground">
               <p className="font-medium text-foreground">Colombia</p>
               <p>32c avenue Oudinot - 94340 Joinville le Pont - France</p>
-              <p>Tél : +33.1.48.89.78.00</p>
+              <p>Tél : +33 7 53 69 58 40</p>
               <p>Site web : <a href="http://www.colombia.fr" className="text-primary hover:underline">www.colombia.fr</a></p>
             </div>
           </CardContent>
@@ -61,11 +61,12 @@ export default function MentionsLegales() {
           <CardContent className="pt-6">
             <h2 className="text-2xl font-semibold mb-4">Site réalisé par</h2>
             <div className="space-y-2 text-muted-foreground">
-              <p className="font-medium text-foreground">Pledge and Grow</p>
-              <p>4 B RUE ALFRED NOBEL 77420 CHAMPS-SUR-MARNE</p>
-              <p>Tél : +33 7 53 69 58 40</p>
-              <p>Adresse e-mail : pledgeandgrow@gmail.com</p>
-              <p>Site web : <a href="https://pledgeandgrow.com/" className="text-primary hover:underline">Pledge and Grow</a></p>
+
+              <p className="font-medium text-foreground">PLEDGE AND GROW</p>
+              <p>4bis rue Alfred Nobel - 77420 Champs-sur-Marne - France</p>
+              <p>Tél : +33.7.53.69.58.40</p>
+              <p>Adresse e-mail : contact@pledgeandgrow.com</p>
+              <p>Site web : <a href="https://pledgeandgrow.com/" className="text-primary hover:underline">pledgeandgrow.com/</a></p>
             </div>
           </CardContent>
         </Card>
