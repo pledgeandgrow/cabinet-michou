@@ -1,14 +1,25 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
-import { useRouter } from "next/navigation"
 import { format } from "date-fns"
+
+// Define types for the API data
+interface TypeBien {
+  id: number;
+  nom: string;
+}
+
+interface TypeTransaction {
+  id: number;
+  nom: string;
+}
 
 interface FormData {
   // Basic Information
@@ -84,8 +95,8 @@ export default function CreateListingPage() {
   const [currentStep, setCurrentStep] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [typesbiens, setTypesBien] = useState([])
-  const [typestransactions, setTypesTransactions] = useState([])
+  const [typesbiens, setTypesBien] = useState<TypeBien[]>([])
+  const [typestransactions, setTypesTransactions] = useState<TypeTransaction[]>([])
   const [formData, setFormData] = useState<FormData>({
     reference: "",
     transactionType: "",
@@ -354,7 +365,7 @@ export default function CreateListingPage() {
                         <SelectValue placeholder="Sélectionner..." />
                       </SelectTrigger>
                       <SelectContent>
-                        {typestransactions.map((type) => (
+                        {typestransactions.map((type: TypeTransaction) => (
                           <SelectItem key={type.id} value={type.id.toString()}>
                             {type.nom}
                           </SelectItem>
@@ -375,7 +386,7 @@ export default function CreateListingPage() {
                         <SelectValue placeholder="Sélectionner..." />
                       </SelectTrigger>
                       <SelectContent>
-                        {typesbiens.map((type) => (
+                        {typesbiens.map((type: TypeBien) => (
                           <SelectItem key={type.id} value={type.id.toString()}>
                             {type.nom}
                           </SelectItem>
@@ -778,4 +789,3 @@ export default function CreateListingPage() {
     </div>
   )
 }
-

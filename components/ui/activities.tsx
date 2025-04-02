@@ -1,60 +1,66 @@
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Badge } from "./badge"
-import { Building2, FileText, Key } from "lucide-react"
+import { Building, Home, Landmark } from "lucide-react"
 
-function Activities() {
+const activities = [
+  {
+    title: "Gestion locative",
+    description: "Nous gérons tous types de biens immobiliers pour les propriétaires bailleurs.",
+    icon: <Home className="h-8 w-8 text-[#00408A]" />,
+    link: "/gestion-locative"
+  },
+  {
+    title: "Syndic de copropriété",
+    description: "Nous assurons la gestion administrative, comptable et technique de votre copropriété.",
+    icon: <Building className="h-8 w-8 text-[#00408A]" />,
+    link: "/syndic"
+  },
+  {
+    title: "Transaction immobilière",
+    description: "Nous vous accompagnons dans l'achat ou la vente de votre bien immobilier.",
+    icon: <Landmark className="h-8 w-8 text-[#00408A]" />,
+    link: "/vente"
+  }
+]
+
+export default function Activities() {
   return (
-    <div className="flex justify-center flex-col py-6  px-6 md:px-12 lg:px-40">
-      <Badge className="mt-12 m-auto mb-4">Nos activités</Badge>
-      <h1 className="text-center font-bold text-4xl lg:text-6xl text-gray-900 dark:text-white">
-        3 expertises dans <br /> l'immobilier
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-        <div className="group flex flex-col items-center text-center p-6 rounded-xl transition-all duration-300 hover:shadow-xl bg-white dark:bg-gray-800">
-          <div className="mb-6 p-4 rounded-full bg-orange-50 dark:bg-orange-900/20 text-orange-400 dark:text-orange-300 transition-transform duration-300 group-hover:scale-110">
-            <Building2 size={32} />
-          </div>
-          <h2 className="text-xl font-bold text-blue-900 dark:text-blue-100 mb-4">GESTION LOCATIVE</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-            Composée d'interlocuteurs de confiance, notre équipe de gestion locative assure l'entière gestion de vos
-            biens immobiliers, qu'il s'agisse de locaux à usage commercial ou d'habitation.
-          </p>
-          <Link href={'gestion-locative'} className="mt-auto rounded-lg px-6 py-2 bg-[#00408A]  text-white    transition-colors duration-300">
-            En savoir plus
-          </Link>
+    <section className="py-12 px-4 md:px-12 lg:px-24 my-8 mx-4 md:mx-0">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-8 md:mb-12">
+          <Badge className="mb-4">NOS ACTIVITÉS</Badge>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 text-black dark:text-white">
+            3 expertises dans l'immobilier
+          </h2>
         </div>
 
-        <div className="group flex flex-col items-center text-center p-6 rounded-xl transition-all duration-300 hover:shadow-xl bg-white dark:bg-gray-800">
-          <div className="mb-6 p-4 rounded-full bg-orange-50 dark:bg-orange-900/20 text-orange-400 dark:text-orange-300 transition-transform duration-300 group-hover:scale-110">
-            <Key size={32} />
-          </div>
-          <h2 className="text-xl font-bold text-blue-900 dark:text-blue-100 mb-4">VENTE</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-            Dans le cadre des missions de vente, notre cabinet se charge de visiter et estimer votre bien afin de vous
-            accompagner au mieux dans votre projet immobilier.
-          </p>
-          <Link href={'/vente'} className="mt-auto px-6 py-2 bg-[#00408A]  text-white rounded-lg  transition-colors duration-300">
-            En savoir plus
-          </Link>
-        </div>
-
-        <div className="group flex flex-col items-center text-center p-6 rounded-xl transition-all duration-300 hover:shadow-xl bg-white dark:bg-gray-800">
-          <div className="mb-6 p-4 rounded-full bg-orange-50 dark:bg-orange-900/20 text-orange-400 dark:text-orange-300 transition-transform duration-300 group-hover:scale-110">
-            <FileText size={32} />
-          </div>
-          <h2 className="text-xl font-bold text-blue-900 dark:text-blue-100 mb-4">SYNDIC</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-            Notre équipe de gestion de copropriétés se compose de gestionnaires, assistantes et comptables qui veillent
-            au bon fonctionnement quotidien de votre immeuble et l'entretien de ses équipements.
-          </p>
-          <Link href={'/syndic'} className="mt-auto px-6 py-2 bg-[#00408A]  text-white rounded-lg  transition-colors duration-300">
-            En savoir plus
-          </Link>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          {activities.map((activity, index) => (
+            <Link href={activity.link} key={index} className="block">
+              <Card className="border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-all group h-full">
+                <CardHeader className="pb-2 flex flex-col items-center text-center">
+                  <div className="p-4 rounded-full bg-blue-50 dark:bg-blue-900/20 mb-4 flex items-center justify-center">
+                    {activity.icon}
+                  </div>
+                  <CardTitle className="text-xl md:text-2xl text-black dark:text-white">{activity.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base text-gray-600 dark:text-gray-300 min-h-[60px] text-center">
+                    {activity.description}
+                  </CardDescription>
+                </CardContent>
+                <CardFooter>
+                  <Button variant="outline" className="w-full border-[#00408A] text-black hover:bg-[#00408A] hover:text-white dark:border-blue-400 dark:text-white dark:hover:bg-blue-800">
+                    En savoir plus
+                  </Button>
+                </CardFooter>
+              </Card>
+            </Link>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   )
 }
-
-export default Activities
-

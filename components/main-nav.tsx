@@ -130,13 +130,13 @@ const ListItem = ({ className, title, children, ...props }: any) => {
 export function MainNav() {
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
       <div className="container flex h-16 items-center">
         <div className="flex flex-1 items-center justify-between">
           <div className="flex items-center gap-10">
             <Link href="/" className="flex items-center space-x-2">
               <Image
-                className="ml-8"
+                className="ml-0 md:ml-0"
                 src={logo || "/placeholder.svg"}
                 alt="Cabinet Michou"
                 width={120}
@@ -148,11 +148,11 @@ export function MainNav() {
             {/* Desktop Navigation */}
             <div className="hidden md:flex">
               <NavigationMenu>
-                <NavigationMenuList>
+                <NavigationMenuList className="gap-1">
                   {mainMenuItems.map((item, index) =>
                     item.items ? (
                       <NavigationMenuItem key={index}>
-                        <NavigationMenuTrigger className="bg-background">
+                        <NavigationMenuTrigger className="bg-background hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors rounded-md px-4 py-2">
                           <item.icon className="mr-2 h-4 w-4" />
                           {item.title}
                         </NavigationMenuTrigger>
@@ -160,7 +160,10 @@ export function MainNav() {
                           <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                             {item.items.map((subItem, subIndex) => (
                               <ListItem key={subIndex} title={subItem.title} href={subItem.url}>
-                                {subItem.description}
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                  <subItem.icon className="h-4 w-4" />
+                                  {subItem.description}
+                                </div>
                               </ListItem>
                             ))}
                           </ul>
@@ -169,7 +172,10 @@ export function MainNav() {
                     ) : (
                       <NavigationMenuItem key={index}>
                         <Link href={item.url} legacyBehavior passHref>
-                          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                          <NavigationMenuLink className={cn(
+                            navigationMenuTriggerStyle(),
+                            "hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors rounded-md px-4 py-2"
+                          )}>
                             <item.icon className="mr-2 h-4 w-4" />
                             {item.title}
                           </NavigationMenuLink>
@@ -177,12 +183,6 @@ export function MainNav() {
                       </NavigationMenuItem>
                     ),
                   )}
-                  <NavigationMenuItem>
-                    <ThemeToggle />
-                  </NavigationMenuItem>
-                  <NavigationMenuItem >
-                    <LogOutForm />
-                  </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
@@ -190,16 +190,17 @@ export function MainNav() {
 
           {/* Quick Links */}
           <div className="hidden md:flex items-center gap-4">
+            <ThemeToggle />
             {quickLinks.map((link) =>
               link.title === "Constituer mon dossier" ? (
                 <Dialog key={link.title} open={isPopupOpen} onOpenChange={setIsPopupOpen}>
                   <DialogTrigger asChild>
-                    <Button variant="ghost" className="flex items-center gap-2">
+                    <Button variant="ghost" className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800">
                       <link.icon className="h-4 w-4" />
                       {link.title}
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-5xl  overflow-y-auto">
+                  <DialogContent className="sm:max-w-5xl overflow-y-auto">
                     <DossierPopup />
                   </DialogContent>
                 </Dialog>
@@ -207,7 +208,7 @@ export function MainNav() {
                 <Link key={link.title} href={link.url}>
                   <Button
                     variant={link.title === "Extranet Client" ? "default" : "ghost"}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 bg-[#00408A] hover:bg-[#00408A]/90 text-white"
                   >
                     <link.icon className="h-4 w-4" />
                     {link.title}
@@ -215,6 +216,7 @@ export function MainNav() {
                 </Link>
               ),
             )}
+            <LogOutForm />
           </div>
 
           {/* Mobile Navigation */}
@@ -299,4 +301,3 @@ export function MainNav() {
     </header>
   )
 }
-

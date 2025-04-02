@@ -12,20 +12,20 @@ const BannerInformative: React.FC<BannerInformativeProps> = ({ type }) => {
         <div className="w-full flex flex-col justify-center items-center text-center py-12 px-6 md:px-12 lg:px-24">
             {type === "gestion-locative" ? (
                 <>
-                    <Badge>Gestion Locative</Badge>
-                    <h1 className="text-5xl font-bold my-8">Vous êtes propriétaire</h1>
-                    <p className="w-1/2 text-zinc-800 dark:text-zinc-200 my-4">
+                    <Badge className="mb-2">Gestion Locative</Badge>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold my-4 md:my-8">Vous êtes propriétaire</h1>
+                    <p className="w-full md:w-3/4 lg:w-1/2 text-base md:text-lg text-zinc-800 dark:text-zinc-200 my-4 leading-relaxed">
                         Vous recherchez un Administrateur de Biens compétent, disponible, accessible et humain pour gérer vos biens immobiliers. 
-                        Notre équipe assure un service complet et personnalisé suivant vos demandes.
+                        <span className="block mt-2">Notre équipe assure un service complet et personnalisé suivant vos demandes.</span>
                     </p>
                 </>
             ) : (
                 <>
-                    <Badge>Gestion Propriétaire</Badge>
-                    <h1 className="text-5xl font-bold my-8">Vous êtes propriétaire</h1>
-                    <p className="w-1/2 text-zinc-800 dark:text-zinc-200 my-4">
+                    <Badge className="mb-2">Gestion Propriétaire</Badge>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold my-4 md:my-8">Vous êtes propriétaire</h1>
+                    <p className="w-full md:w-3/4 lg:w-1/2 text-base md:text-lg text-zinc-800 dark:text-zinc-200 my-4 leading-relaxed">
                         Vous recherchez un partenaire fiable pour gérer efficacement vos biens immobiliers. 
-                        Notre service est adapté pour répondre à vos besoins spécifiques.
+                        <span className="block mt-2">Notre service est adapté pour répondre à vos besoins spécifiques.</span>
                     </p>
                 </>
             )}

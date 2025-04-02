@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Feature } from "@/components/ui/gestion-locative-services";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { useState } from "react";
 
 const sectionsOne = [
     {
@@ -77,40 +79,72 @@ const GestionLocative: React.FC = () => {
             <Separator />
             <BannerInformative type="gestion-locative" />
             <BannerDocument />
-            <div className="w-full flex justify-center my-24">
-           
-            </div>
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-        <div className="relative max-w-5xl hidden lg:flex mx-auto h-[410px] rounded-lg overflow-hidden">
-            <img
-              src="https://cabinet-michou.com/images/gestion/3.jpg"
-              alt="Parisian building with fountain"
-              className="object-cover w-full h-full"
-            />
-        </div>
-          <div className="space-y-6  py-20 lg:py-40">
-          <Badge className="mt-12 m-auto mb-4 ml-6">Locataire</Badge>
-          <h3 className="text-black dark:text-white ml-6 text-3xl md:text-4xl lg:text-5xl font-bold">Visite, acceptation dossier et signature du bail  </h3>
-            <Card className="bg-transparent border-none shadow-none">
-              <CardContent className="space-y-6 text-gray-600">
+            
+            <section className="py-12 px-4 md:px-12 lg:px-24 my-8 mx-4 md:mx-0">
+              <div className="max-w-6xl mx-auto">
+                <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                  <div className="relative max-w-5xl hidden lg:flex mx-auto h-[410px] rounded-lg overflow-hidden">
+                      <img
+                        src="https://cabinet-michou.com/images/gestion/3.jpg"
+                        alt="Parisian building with fountain"
+                        className="object-cover w-full h-full"
+                      />
+                  </div>
+                  <div className="space-y-4 md:space-y-6">
+                    <Badge className="mb-2 md:mb-4">LOCATAIRE</Badge>
+                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">Visite, acceptation dossier et signature du bail</h3>
+                    <div className="text-gray-600 dark:text-gray-300 space-y-3 md:space-y-4">
+                      <p className="text-sm md:text-base">
+                        Nous effectuons des visites individuelles, sur rendez-vous, par notre cabinet. Votre dossier fait l'objet d'une étude précise et sérieuse. Nous le transmettons pour accord à notre client.
+                      </p>
+                      <p className="text-sm md:text-base">
+                        Une fois le dossier accepté, nous organisons rapidement votre entrée dans les lieux, procédons à la signature du bail (par voie électronique) et à un état des lieux par une société spécialisée et intègre.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
-                <p className='text-black dark:text-white'>
-                Nous effectuons des visites individuelles, sur rendez-vous, par notre cabinet. Votre dossier fait l’objet d’une étude précise et sérieuse. Nous le transmettons pour accord à notre client.
-                Une fois le dossier accepté, nous organisons rapidement votre entrée dans les lieux, procédons à la signature du bail (par voie électronique) et à un état des lieux par une société spécialisée et intègre.
-                </p>
-                
-              </CardContent>
-            </Card>
-          </div>
-        
-        </div>
-           <Feature badge='locataire' title="Un service informatisé" sections={sectionsTwo}  />
+            <section className="py-12 px-4 md:px-12 lg:px-24 my-8 mx-4 md:mx-0">
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center mb-8 md:mb-12">
+                  <Badge className="mb-2 md:mb-4">LOCATAIRE</Badge>
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-gray-900 dark:text-white">Un service informatisé</h2>
+                </div>
+                <Carousel className="w-full">
+                  <CarouselContent>
+                    {sectionsTwo.map((section, index) => (
+                      <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2">
+                        <Card className="border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-all h-full">
+                          <CardContent className="p-4 md:p-6">
+                            <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4 text-[#00408A] dark:text-blue-300">{section.title}</h3>
+                            <p className="text-sm md:text-base text-gray-600 dark:text-gray-300">{section.description}</p>
+                          </CardContent>
+                        </Card>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <div className="flex justify-between items-center mt-6">
+                    <CarouselPrevious className="relative static md:absolute h-10 w-10 bg-[#00408A] text-white hover:bg-[#003070] border-none shadow-md" />
+                    <div className="flex items-center justify-center gap-2 md:hidden">
+                      <span className="text-xs text-muted-foreground">Glisser pour voir plus</span>
+                    </div>
+                    <CarouselNext className="relative static md:absolute h-10 w-10 bg-[#00408A] text-white hover:bg-[#003070] border-none shadow-md" />
+                  </div>
+                </Carousel>
+              </div>
+            </section>
 
-           <div className="flex justify-center items-center">
-           <Link className="" href="/annonces" >
-                <Button>Voir nos annonces</Button>
-            </Link>
-           </div>
+            <section className="py-12 px-4 md:px-12 lg:px-24 my-8 mx-4 md:mx-0">
+              <div className="max-w-6xl mx-auto">
+                <div className="flex justify-center items-center">
+                  <Link href="/annonces">
+                    <Button className="px-6 py-4 md:px-8 md:py-6 text-base md:text-lg bg-[#00408A] hover:bg-[#003070] text-white shadow-md">Voir nos annonces</Button>
+                  </Link>
+                </div>
+              </div>
+            </section>
         </>
     );
 }

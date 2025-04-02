@@ -64,58 +64,62 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="w-full mx-auto">
-      <div className="text-center mb-8">
+    <section className="w-full md:w-1/2 mx-auto">
+      <div className="text-center mb-6">
         <Badge
           variant={"outline"}
+          className="mb-2"
         >Contact</Badge>
-        <h2 className="text-3xl font-extrabold text-black dark:text-white leading-tight">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-black dark:text-white leading-tight">
           Envoyez-nous un message
         </h2>
-        <p className="mt-4 text-gray-600">
+        <p className="mt-2 text-sm md:text-base text-gray-600 dark:text-gray-400">
           Nous vous répondrons dans les plus brefs délais
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label htmlFor="nom" className="text-sm font-medium text-gray-700">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
+        <div className="grid grid-cols-1 gap-4">
+          <div className="space-y-1">
+            <label htmlFor="nom" className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Nom
             </label>
             <Input
               id="nom"
+              placeholder="Votre nom"
               {...register("nom", { required: "Le nom est requis" })}
               className={errors.nom ? "border-red-500" : ""}
             />
             {errors.nom && (
-              <p className="text-red-500 text-sm">{errors.nom.message}</p>
+              <p className="text-red-500 text-xs">{errors.nom.message}</p>
             )}
           </div>
 
-          <div className="space-y-2">
-            <label htmlFor="prenom" className="text-sm font-medium text-gray-700">
+          <div className="space-y-1">
+            <label htmlFor="prenom" className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Prénom
             </label>
             <Input
               id="prenom"
+              placeholder="Votre prénom"
               {...register("prenom", { required: "Le prénom est requis" })}
               className={errors.prenom ? "border-red-500" : ""}
             />
             {errors.prenom && (
-              <p className="text-red-500 text-sm">{errors.prenom.message}</p>
+              <p className="text-red-500 text-xs">{errors.prenom.message}</p>
             )}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium text-gray-500">
+        <div className="grid grid-cols-1 gap-4">
+          <div className="space-y-1">
+            <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Email
             </label>
             <Input
               id="email"
               type="email"
+              placeholder="votre@email.com"
               {...register("email", {
                 required: "L'email est requis",
                 pattern: {
@@ -126,66 +130,71 @@ export default function ContactForm() {
               className={errors.email ? "border-red-500" : ""}
             />
             {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email.message}</p>
+              <p className="text-red-500 text-xs">{errors.email.message}</p>
             )}
           </div>
 
-          <div className="space-y-2">
-            <label htmlFor="telephone" className="text-sm font-medium text-gray-500">
+          <div className="space-y-1">
+            <label htmlFor="telephone" className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Téléphone
             </label>
             <Input
               id="telephone"
+              placeholder="01 23 45 67 89"
               {...register("telephone", { required: "Le téléphone est requis" })}
               className={errors.telephone ? "border-red-500" : ""}
             />
             {errors.telephone && (
-              <p className="text-red-500 text-sm">{errors.telephone.message}</p>
+              <p className="text-red-500 text-xs">{errors.telephone.message}</p>
             )}
           </div>
         </div>
 
-        <div className="space-y-2">
-          <label htmlFor="objet" className="text-sm font-medium text-gray-500">
+        <div className="space-y-1">
+          <label htmlFor="objet" className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Objet
           </label>
           <Input
             id="objet"
+            placeholder="Sujet de votre message"
             {...register("objet", { required: "L'objet est requis" })}
             className={errors.objet ? "border-red-500" : ""}
           />
           {errors.objet && (
-            <p className="text-red-500 text-sm">{errors.objet.message}</p>
+            <p className="text-red-500 text-xs">{errors.objet.message}</p>
           )}
         </div>
 
-        <div className="space-y-2">
-          <label htmlFor="message" className="text-sm font-medium text-gray-500">
+        <div className="space-y-1">
+          <label htmlFor="message" className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Message
           </label>
           <Textarea
             id="message"
-            rows={5}
+            rows={4}
+            placeholder="Votre message..."
             {...register("message", { required: "Le message est requis" })}
             className={errors.message ? "border-red-500" : ""}
           />
           {errors.message && (
-            <p className="text-red-500 text-sm">{errors.message.message}</p>
+            <p className="text-red-500 text-xs">{errors.message.message}</p>
           )}
         </div>
 
-        <div className="flex justify-center">
-          <ReCAPTCHA
-            sitekey="6Ldk9NEqAAAAAMyq1LfunVJcxxby0U42CXQ0p2fx"
-            onChange={(token) => setRecaptchaToken(token)}
-          />
+        <div className="flex justify-center mt-4 overflow-hidden">
+          <div className="transform scale-90 md:scale-100">
+            <ReCAPTCHA
+              sitekey="6Ldk9NEqAAAAAMyq1LfunVJcxxby0U42CXQ0p2fx"
+              onChange={(token) => setRecaptchaToken(token)}
+            />
+          </div>
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-4">
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="px-8 py-2"
+            className="w-full md:w-auto px-8 py-2 bg-[#00408A] hover:bg-[#003070]"
           >
             {isSubmitting ? "Envoi en cours..." : "Envoyer"}
           </Button>
