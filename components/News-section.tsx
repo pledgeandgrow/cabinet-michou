@@ -68,7 +68,7 @@ export default function NewsSections() {
   }, [api])
 
   return (
-    <section className="py-8 md:py-12 px-3 md:px-12 lg:px-24 my-6 md:my-8 mx-3 md:mx-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
+    <section className="py-8 md:py-12 px-3 md:px-12 lg:px-24 my-6 md:my-8 mx-3 md:mx-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-4 md:mb-8">
           <Badge className="mb-2 md:mb-4">ACTUALITÉS</Badge>

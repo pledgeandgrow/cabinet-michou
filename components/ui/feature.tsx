@@ -13,7 +13,7 @@ function Feature() {
   const sections: Section[] = [
     {
       title: "",
-      description: "Nous assurons la tenue de votre comptabilité avec  le logiciel Lojii de la société Neoteem et vous adressons à la période de votre choix (mensuel ou trimestriel) un relevé de compte de gérance accompagné de votre règlement. À tout moment, vos comptes sont consultables sur Internet (via notre accès client). Nous vous adressons tous les ans un récapitulatif afin de vous aider à réaliser votre déclaration des revenus fonciers. Nous vous proposons une garantie des loyers impayés, une assurance Propriétaire Non Occupant."
+      description: "Votre cabinet de gestion immobilière offre une gamme complète de services pour assurer le bon fonctionnement de votre copropriété. Voici un aperçu détaillé de vos prestations :"
     },
     {
       title: "GESTION DES INTERVENTIONS ET DES SINISTRES",
@@ -30,8 +30,8 @@ function Feature() {
   ];  
   return (
     <div className="w-full py-12 md:py-20 lg:py-40">
-      <div className="container mx-auto">
-        <div className="grid rounded-lg container p-4 md:p-8 grid-cols-1 gap-6 md:gap-8 items-center lg:grid-cols-2">
+      <div className="container mx-auto px-12 md:px-24 lg:px-32">
+        <div className="grid rounded-lg grid-cols-1 gap-6 md:gap-8 items-center lg:grid-cols-2">
           <div className="flex gap-6 md:gap-10 flex-col">
             <div className="flex gap-3 md:gap-4 flex-col">
               <div>
@@ -48,9 +48,9 @@ function Feature() {
                 <CarouselContent>
                   {sections.map((section: Section, index: number) => (
                     <CarouselItem key={index}>
-                      <div key={index} className="flex gap-4 flex-col">
+                      <div key={index} className="flex flex-col gap-4">
                         <div className="flex gap-2 items-center">
-                          <Check size={24} className="text-accent" />
+                          {index !== 0 && <Check size={24} className="text-accent" />}
                           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{section.title}</h3>
                         </div>
                         <p className="text-sm md:text-base text-gray-600 dark:text-gray-300">{section.description}</p>

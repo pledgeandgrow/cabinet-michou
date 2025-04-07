@@ -124,10 +124,16 @@ export default function Footer() {
               <div className="flex items-center space-x-4">
                 <div className="relative w-32 h-16 rounded-md p-2 flex items-center justify-center">
                   <Image 
+                    src="/unis-light.png" 
+                    alt="Logo UNIS" 
+                    fill
+                    className="object-contain p-1 dark:hidden"
+                  />
+                  <Image 
                     src="/unis.png" 
                     alt="Logo UNIS" 
                     fill
-                    className="object-contain p-1"
+                    className="object-contain p-1 hidden dark:block"
                   />
                 </div>
                 <p className="text-sm text-muted-foreground">

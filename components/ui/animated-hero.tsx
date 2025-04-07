@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Home, MoveRight, PhoneCall, UserCheck2, Facebook, Instagram, Linkedin, Mail } from "lucide-react";
+import { Home, MoveRight, PhoneCall, UserCheck2, Instagram, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "./badge";
 import Link from "next/link";
@@ -87,7 +87,7 @@ export default function AnimatedHero() {
             </Link>
           </Button>
           <Button size="lg" className="gap-2 w-full sm:w-auto">
-            <Link href="#" className="flex items-center gap-2 w-full justify-center">
+            <Link href="https://michou.neotimm.com/extranet/#/login" className="flex items-center gap-2 w-full justify-center">
               Extranet client <UserCheck2 className="w-4 h-4" />
             </Link>
           </Button>
@@ -96,19 +96,14 @@ export default function AnimatedHero() {
       
       {/* Emoticons section - always on the right */}
       <div className="hidden md:flex flex-col gap-4 absolute right-4 lg:right-12 top-1/2 -translate-y-1/2 z-30">
-        <Link href="https://www.facebook.com/cabinetrmichou/" target="_blank" aria-label="Facebook">
-          <Button size="icon" variant="outline" className="rounded-full bg-white/20 backdrop-blur-sm border-white/50 hover:bg-white hover:text-[#00408A]">
-            <Facebook className="h-5 w-5" />
-          </Button>
-        </Link>
-        <Link href="https://www.instagram.com/cabinetrmichou/" target="_blank" aria-label="Instagram">
+        <Link href="https://www.instagram.com/cabinetrmichou" target="_blank" aria-label="Instagram">
           <Button size="icon" variant="outline" className="rounded-full bg-white/20 backdrop-blur-sm border-white/50 hover:bg-white hover:text-[#00408A]">
             <Instagram className="h-5 w-5" />
           </Button>
         </Link>
-        <Link href="https://www.linkedin.com/company/cabinet-r-michou-cie/" target="_blank" aria-label="LinkedIn">
+        <Link href="mailto:contact@cabinet-michou.com" target="_blank" aria-label="Email">
           <Button size="icon" variant="outline" className="rounded-full bg-white/20 backdrop-blur-sm border-white/50 hover:bg-white hover:text-[#00408A]">
-            <Linkedin className="h-5 w-5" />
+            <Mail className="h-5 w-5" />
           </Button>
         </Link>
       </div>

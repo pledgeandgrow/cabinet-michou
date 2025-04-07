@@ -72,15 +72,10 @@ const GestionLocative: React.FC = () => {
                 <TabsTransitionPanel />
             </div>
             <Separator />
-            <Feature badge='locataire' title="Nos principaux services" sections={sectionsOne}/>
-            <section className="container mx-auto px-4 py-16 md:py-24">
-        
-           </section>
-            <Separator />
             <BannerInformative type="gestion-locative" />
-            <BannerDocument />
+            <Feature badge='propriétaire' title="Nos principaux services" sections={sectionsOne}/>
             
-            <section className="py-12 px-4 md:px-12 lg:px-24 my-8 mx-4 md:mx-0">
+            <section className="py-12 px-4 md:px-12 lg:px-24 mx-4 md:mx-0">
               <div className="max-w-6xl mx-auto">
                 <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
                   <div className="relative max-w-5xl hidden lg:flex mx-auto h-[410px] rounded-lg overflow-hidden">
@@ -91,7 +86,7 @@ const GestionLocative: React.FC = () => {
                       />
                   </div>
                   <div className="space-y-4 md:space-y-6">
-                    <Badge className="mb-2 md:mb-4">LOCATAIRE</Badge>
+                    <Badge className="mb-2 md:mb-4">PROPRIÉTAIRE</Badge>
                     <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">Visite, acceptation dossier et signature du bail</h3>
                     <div className="text-gray-600 dark:text-gray-300 space-y-3 md:space-y-4">
                       <p className="text-sm md:text-base">
@@ -105,36 +100,8 @@ const GestionLocative: React.FC = () => {
                 </div>
               </div>
             </section>
-
-            <section className="py-12 px-4 md:px-12 lg:px-24 my-8 mx-4 md:mx-0">
-              <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-8 md:mb-12">
-                  <Badge className="mb-2 md:mb-4">LOCATAIRE</Badge>
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-gray-900 dark:text-white">Un service informatisé</h2>
-                </div>
-                <Carousel className="w-full">
-                  <CarouselContent>
-                    {sectionsTwo.map((section, index) => (
-                      <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2">
-                        <Card className="border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-all h-full">
-                          <CardContent className="p-4 md:p-6">
-                            <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4 text-[#00408A] dark:text-blue-300">{section.title}</h3>
-                            <p className="text-sm md:text-base text-gray-600 dark:text-gray-300">{section.description}</p>
-                          </CardContent>
-                        </Card>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <div className="flex justify-between items-center mt-6">
-                    <CarouselPrevious className="relative static md:absolute h-10 w-10 bg-[#00408A] text-white hover:bg-[#003070] border-none shadow-md" />
-                    <div className="flex items-center justify-center gap-2 md:hidden">
-                      <span className="text-xs text-muted-foreground">Glisser pour voir plus</span>
-                    </div>
-                    <CarouselNext className="relative static md:absolute h-10 w-10 bg-[#00408A] text-white hover:bg-[#003070] border-none shadow-md" />
-                  </div>
-                </Carousel>
-              </div>
-            </section>
+            
+            <BannerDocument />
 
             <section className="py-12 px-4 md:px-12 lg:px-24 my-8 mx-4 md:mx-0">
               <div className="max-w-6xl mx-auto">

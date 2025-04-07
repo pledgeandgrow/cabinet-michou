@@ -34,37 +34,31 @@ function page() {
 		<TabsSyndicPanel />
 	</div>
 	<Separator />
-	<Feature />
-	<Separator />
 	
-	<section className="container mx-auto px-4 py-16 md:py-24">
+	<section className="container mx-auto px-12 md:px-24 lg:px-32 py-16 md:py-24">
         <div className="text-center space-y-6">
          <Badge className="mt-12 m-auto mb-4">Notre Savoir-Faire</Badge>
-        <h1 className="text-black dark:text-white text-4xl md:text-5xl lg:text-6xl font-bold">Notre expertise à votre service pour la gestion de copropriété à paris</h1>
-          <Card className="bg-transparent border-none shadow-none">
-            <CardContent className="space-y-6 text-gray-600 text-lg leading-relaxed max-w-4xl mx-auto">
-              <p className='text-black dark:text-white'>
-                Notre cabinet assure la gestion des syndicats de copropriétaires. En tant que syndic de copropriétés
-                nous administrons 160 immeubles, représentant un total de 6000 lots sur Paris. Notre cabinet situé dans
-                le 4ème arrondissement est spécialisé dans la gestion des immeubles dans le Marais et dans Paris
-                intramuros. Notre métier de syndic s'adresse à des clients cherchant une bonne gestion de leur
-                copropriété. Nous sommes facilement joignable et répondons à vos attentes.
-              </p>
-              <p className='text-black dark:text-white'>
-                Vous cherchez un syndic compétent, disponible et accessible pour gérer votre copropriété le cabinet
-                R.MICHOU est là pour répondre à vos demandes.
-              </p>
-            </CardContent>
-          </Card>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">Notre expertise à votre service pour la gestion de copropriétés à Paris</h1>
+          <div className="max-w-3xl mx-auto space-y-6 text-gray-600 dark:text-gray-300">
+            <p className="text-base md:text-lg">
+              Situé dans le cœur du 4ème arrondissement, notre cabinet se spécialise dans la gestion des syndicats de copropriétaires, en particulier dans les quartiers du Marais et dans Paris intramuros. Avec une expérience solide dans l'administration de plus de 160 immeubles représentant plus de 6000 lots, nous mettons à votre disposition notre savoir-faire pour assurer la gestion optimale de votre copropriété.
+            </p>
+            <p className="text-base md:text-lg">
+              Notre priorité ? Vous offrir une gestion transparente, réactive et adaptée à vos besoins. Nous restons facilement joignables et nous répondons rapidement à toutes vos demandes, avec une attention particulière à la satisfaction de nos clients.
+            </p>
+            <p className="text-base md:text-lg">
+              Confiez-nous la gestion de votre bien en toute sérénité, nous nous occupons de tout.
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Team Section */}
-      <section className="container mx-auto px-4 py-16 md:py-24">
+      <section className="container mx-auto px-12 md:px-24 lg:px-32 py-16 md:py-24">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
           <Badge className="mt-12 m-auto mb-4 ml-6">Gestion de copropriété</Badge>
-          <h3 className="text-black ml-6 text-3xl md:text-4xl lg:text-5xl font-bold dark:text-white">Notre équipe</h3>
+          <h3 className="text-black ml-6 text-2xl sm:text-3xl md:text-4xl font-bold dark:text-white">Notre équipe</h3>
             <Card className="bg-transparent border-none shadow-none">
               <CardContent className="space-y-6 text-gray-600">
 
@@ -93,7 +87,10 @@ function page() {
           </div>
         </div>
       </section>
-</>
+
+      <Separator />
+      <Feature />
+	</>
   )
 }
 

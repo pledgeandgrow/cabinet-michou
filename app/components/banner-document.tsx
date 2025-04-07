@@ -12,7 +12,7 @@ const BannerDocument: React.FC = () => {
             <div className="max-w-6xl mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div className="space-y-6">
-                        <Badge className="mb-4">LOCATAIRE</Badge>
+                        <Badge className="mb-4">PROPRIÉTAIRE</Badge>
                         <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">Documents à fournir</h2>
                         
                         <div className="space-y-4">
@@ -36,10 +36,6 @@ const BannerDocument: React.FC = () => {
                                 <li className="flex items-center gap-2">
                                     <Check className="h-5 w-5 text-[#00408A]" />
                                     <span className="text-gray-600 dark:text-gray-300">Attestation employeur</span>
-                                </li>
-                                <li className="flex items-center gap-2">
-                                    <Check className="h-5 w-5 text-[#00408A]" />
-                                    <span className="text-gray-600 dark:text-gray-300">RIB</span>
                                 </li>
                             </ul>
                         </div>

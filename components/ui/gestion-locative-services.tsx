@@ -17,9 +17,9 @@ interface FeatureProps {
 
 function Feature({ sections, title, badge }: FeatureProps) {
   return (
-    <div className="w-full py-20 lg:py-40">
-      <div className="container mx-auto">
-        <div className="grid rounded-lg container p-8 grid-cols-1 gap-8 items-center lg:grid-cols-2">
+    <div className="w-full py-12 md:py-20 lg:py-40">
+      <div className="container mx-auto px-12 md:px-24 lg:px-32">
+        <div className="grid rounded-lg grid-cols-1 gap-6 md:gap-8 items-center lg:grid-cols-2">
           <div className="flex gap-10 flex-col">
             <div className="flex gap-4 flex-col">
               <div>

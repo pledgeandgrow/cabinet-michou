@@ -12,7 +12,7 @@ const Presentation: React.FC = () => {
         <section className="py-12 px-4 md:px-12 lg:px-24 my-8 mx-4 md:mx-0">
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div className="order-2 md:order-1">
-                    <Badge className="mb-4 text-black dark:text-white">LE CABINET</Badge>
+                    <Badge className="mb-4">LE CABINET</Badge>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
                         Présent à Paris depuis 1952
                     </h2>
@@ -25,11 +25,6 @@ const Presentation: React.FC = () => {
                     <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-6">
                         La gestion du cabinet est assurée par Angélique Mouton et Alexandre Baboz, accompagnés de leurs collaborateurs qui sont à votre disposition pour vous renseigner et vous épauler au quotidien.
                     </p>
-                    <Button className="mt-2">
-                        <Link href="/a-propos" className="flex items-center gap-2">
-                            En savoir plus
-                        </Link>
-                    </Button>
                 </div>
                 <div className="flex justify-center order-1 md:order-2 mb-6 md:mb-0">
                     <div className="relative w-full max-w-md h-[300px] md:h-[400px] rounded-lg overflow-hidden shadow-xl">

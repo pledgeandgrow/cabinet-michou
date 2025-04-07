@@ -6,8 +6,6 @@ import {
   CarouselApi,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
 } from "@/components/ui/carousel";
 import { Badge } from "./badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
@@ -176,8 +174,6 @@ export function Case({ items }: CaseProps) {
                               </CarouselItem>
                             ))}
                           </CarouselContent>
-                          <CarouselPrevious className="absolute left-2 top-1/3 -translate-y-1/2 h-8 w-8 z-10 bg-white/80 hover:bg-white hover:text-[#00408A] border-white/50 dark:bg-gray-800/80 dark:hover:bg-gray-800 dark:text-gray-200 dark:hover:text-white hidden md:flex" />
-                          <CarouselNext className="absolute right-2 top-1/3 -translate-y-1/2 h-8 w-8 z-10 bg-white/80 hover:bg-white hover:text-[#00408A] border-white/50 dark:bg-gray-800/80 dark:hover:bg-gray-800 dark:text-gray-200 dark:hover:text-white hidden md:flex" />
                         </Carousel>
                         <Badge className="absolute top-4 left-4 z-10 bg-background/90 backdrop-blur-sm bg-[#00408A] hover:bg-white hover:text-[#F6A831] dark:bg-background/90">
                           {annonce.transaction}

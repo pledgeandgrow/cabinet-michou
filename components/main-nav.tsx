@@ -14,7 +14,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
-import logo from "../public/logo.svg"
+import logo from "../public/michou-logo.png"
 import { Home, Search, Building2, Building, Phone, FileText, ExternalLink, Key, Users, Banknote } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { useState } from "react"
@@ -79,13 +79,6 @@ const mainMenuItems = [
     ],
   },
   {
-    title: "Cabinet Mas Rocher",
-
-    url: "https://cabinet-mas-rocher.vercel.app",
-    icon: Building2,
-    description: "Découvrez notre histoire depuis 1952",
-  },
-  {
     title: "Contact",
     url: "/contact",
     icon: Phone,
@@ -114,7 +107,7 @@ const ListItem = ({ className, title, children, ...props }: any) => {
       <NavigationMenuLink asChild>
         <a
           className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-[#f0b034] hover:text-white",
             className,
           )}
           {...props}
@@ -152,14 +145,14 @@ export function MainNav() {
                   {mainMenuItems.map((item, index) =>
                     item.items ? (
                       <NavigationMenuItem key={index}>
-                        <NavigationMenuTrigger className="bg-background hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors rounded-md px-4 py-2">
+                        <NavigationMenuTrigger className="bg-background hover:bg-[#f0b034] dark:hover:bg-[#f0b034] hover:text-white transition-colors rounded-md px-4 py-2">
                           <item.icon className="mr-2 h-4 w-4" />
                           {item.title}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
                           <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                             {item.items.map((subItem, subIndex) => (
-                              <ListItem key={subIndex} title={subItem.title} href={subItem.url}>
+                              <ListItem key={subIndex} title={subItem.title} href={subItem.url} className="hover:bg-[#f0b034] hover:text-white transition-colors rounded-md">
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                   <subItem.icon className="h-4 w-4" />
                                   {subItem.description}
@@ -174,7 +167,7 @@ export function MainNav() {
                         <Link href={item.url} legacyBehavior passHref>
                           <NavigationMenuLink className={cn(
                             navigationMenuTriggerStyle(),
-                            "hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors rounded-md px-4 py-2"
+                            "hover:bg-[#f0b034] dark:hover:bg-[#f0b034] hover:text-white transition-colors rounded-md px-4 py-2"
                           )}>
                             <item.icon className="mr-2 h-4 w-4" />
                             {item.title}
@@ -192,19 +185,7 @@ export function MainNav() {
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
             {quickLinks.map((link) =>
-              link.title === "Constituer mon dossier" ? (
-                <Dialog key={link.title} open={isPopupOpen} onOpenChange={setIsPopupOpen}>
-                  <DialogTrigger asChild>
-                    <Button variant="ghost" className="flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                      <link.icon className="h-4 w-4" />
-                      {link.title}
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-5xl overflow-y-auto">
-                    <DossierPopup />
-                  </DialogContent>
-                </Dialog>
-              ) : (
+              link.title !== "Constituer mon dossier" && (
                 <Link key={link.title} href={link.url}>
                   <Button
                     variant={link.title === "Extranet Client" ? "default" : "ghost"}
@@ -238,30 +219,33 @@ export function MainNav() {
                 </SheetTitle>
               </SheetHeader>
               <div className="flex flex-col gap-4 py-4">
-                {mainMenuItems.map((item) => (
-                  <div key={item.title} className="space-y-3">
+                {mainMenuItems.map((item, index) => (
+                  <div key={index}>
                     {item.items ? (
-                      <>
-                        <h2 className="flex items-center gap-2 font-medium">
-                          <item.icon className="h-4 w-4" />
+                      <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-2 px-4 py-2 text-lg font-semibold">
+                          <item.icon className="h-5 w-5" />
                           {item.title}
-                        </h2>
-                        <div className="pl-6 space-y-2">
-                          {item.items.map((subItem) => (
+                        </div>
+                        <div className="flex flex-col gap-1 pl-6">
+                          {item.items.map((subItem, subIndex) => (
                             <Link
-                              key={subItem.title}
+                              key={subIndex}
                               href={subItem.url}
-                              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
+                              className="flex items-center gap-2 rounded-md px-4 py-2 text-sm hover:bg-[#f0b034] hover:text-white transition-colors"
                             >
                               <subItem.icon className="h-4 w-4" />
                               {subItem.title}
                             </Link>
                           ))}
                         </div>
-                      </>
+                      </div>
                     ) : (
-                      <Link href={item.url} className="flex items-center gap-2 font-medium hover:text-primary">
-                        <item.icon className="h-4 w-4" />
+                      <Link
+                        href={item.url}
+                        className="flex items-center gap-2 px-4 py-2 text-lg font-semibold hover:bg-[#f0b034] hover:text-white transition-colors rounded-md"
+                      >
+                        <item.icon className="h-5 w-5" />
                         {item.title}
                       </Link>
                     )}

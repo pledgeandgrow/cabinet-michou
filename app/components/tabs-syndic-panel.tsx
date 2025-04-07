@@ -18,7 +18,7 @@ const TEAM_ITEMS = [
   },
   {
     "title": "Gestionnaire",
-    "subtitle": "5 syndics",
+    "subtitle": "5 gestionnaires",
     "content": "Des collaborateurs spécialisés dans la gestion des copropriétés. Mobiles, réactifs, attentifs et à votre écoute."
   },
   
