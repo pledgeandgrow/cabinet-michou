@@ -136,6 +136,20 @@ export default function Footer() {
                     className="object-contain p-1 hidden dark:block"
                   />
                 </div>
+                <div className="relative w-32 h-16 rounded-md p-2 flex items-center justify-center">
+                  <Image 
+                    src="/cgec.png" 
+                    alt="Logo CGEC" 
+                    fill
+                    className="object-contain p-1 dark:hidden"
+                  />
+                  <Image 
+                    src="/cgec.png" 
+                    alt="Logo CGEC" 
+                    fill
+                    className="object-contain p-1 hidden dark:block"
+                  />
+                </div>
                 <p className="text-sm text-muted-foreground">
                   Nous sommes membres de l'U.N.I.S (Union des Syndicats de l'Immobilier) 
                   et bénéficions de la garantie financière de la CEGC.

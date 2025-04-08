@@ -1,6 +1,6 @@
 import { Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import image from "../../public/1.jpg";
+import image from "../../public/parc.jpg";
 import Image from "next/image";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./carousel";
 

@@ -53,41 +53,6 @@ function page() {
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="container mx-auto px-12 md:px-24 lg:px-32 py-16 md:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-          <Badge className="mt-12 m-auto mb-4 ml-6">Gestion de copropriété</Badge>
-          <h3 className="text-black ml-6 text-2xl sm:text-3xl md:text-4xl font-bold dark:text-white">Notre équipe</h3>
-            <Card className="bg-transparent border-none shadow-none">
-              <CardContent className="space-y-6 text-gray-600">
-
-                <p className='text-black dark:text-white'>
-                  L'équipe qui s'occupe de votre immeuble règle rapidement les interventions, s'occupe des sinistres en
-                  lien étroit avec l'assureur, organise vos assemblées générales et gère vos travaux. Le cabinet a une
-                  compétence particulière pour la gestion des aspects techniques et des travaux de vos immeubles.
-                </p>
-                <p className='text-black dark:text-white'>
-                  Des réunions sont organisées avec le conseil syndical pour le bon suivi de l'immeuble et la bonne
-                  préparation de vos assemblées générales.
-                </p>
-                <p className='text-black dark:text-white'>
-                  L'ensemble de la comptabilité de vos immeubles et la gestion des gardiens est assurée en interne par
-                  nos collaborateurs.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-          <div className="relative h-[410px] rounded-lg overflow-hidden">
-            <img
-              src="https://cabinet-michou.com/images/syndic/3.jpg"
-              alt="Parisian building with fountain"
-              className="object-cover w-full h-full"
-            />
-          </div>
-        </div>
-      </section>
-
       <Separator />
       <Feature />
 	</>

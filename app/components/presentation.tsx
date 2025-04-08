@@ -17,7 +17,7 @@ const Presentation: React.FC = () => {
                         Présent à Paris depuis 1952
                     </h2>
                     <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-4">
-                        Installé dans le Marais depuis 1952, le cabinet Michou assure aujourd'hui la gestion de plus de 200 copropriétés dans le centre de Paris et compte plus de 1500 lots en gestion locative.
+                        Installé dans le Marais depuis 1952, le cabinet Michou assure aujourd'hui la gestion de plus de 160 immeubles dans le centre de Paris et compte plus de 1500 lots en gestion locative.
                     </p>
                     <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-4">
                         Notre cabinet, réputé pour son caractère familial, vous accompagne dans les différents domaines de la gestion immobilière autour de deux grandes activités : la gestion de copropriétés et la gestion locative et transaction.

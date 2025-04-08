@@ -129,11 +129,11 @@ export function MainNav() {
           <div className="flex items-center gap-10">
             <Link href="/" className="flex items-center space-x-2">
               <Image
-                className="ml-0 md:ml-0"
+                className="ml-6 md:ml-8"
                 src={logo || "/placeholder.svg"}
                 alt="Cabinet Michou"
-                width={120}
-                height={40}
+                width={140}
+                height={47}
                 priority
               />
             </Link>
@@ -215,7 +215,7 @@ export function MainNav() {
             <SheetContent side="left" className="w-[300px] sm:w-[400px]">
               <SheetHeader>
                 <SheetTitle>
-                  <Image src={logo || "/placeholder.svg"} alt="Cabinet Michou" width={120} height={40} />
+                  <Image src={logo || "/placeholder.svg"} alt="Cabinet Michou" width={140} height={47} />
                 </SheetTitle>
               </SheetHeader>
               <div className="flex flex-col gap-4 py-4">
