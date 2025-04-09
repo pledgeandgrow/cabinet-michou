@@ -32,12 +32,13 @@ export default function AnimatedHero() {
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
-          src="/cab1.jpg"
+          src="/paris-michou.jpeg"
           alt="Cabinet Michou"
           fill
           className="object-cover"
           priority
-          sizes="100vw"
+          quality={100}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
         />
       </div>
       

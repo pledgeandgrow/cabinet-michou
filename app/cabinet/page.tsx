@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import Image from 'next/image'
 import React from 'react'
-import cabinet1 from "@/public/cab1.jpg"
+import cabinet1 from "@/public/paris-michou.jpeg"
 import cabinet2 from "@/public/cab2.jpg"
 
 
