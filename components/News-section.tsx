@@ -71,7 +71,7 @@ export default function NewsSections() {
     <section className="py-8 md:py-12 px-3 md:px-12 lg:px-24 my-6 md:my-8 mx-3 md:mx-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-4 md:mb-8">
-          <Badge className="mb-2 md:mb-4">ACTUALITÉS</Badge>
+          <Badge className="mb-2 md:mb-4 bg-[#f6a831] hover:bg-[#f6a831]/90 text-white">ACTUALITÉS</Badge>
           <h2 className="text-2xl md:text-3xl font-bold mb-2 md:mb-4 text-gray-900 dark:text-white">Dernières nouvelles</h2>
         </div>
         

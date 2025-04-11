@@ -27,7 +27,7 @@ export default function AnimatedHero() {
   return (
     <div className="relative min-h-[500px] md:min-h-[600px] lg:min-h-[700px] w-full overflow-hidden">
       {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/40 z-10"></div>
+      <div className="absolute inset-0 bg-black/20 z-10"></div>
       
       {/* Background image */}
       <div className="absolute inset-0">
@@ -35,7 +35,7 @@ export default function AnimatedHero() {
           src="/paris-michou.jpeg"
           alt="Cabinet Michou"
           fill
-          className="object-cover"
+          className="object-cover brightness-120"
           priority
           quality={100}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
@@ -43,7 +43,7 @@ export default function AnimatedHero() {
       </div>
       
       <div className="relative z-20 container mx-auto h-full flex flex-col justify-center items-center text-center px-4 py-16">
-        <Badge className="mb-4 bg-white/20 backdrop-blur-sm text-white hover:bg-white hover:text-[#00408A]">
+        <Badge className="mb-4 bg-[#f6a831] text-white hover:bg-white hover:text-[#f6a831]">
           Un cabinet à votre écoute
         </Badge>
         
@@ -77,9 +77,11 @@ export default function AnimatedHero() {
           </span>
         </h1>
         
-        <p className="text-white/90 text-base sm:text-lg md:text-xl max-w-2xl mb-8">
-          Le cabinet R. MICHOU vous accompagne dans les différents domaines de la gestion immobilière.
-        </p>
+        <div className="relative z-20 bg-black/50 backdrop-blur-sm p-6 rounded-lg max-w-4xl mx-auto">
+          <p className="text-white text-base sm:text-lg md:text-xl font-medium leading-relaxed text-shadow">
+            Au cœur du Marais, le cabinet R. MICHOU incarne une vision exigeante et familiale de l'Administration de biens. Notre engagement au quotidien depuis plusieurs décennies : Accompagner nos clients dans la gestion quotidienne de leur patrimoine immobilier avec rigueur, réactivité, clarté et savoir-faire.
+          </p>
+        </div>
         
         <div className="flex flex-col sm:flex-row gap-3 justify-center mt-4">
           <Button size="lg" className="gap-2 w-full sm:w-auto" variant="outline">

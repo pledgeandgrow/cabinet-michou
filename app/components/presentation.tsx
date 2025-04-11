@@ -12,7 +12,7 @@ const Presentation: React.FC = () => {
         <section className="py-12 px-4 md:px-12 lg:px-24 my-8 mx-4 md:mx-0">
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div className="order-2 md:order-1">
-                    <Badge className="mb-4">LE CABINET</Badge>
+                    <Badge className="mb-4 bg-[#f6a831] hover:bg-[#f6a831]/90 text-white">LE CABINET</Badge>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
                         Présent à Paris depuis 1952
                     </h2>
@@ -22,8 +22,11 @@ const Presentation: React.FC = () => {
                     <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-4">
                         Notre cabinet, réputé pour son caractère familial, vous accompagne dans les différents domaines de la gestion immobilière autour de deux grandes activités : la gestion de copropriétés et la gestion locative et transaction.
                     </p>
-                    <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-6">
+                    <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-4">
                         La gestion du cabinet est assurée par Angélique Mouton et Alexandre Baboz, accompagnés de leurs collaborateurs qui sont à votre disposition pour vous renseigner et vous épauler au quotidien.
+                    </p>
+                    <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-6">
+                        Notre service extranet offre un accès 24h/24 7j/7 aux clients afin qu'ils puissent retrouver les informations/documents de leur choix en libre service.
                     </p>
                 </div>
                 <div className="flex justify-center order-1 md:order-2 mb-6 md:mb-0">
