@@ -27,10 +27,13 @@ export default function MentionsLegales() {
                 <p>SAS au capital de 120 000,00 €</p>
                 <p>Immatriculée au Registre du commerce et des Sociétés de Paris sous le N° B562016535</p>
                 <p>N° SIRET : 562 016 535 000 22</p>
-                <p>Cartes professionnelles :</p>
+                <p>Cartes professionnelles : CPI 7501 2016 000 013 635</p>
                 <ul className="list-disc list-inside ml-4">
-                  <li>Gestion : G1321</li>
-                  <li>Transaction : T2996</li>
+                  <li>Garantie CEGC domiciliée 59 Avenue Pierre Mendès 75013 Paris</li>
+                  <li>RC professionnelle : GENERALI IARD AL591311/00037</li>
+                  <li>TVA intracommunautaire : FR79562016535</li>
+                  <li>APE 6832A</li>
+                  <li>ORIAS, mandataire intermédiaire d'assurance : n* 07001914</li>
                 </ul>
               </div>
               <Separator className="my-4" />

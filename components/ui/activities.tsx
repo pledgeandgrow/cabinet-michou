@@ -30,7 +30,7 @@ export default function Activities() {
     <section className="py-12 px-4 md:px-12 lg:px-24 my-8 mx-4 md:mx-0">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8 md:mb-12">
-          <Badge className="mb-4">NOS ACTIVITÉS</Badge>
+          <Badge className="mb-4 bg-[#f6a831] hover:bg-[#f6a831]/90 text-white">NOS ACTIVITÉS</Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 text-black dark:text-white">
             3 expertises dans l'immobilier
           </h2>

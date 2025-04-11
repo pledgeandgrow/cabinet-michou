@@ -9,12 +9,12 @@ const TEAM_ITEMS = [
   {
     "title": "Dirigeant société",
     "subtitle": "1 responsable",
-    "content": "Alexandre Baboz, diplômé de l'ESPI et de l'I.C.H, spécialisé dans la gestion de copropriété, supervise la société et le service."
+    "content": "Alexandre Baboz, diplômé de l'ESPI avec un parcours au sein de l'I.C.H, spécialisé dans la gestion de copropriété, supervise la société et le service."
   },
   {
-    "title": "Assistantes de copropriété",
+    "title": "Assistant de copropriété",
     "subtitle": "3 assistants",
-    "content": "Des collaboratrices qui répondent au quotidien aux questions diverses et variées des copropriétaires, suivent les prestataires et règlent les soucis du quotidien."
+    "content": "Des collaborateurs qui répondent au quotidien aux questions diverses et variées des copropriétaires, suivent les prestataires et règlent les soucis du quotidien."
   },
   {
     "title": "Gestionnaire",

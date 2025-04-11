@@ -14,7 +14,8 @@ import {
   MessageSquare,
   FileText,
   Shield,
-  UserCircle
+  UserCircle,
+  Cookie
 } from "lucide-react"
 import Map from './Map'
 
@@ -26,6 +27,7 @@ const navigation = [
   { name: 'Contact', href: '/contact', icon: MessageSquare },
   { name: 'Mentions Légales', href: '/mentions-legales', icon: FileText },
   { name: 'Politique de traitement RGPD', href: 'https://www.declarations-juridiques.fr/processing-policy/cabinet-r-michou-et-cie_562016535', icon: Shield },
+  { name: 'Politique de cookies', href: '/politique-cookies', icon: Cookie },
   { name: 'Espace client', href: 'https://michou.neotimm.com/extranet/#/login', icon: UserCircle },
 ]
 
@@ -111,9 +113,12 @@ export default function Footer() {
               </div>
               
               <div className="space-y-2 text-muted-foreground">
-                <p className="font-medium">Cartes professionnelles : CPI 7501 2016 000 013 635</p>
-                <p>Gestion : G1321</p>
-                <p>Transaction : T2996</p>
+                <p className="font-medium text-xs">Cartes professionnelles : CPI 7501 2016 000 013 635</p>
+                <p className="text-xs">Garantie CEGC domiciliée 59 Avenue Pierre Mendès 75013 Paris</p>
+                <p className="text-xs">RC professionnelle : GENERALI IARD AL591311/00037</p>
+                <p className="text-xs">TVA intracommunautaire : FR79562016535</p>
+                <p className="text-xs">APE 6832A</p>
+                <p className="text-xs">ORIAS, mandataire intermédiaire d'assurance : n* 07001914</p>
               </div>
             </div>
 

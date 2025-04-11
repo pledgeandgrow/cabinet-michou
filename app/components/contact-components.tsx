@@ -18,7 +18,7 @@ export default function ContactComponent() {
         <Card className="shadow-sm hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <ContactItem
-              icon="🏠"
+              icon="🏢"
               label="Gestion locative"
               number="01 48 87 94 78"
             />
@@ -28,7 +28,7 @@ export default function ContactComponent() {
         <Card className="shadow-sm hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <ContactItem
-              icon="🏢"
+              icon="🔑"
               label="Location"
               number="01 40 09 32 44"
             />
@@ -38,7 +38,7 @@ export default function ContactComponent() {
         <Card className="shadow-sm hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <ContactItem 
-              icon="🛒" 
+              icon="💰" 
               label="Vente" 
               number="01 48 87 97 30" 
             />
@@ -48,7 +48,7 @@ export default function ContactComponent() {
         <Card className="shadow-sm hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <ContactItem 
-              icon="👥" 
+              icon="🏘️" 
               label="Syndic" 
               number="01 48 87 56 99" 
             />
@@ -58,9 +58,9 @@ export default function ContactComponent() {
         <Card className="shadow-sm hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <ContactItem
-              icon="⚠️"
+              icon="🚨"
               label="Service d'urgence"
-              number="Numéro disponible sur notre répondeur syndic"
+              number="Numéro disponible sur notre répondeur"
             />
           </CardContent>
         </Card>
