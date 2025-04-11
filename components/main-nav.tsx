@@ -93,12 +93,7 @@ const quickLinks = [
     url: "https://michou.neotimm.com/extranet/#/login",
     icon: Users,
   },
-  {
-    title: "Constituer mon dossier",
-    description: "Préparez votre dossier de location",
-    url: "/dossier-location",
-    icon: FileText,
-  },
+  
 ]
 
 const ListItem = ({ className, title, children, ...props }: any) => {

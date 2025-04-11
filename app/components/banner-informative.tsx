@@ -21,11 +21,12 @@ const BannerInformative: React.FC<BannerInformativeProps> = ({ type }) => {
                 </>
             ) : (
                 <>
-                    <Badge className="mb-2">Gestion Propriétaire</Badge>
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold my-4 md:my-8">Vous êtes propriétaire</h1>
+                    <Badge className="mb-2"> Gestion Locative
+                    </Badge>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold my-4 md:my-8">Vous êtes locataire
+                    </h1>
                     <p className="w-full md:w-3/4 lg:w-1/2 text-base md:text-lg text-zinc-800 dark:text-zinc-200 my-4 leading-relaxed">
-                        Vous recherchez un partenaire fiable pour gérer efficacement vos biens immobiliers. 
-                        <span className="block mt-2">Notre service est adapté pour répondre à vos besoins spécifiques.</span>
+                    Nous proposons à la location des biens (appartement, bureaux, parkings) situés dans de nombreux arrondissements de Paris et en proche banlieue parisienne. Nous effectuons des visites individuelles sur rendez-vous.
                     </p>
                 </>
             )}

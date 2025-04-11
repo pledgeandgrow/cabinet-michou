@@ -131,6 +131,12 @@ export default function AnnoncesPage() {
       nbPieces: "all",
     });
   };
+  const numberToWords = (num) => {
+    const words = [
+      "A", "B", "C", "D", "E", "F", "G", "H"
+    ];
+    return words[num - 1]; // Convert number to corresponding word
+  };
 
   if (isLoading) {
     return (
@@ -292,7 +298,7 @@ export default function AnnoncesPage() {
                         )}
                       >
                         <Thermometer className="h-4 w-4 mr-1" />
-                        DPE {annonce.dpe_conso}
+                        DPE {numberToWords(annonce.dpe_conso)}
                       </Badge>
                       {annonce.dpe_emission && (
                         <Badge 
@@ -303,7 +309,7 @@ export default function AnnoncesPage() {
                           )}
                         >
                           <Leaf className="h-4 w-4 mr-1" />
-                          GES {annonce.dpe_emission}
+                          GES {numberToWords(annonce.dpe_emission)}
                         </Badge>
                       )}
                     </div>

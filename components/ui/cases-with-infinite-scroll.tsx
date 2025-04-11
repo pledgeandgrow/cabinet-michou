@@ -129,6 +129,12 @@ export function Case({ items }: CaseProps) {
       setCurrent(api.selectedScrollSnap());
     });
   }, [api]);
+  const numberToWords = (num) => {
+    const words = [
+      "A", "B", "C", "D", "E", "F", "G", "H"
+    ];
+    return words[num - 1]; // Convert number to corresponding word
+  };
 
   return (
     <section className="py-12 px-4 md:px-12 lg:px-24 mt-10 mx-4 md:mx-0">
@@ -231,7 +237,7 @@ export function Case({ items }: CaseProps) {
                               className={cn(DPE_COLORS[annonce.dpe_conso])}
                             >
                               <Thermometer className="h-4 w-4 mr-1" />
-                              DPE {annonce.dpe_conso}
+                              DPE {numberToWords(annonce.dpe_conso)}
                             </Badge>
                           )}
                           {annonce.dpe_emission !== 'N/C' && (
@@ -240,7 +246,7 @@ export function Case({ items }: CaseProps) {
                               className={cn(DPE_COLORS[annonce.dpe_emission])}
                             >
                               <Leaf className="h-4 w-4 mr-1" />
-                              GES {annonce.dpe_emission}
+                              GES {numberToWords(annonce.dpe_emission)}
                             </Badge>
                           )}
                         </div>

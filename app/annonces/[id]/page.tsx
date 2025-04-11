@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import he from 'he'
 import {
   Card,
   CardContent,
@@ -63,6 +64,16 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
   const photos = await getAnnoncePhotos(params.id);
 
   const isLocation = annonce.transaction_id === 1;
+  const decodeHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || "";
+  };
+  const numberToWords = (num) => {
+    const words = [
+      "A", "B", "C", "D", "E", "F", "G", "H"
+    ];
+    return words[num - 1]; // Convert number to corresponding word
+  };
 
   return (
     <div className="container max-w-full px-2 md:px-4 py-4 md:py-8 mb-16 md:mb-0">
@@ -223,32 +234,32 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
 
           {/* DPE */}
           {(annonce.bilan_conso_id || annonce.bilan_emission_id) && (
-            <Card className="shadow-sm">
-              <CardHeader className="pb-1 px-2 pt-2 md:pb-2 md:px-4 md:pt-4">
-                <CardTitle className="text-xs md:text-lg">Diagnostic énergétique</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-1 px-2 pb-2 md:flex-row md:gap-3 md:px-4 md:pb-4">
-                {annonce.bilan_conso_id && (
-                  <Badge 
-                    variant="secondary" 
-                    className={cn("px-1.5 py-0.5 text-xs w-full md:w-auto justify-center md:justify-start", DPE_COLORS[annonce.bilan_conso_id])}
-                  >
-                    <Thermometer className="h-3 w-3 mr-1 flex-shrink-0 md:h-3.5 md:w-3.5 md:mr-1.5" />
-                    DPE {annonce.bilan_conso_id} - {annonce.consos} kWh/m²/an
-                  </Badge>
-                )}
-                {annonce.bilan_emission_id && (
-                  <Badge 
-                    variant="secondary" 
-                    className={cn("px-1.5 py-0.5 text-xs w-full md:w-auto justify-center md:justify-start", DPE_COLORS[annonce.bilan_emission_id])}
-                  >
-                    <Leaf className="h-3 w-3 mr-1 flex-shrink-0 md:h-3.5 md:w-3.5 md:mr-1.5" />
-                    GES {annonce.bilan_emission_id} - {annonce.emissions} kgCO₂/m²/an
-                  </Badge>
-                )}
-              </CardContent>
-            </Card>
-          )}
+  <Card className="shadow-sm">
+    <CardHeader className="pb-1 px-2 pt-2 md:pb-2 md:px-4 md:pt-4">
+      <CardTitle className="text-xs md:text-lg">Diagnostic énergétique</CardTitle>
+    </CardHeader>
+    <CardContent className="flex flex-col gap-1 px-2 pb-2 md:flex-row md:gap-3 md:px-4 md:pb-4">
+      {annonce.bilan_conso_id && (
+        <Badge 
+          variant="secondary" 
+          className={cn("px-1.5 py-0.5 text-xs w-full md:w-auto justify-center md:justify-start", DPE_COLORS[annonce.bilan_conso_id])}
+        >
+          <Thermometer className="h-3 w-3 mr-1 flex-shrink-0 md:h-3.5 md:w-3.5 md:mr-1.5" />
+          DPE {numberToWords(annonce.bilan_conso_id)} - {annonce.consos} kWh/m²/an
+        </Badge>
+      )}
+      {annonce.bilan_emission_id && (
+        <Badge 
+          variant="secondary" 
+          className={cn("px-1.5 py-0.5 text-xs w-full md:w-auto justify-center md:justify-start", DPE_COLORS[annonce.bilan_emission_id])}
+        >
+          <Leaf className="h-3 w-3 mr-1 flex-shrink-0 md:h-3.5 md:w-3.5 md:mr-1.5" />
+          GES {numberToWords(annonce.bilan_emission_id)} - {annonce.emissions} kgCO₂/m²/an
+        </Badge>
+      )}
+    </CardContent>
+  </Card>
+)}
 
           {/* Informations complémentaires */}
           {isLocation && (
@@ -284,7 +295,8 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
               <CardTitle className="text-xs md:text-lg">Description</CardTitle>
             </CardHeader>
             <CardContent className="px-2 pb-2 md:px-4 md:pb-4">
-              <p className="whitespace-pre-line text-xs md:text-sm">{annonce.description}</p>
+              <p className="whitespace-pre-line text-xs md:text-sm">      {he.decode(annonce.description)}
+              </p>
             </CardContent>
           </Card>
 

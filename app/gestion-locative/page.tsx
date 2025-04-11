@@ -74,6 +74,9 @@ const GestionLocative: React.FC = () => {
             <Separator />
             <BannerInformative type="gestion-locative" />
             <Feature badge='propriétaire' title="Nos principaux services" sections={sectionsOne}/>
+            <BannerInformative  />
+            <BannerDocument />
+
             
             <section className="py-12 px-4 md:px-12 lg:px-24 mx-4 md:mx-0">
               <div className="max-w-6xl mx-auto">
@@ -86,7 +89,7 @@ const GestionLocative: React.FC = () => {
                       />
                   </div>
                   <div className="space-y-4 md:space-y-6">
-                    <Badge className="mb-2 md:mb-4">PROPRIÉTAIRE</Badge>
+                    <Badge className="mb-2 md:mb-4">Locataire</Badge>
                     <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">Visite, acceptation dossier et signature du bail</h3>
                     <div className="text-gray-600 dark:text-gray-300 space-y-3 md:space-y-4">
                       <p className="text-sm md:text-base">
@@ -101,7 +104,7 @@ const GestionLocative: React.FC = () => {
               </div>
             </section>
             
-            <BannerDocument />
+            
 
             <section className="py-12 px-4 md:px-12 lg:px-24 my-8 mx-4 md:mx-0">
               <div className="max-w-6xl mx-auto">

@@ -55,15 +55,7 @@ export default function ContactComponent() {
           </CardContent>
         </Card>
         
-        <Card className="shadow-sm hover:shadow-md transition-shadow">
-          <CardContent className="p-4">
-            <ContactItem
-              icon="⚠️"
-              label="Service d'urgence"
-              number="Numéro disponible sur notre répondeur syndic"
-            />
-          </CardContent>
-        </Card>
+       
       </div>
     </section>
   );
