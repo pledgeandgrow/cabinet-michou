@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import MapView from "@/app/components/MapView";
 
 const DPE_COLORS: { [key: string]: string } = {
   A: "bg-green-500",
@@ -89,7 +90,7 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
 
       <div className="grid gap-3 md:gap-8 md:grid-cols-2">
         {/* Images */}
-        <div className="space-y-2 md:space-y-4">
+        <div className="space-y-2 md:space-y-4 mb-11">
           <Carousel className="w-full">
             <CarouselContent>
               {photos.map((photo: Photo, index: number) => (
@@ -131,6 +132,7 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
               ))}
             </div>
           )}
+          <MapView postalCode={annonce.cp}/>
         </div>
 
         {/* Informations principales */}

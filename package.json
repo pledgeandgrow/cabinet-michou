@@ -36,6 +36,7 @@
     "he": "^1.2.0",
     "iron-session": "^8.0.4",
     "jsonwebtoken": "^9.0.2",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.469.0",
     "mailjet": "^0.0.1",
     "mysql2": "^3.12.0",
