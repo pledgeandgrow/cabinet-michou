@@ -1,5 +1,6 @@
 import mysql from 'mysql2/promise';
 import { RowDataPacket } from 'mysql2';
+import { createAndUploadAnnonceCSV } from './ftp';
 
 export async function createConnection() {
   return await mysql.createConnection({
@@ -369,6 +370,25 @@ export async function insertAnnonce(data: any) {
     `,
     values: values,
   })
+  
+  // Récupérer l'ID de l'annonce insérée
+  // @ts-ignore - MySQL2 retourne insertId mais TypeScript ne le reconnaît pas dans le type RowDataPacket[]
+  const insertId = results.insertId || (results as any).insertId;
+  
+  if (insertId) {
+    try {
+      // Récupérer les détails complets de l'annonce nouvellement créée
+      const annonceDetails = await getListing(insertId);
+      
+      // Créer et envoyer le fichier CSV au serveur FTP
+      await createAndUploadAnnonceCSV(annonceDetails);
+      
+      console.log(`CSV file for annonce ${insertId} created and uploaded to FTP server`);
+    } catch (error) {
+      console.error(`Error creating/uploading CSV for annonce ${insertId}:`, error);
+      // Ne pas échouer l'insertion si l'envoi FTP échoue
+    }
+  }
 
   return results
 }
