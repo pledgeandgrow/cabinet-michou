@@ -41,11 +41,13 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 
     await query({ query: "START TRANSACTION", values: [] })
 
+    // Reset all photos to non-principal
     await query({
       query: "UPDATE annonces_photos SET principale = 0 WHERE annonce_id = ?",
       values: [annonceId],
     })
 
+    // Update existing photos with their principal status
     for (const photo of existingPhotos) {
       await query({
         query: "UPDATE annonces_photos SET principale = ? WHERE id = ?",
@@ -53,14 +55,23 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       })
     }
 
-    const existingIds = existingPhotos.map((p: any) => p.id)
-    const idsPlaceholder = existingIds.length ? existingIds.map(() => "?").join(",") : "NULL"
+    // Delete photos that are no longer in the list
+    const existingIds = existingPhotos.map((p: any) => p.id).filter((id) => id)
+    if (existingIds.length > 0) {
+      const idsPlaceholder = existingIds.map(() => "?").join(",")
+      await query({
+        query: `DELETE FROM annonces_photos WHERE annonce_id = ? AND id NOT IN (${idsPlaceholder})`,
+        values: [annonceId, ...existingIds],
+      })
+    } else {
+      // If no existing photos, delete all photos for this annonce
+      await query({
+        query: "DELETE FROM annonces_photos WHERE annonce_id = ?",
+        values: [annonceId],
+      })
+    }
 
-    await query({
-      query: `DELETE FROM annonces_photos WHERE annonce_id = ? AND id NOT IN (${idsPlaceholder})`,
-      values: [annonceId, ...existingIds],
-    })
-
+    // Handle new files
     const files = formData.getAll("files") as File[]
     const fileInfos = formData.getAll("fileInfo").map((info) => JSON.parse(info as string))
 
@@ -68,15 +79,25 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       const file = files[i]
       const fileInfo = fileInfos[i]
 
-      const timestamp = Date.now()
-      const uniqueFilename = `${timestamp}-${fileInfo.name}`
+      let filename = fileInfo.name
 
-      const buffer = Buffer.from(await file.arrayBuffer())
-      await writeFile(path.join(UPLOAD_DIR, uniqueFilename), buffer)
+      // If it's a traditional upload (no Cloudinary URL), save file locally
+      if (!fileInfo.cloudinary_url) {
+        const timestamp = Date.now()
+        const uniqueFilename = `${timestamp}-${fileInfo.name}`
 
+        const buffer = Buffer.from(await file.arrayBuffer())
+        await writeFile(path.join(UPLOAD_DIR, uniqueFilename), buffer)
+        filename = uniqueFilename
+      } else {
+        // Use Cloudinary URL as the filename
+        filename = fileInfo.cloudinary_url
+      }
+
+      // Insert into database with Cloudinary URL in nom field
       await query({
         query: "INSERT INTO annonces_photos (annonce_id, nom, principale) VALUES (?, ?, ?)",
-        values: [annonceId, uniqueFilename, fileInfo.principale],
+        values: [annonceId, filename, fileInfo.principale],
       })
     }
 
@@ -90,4 +111,3 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     return NextResponse.json({ error: "Failed to save photos" }, { status: 500 })
   }
 }
-
