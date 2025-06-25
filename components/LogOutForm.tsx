@@ -2,24 +2,30 @@
 
 import { useState, useEffect } from "react"
 import { getSessionStatus, logout } from "@/app/actions"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { LogOut } from "lucide-react"
 
 export default function LogOutForm() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
     const checkSession = async () => {
-      // Pour tester l'affichage du bouton, on force isLoggedIn à true
       const loggedIn = await getSessionStatus()
       setIsLoggedIn(loggedIn)
-
     }
 
+    // Vérifier la session à chaque montage du composant
     checkSession()
-  }, [])
+
+    // Configurer un intervalle pour vérifier régulièrement la session
+    const intervalId = setInterval(checkSession, 2000)
+
+    // Nettoyer l'intervalle lors du démontage du composant
+    return () => clearInterval(intervalId)
+  }, [pathname]) // Re-exécuter l'effet lorsque le chemin change
 
   const handleLogout = async () => {
     await logout()
