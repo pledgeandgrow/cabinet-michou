@@ -4,7 +4,7 @@ import { createAndUploadAnnonceCSV } from './ftp';
 
 export async function createConnection() {
   return await mysql.createConnection({
-    host: 'mysql-pledgeandgrow.alwaysdata.net',
+    host: 'mysql-michouuu.alwaysdata.net',
     port: 3306,
     user: '419773',
     password: 'Pledgedatamysql2025!',
