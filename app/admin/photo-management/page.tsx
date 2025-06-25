@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation"
 import { Trash2, Star, Upload, Home, List } from "lucide-react"
 import Link from "next/link"
 import { toast } from "@/hooks/use-toast"
+import { CldImage } from "next-cloudinary"
 
 // Define types for our photos
 interface Photo {
@@ -15,9 +16,17 @@ interface Photo {
   annonce_id: number
   nom: string
   principale: number
+  cloudinary_public_id?: string
+  cloudinary_url?: string
   file?: File
   preview?: string
   isNew?: boolean
+}
+
+interface CloudinaryResult {
+  public_id: string
+  secure_url: string
+  original_filename: string
 }
 
 // Your PhotoManagement component
@@ -29,6 +38,7 @@ const PhotoManagementContent = () => {
   const [photos, setPhotos] = useState<Photo[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
 
   // Fetch existing photos when component mounts
   useEffect(() => {
@@ -47,7 +57,7 @@ const PhotoManagementContent = () => {
       setPhotos(
         data.map((photo: Photo) => ({
           ...photo,
-          preview: `/uploads/${photo.nom}`, // Adjust path as needed
+          preview: photo.cloudinary_url || `/uploads/${photo.nom}`, // Support both Cloudinary and legacy uploads
         })),
       )
     } catch (error) {
@@ -62,46 +72,120 @@ const PhotoManagementContent = () => {
     }
   }
 
+  const handleCloudinaryUpload = (result: any) => {
+    if (result.event === "success" && annonceId) {
+      const cloudinaryResult: CloudinaryResult = result.info
+
+      const newPhoto: Photo = {
+        annonce_id: Number.parseInt(annonceId),
+        nom: cloudinaryResult.original_filename || `photo_${Date.now()}`,
+        principale: photos.length === 0 ? 1 : 0, // First photo becomes principal
+        cloudinary_public_id: cloudinaryResult.public_id,
+        cloudinary_url: cloudinaryResult.secure_url,
+        preview: cloudinaryResult.secure_url,
+        isNew: true,
+      }
+
+      setPhotos((prevPhotos) => [...prevPhotos, newPhoto])
+
+      toast({
+        title: "Succès",
+        description: "Photo uploadée avec succès",
+      })
+    }
+  }
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setSelectedFiles(e.target.files)
     }
   }
 
-  const handleAddPhotos = () => {
+  const handleAddPhotos = async () => {
     if (!selectedFiles || !annonceId) return
 
-    const newPhotos: Photo[] = Array.from(selectedFiles).map((file) => ({
-      annonce_id: Number.parseInt(annonceId),
-      nom: file.name,
-      principale: 0,
-      file,
-      preview: URL.createObjectURL(file),
-      isNew: true,
-    }))
+    setIsUploading(true)
 
-    // If this is the first photo, make it the principal one
-    if (photos.length === 0 && newPhotos.length > 0) {
-      newPhotos[0].principale = 1
+    try {
+      const uploadPromises = Array.from(selectedFiles).map(async (file) => {
+        const formData = new FormData()
+        formData.append("file", file)
+        formData.append("folder", `annonces/${annonceId}`)
+
+        const response = await fetch("/api/upload-to-cloudinary", {
+          method: "POST",
+          body: formData,
+        })
+
+        if (!response.ok) throw new Error(`Failed to upload ${file.name}`)
+
+        const result = await response.json()
+        return {
+          file,
+          cloudinary_result: result,
+        }
+      })
+
+      const uploadResults = await Promise.all(uploadPromises)
+
+      const newPhotos: Photo[] = uploadResults.map(({ file, cloudinary_result }) => ({
+        annonce_id: Number.parseInt(annonceId),
+        nom: file.name,
+        principale: 0,
+        cloudinary_public_id: cloudinary_result.public_id,
+        cloudinary_url: cloudinary_result.secure_url,
+        file,
+        preview: cloudinary_result.secure_url,
+        isNew: true,
+      }))
+
+      if (photos.length === 0 && newPhotos.length > 0) {
+        newPhotos[0].principale = 1
+      }
+
+      setPhotos([...photos, ...newPhotos])
+      setSelectedFiles(null)
+
+      const fileInput = document.getElementById("photos") as HTMLInputElement
+      if (fileInput) fileInput.value = ""
+
+      toast({
+        title: "Succès",
+        description: `${newPhotos.length} photo(s) uploadée(s) vers Cloudinary`,
+      })
+    } catch (error) {
+      console.error("Error uploading to Cloudinary:", error)
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de l'upload vers Cloudinary",
+        variant: "destructive",
+      })
+    } finally {
+      setIsUploading(false)
     }
-
-    setPhotos([...photos, ...newPhotos])
-    setSelectedFiles(null)
-
-    // Reset the file input
-    const fileInput = document.getElementById("photos") as HTMLInputElement
-    if (fileInput) fileInput.value = ""
   }
 
-  const handleRemovePhoto = (index: number) => {
+  const handleRemovePhoto = async (index: number) => {
     const photoToRemove = photos[index]
 
-    // If removing the principal photo, set another one as principal
+    if (photoToRemove.cloudinary_public_id && photoToRemove.isNew) {
+      try {
+        await fetch("/api/delete-from-cloudinary", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ public_id: photoToRemove.cloudinary_public_id }),
+        })
+      } catch (error) {
+        console.error("Error deleting from Cloudinary:", error)
+      }
+    }
+
     if (photoToRemove.principale === 1 && photos.length > 1) {
       const newPhotos = [...photos]
       newPhotos.splice(index, 1)
 
-      // Find the first remaining photo and make it principal
       const firstRemainingPhotoIndex = newPhotos.findIndex((p) => p.id !== photoToRemove.id)
       if (firstRemainingPhotoIndex !== -1) {
         newPhotos[firstRemainingPhotoIndex].principale = 1
@@ -109,12 +193,10 @@ const PhotoManagementContent = () => {
 
       setPhotos(newPhotos)
     } else {
-      // Just remove the photo
       setPhotos(photos.filter((_, i) => i !== index))
     }
 
-    // If the photo has a preview URL, revoke it to free memory
-    if (photoToRemove.preview && photoToRemove.isNew) {
+    if (photoToRemove.preview && photoToRemove.isNew && !photoToRemove.cloudinary_url) {
       URL.revokeObjectURL(photoToRemove.preview)
     }
   }
@@ -132,18 +214,20 @@ const PhotoManagementContent = () => {
 
     setIsSaving(true)
     try {
-      // Create FormData to handle file uploads
       const formData = new FormData()
       formData.append("annonceId", annonceId)
 
-      // Add information about which photos to keep, delete, and which is principal
       const existingPhotoIds = photos
         .filter((p) => !p.isNew && p.id)
-        .map((p) => ({ id: p.id, principale: p.principale }))
+        .map((p) => ({
+          id: p.id,
+          principale: p.principale,
+          cloudinary_public_id: p.cloudinary_public_id,
+          cloudinary_url: p.cloudinary_url,
+        }))
 
       formData.append("existingPhotos", JSON.stringify(existingPhotoIds))
 
-      // Add new files
       photos
         .filter((p) => p.isNew && p.file)
         .forEach((photo) => {
@@ -154,6 +238,8 @@ const PhotoManagementContent = () => {
               JSON.stringify({
                 name: photo.nom,
                 principale: photo.principale,
+                cloudinary_public_id: photo.cloudinary_public_id,
+                cloudinary_url: photo.cloudinary_url,
               }),
             )
           }
@@ -171,7 +257,6 @@ const PhotoManagementContent = () => {
         description: "Les photos ont été enregistrées avec succès",
       })
 
-      // Refresh photos from server
       fetchPhotos(Number.parseInt(annonceId))
     } catch (error) {
       console.error("Error saving photos:", error)
@@ -218,11 +303,21 @@ const PhotoManagementContent = () => {
           {photos.map((photo, index) => (
             <div key={index} className="relative group border rounded-lg overflow-hidden shadow-sm">
               <div className="aspect-video relative">
-                <img
-                  src={photo.preview || "/placeholder.svg?height=200&width=300"}
-                  alt={`Photo ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
+                {photo.cloudinary_public_id ? (
+                  <CldImage
+                    src={photo.cloudinary_public_id}
+                    alt={`Photo ${index + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                ) : (
+                  <img
+                    src={photo.preview || "/placeholder.svg?height=200&width=300"}
+                    alt={`Photo ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                )}
                 {photo.principale === 1 && (
                   <div className="absolute top-2 left-2 bg-orange-400 text-white px-2 py-1 rounded-md text-xs font-medium flex items-center">
                     <Star className="h-3 w-3 mr-1" />
@@ -235,6 +330,7 @@ const PhotoManagementContent = () => {
                 <p className="text-sm truncate" title={photo.nom}>
                   {photo.nom}
                 </p>
+                {photo.cloudinary_public_id && <p className="text-xs text-green-600 mt-1">📁 Cloudinary</p>}
               </div>
 
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
@@ -270,19 +366,30 @@ const PhotoManagementContent = () => {
               accept="image/*"
               onChange={handleFileChange}
               className="cursor-pointer"
+              disabled={isUploading}
             />
             <p className="text-sm text-muted-foreground">
-              Formats acceptés: JPG, PNG, GIF. Taille maximale: 5MB par image.
+              Formats acceptés: JPG, PNG, GIF, WEBP. Taille maximale: 10MB par image. Les images seront automatiquement
+              uploadées vers Cloudinary et optimisées.
             </p>
           </div>
 
           <Button
             onClick={handleAddPhotos}
-            disabled={!selectedFiles}
+            disabled={!selectedFiles || isUploading}
             className="bg-orange-400 hover:bg-orange-500 text-white"
           >
-            <Upload className="h-4 w-4 mr-2" />
-            Ajouter les photos
+            {isUploading ? (
+              <>
+                <div className="animate-spin mr-2 h-4 w-4 border-2 border-b-transparent border-white rounded-full"></div>
+                Upload vers Cloudinary...
+              </>
+            ) : (
+              <>
+                <Upload className="h-4 w-4 mr-2" />
+                Ajouter les photos
+              </>
+            )}
           </Button>
         </div>
 
@@ -307,7 +414,6 @@ const PhotoManagementContent = () => {
   )
 }
 
-// Wrap your component with Suspense
 export default function PhotoManagement() {
   return (
     <Suspense
@@ -321,4 +427,3 @@ export default function PhotoManagement() {
     </Suspense>
   )
 }
-
