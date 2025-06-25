@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   title: "Cabinet R. Michou & Cie",
   description: "Cabinet R. Michou & Cie - Gestion locative, Syndic, Vente immobilière à Paris",
   icons: {
-    icon: "/favicon-michou.png",
+    icon: `/favicon-new.ico`,
   },
 };
 

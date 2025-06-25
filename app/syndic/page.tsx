@@ -18,7 +18,7 @@ function page() {
 	<Breadcrumb className="ml-24 mt-12">
 		<BreadcrumbList>
 			<BreadcrumbItem>
-				<BreadcrumbLink href="/">Acceuil</BreadcrumbLink>
+				<BreadcrumbLink href="/">Accueil</BreadcrumbLink>
 			</BreadcrumbItem>
 			<BreadcrumbSeparator />
 			<BreadcrumbItem>

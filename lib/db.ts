@@ -6,9 +6,9 @@ export async function createConnection() {
   return await mysql.createConnection({
     host: 'mysql-michouuu.alwaysdata.net',
     port: 3306,
-    user: 'michouuu',
-    password: 'zakariamichou1234',
-    database: 'michouuu_db'
+    user: '419773',
+    password: 'Pledgedatamysql2025!',
+    database: 'pledgeandgrow_cabinet-michou'
   });
 }
 

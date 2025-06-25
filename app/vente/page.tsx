@@ -19,7 +19,7 @@ export default async function VentePage() {
       <Breadcrumb className="ml-0 md:ml-24 mt-6 md:mt-12">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Acceuil</BreadcrumbLink>
+            <BreadcrumbLink href="/">Accueil</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

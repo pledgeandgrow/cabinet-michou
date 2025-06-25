@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
     // Verify reCAPTCHA
     const recaptchaResponse = await fetch(
-      `https://www.google.com/recaptcha/api/siteverify?secret=6Le4oswZAAAAAHiBVBnjI8A4eRHtabdU4-LYmJox&response=${recaptchaToken}`,
+      `https://www.google.com/recaptcha/api/siteverify?secret=6LeqLG0rAAAAAIEzStfl-hittuwFdmowhmL_w7yJ&response=${recaptchaToken}`,
       { method: 'POST' }
     );
     

@@ -35,6 +35,7 @@ interface Annonce {
   nb_pieces: number | "N/C"
   nb_chambres: number | "N/C"
   typeLogement: string
+  typebien_nom: string  // Ajout de la propriété manquante
   transaction: "Location" | "Vente"
   chauffage: string
   dpe_conso: string | "N/C"
@@ -48,6 +49,7 @@ interface Annonce {
   terrasse: "Oui" | "Non"
   cave: "Oui" | "Non"
   parking: "Oui" | "Non"
+  publie: boolean  // Ajout de la propriété manquante
   meuble: "Oui" | "Non"
   photos: Photo[]
   equipements: Equipements
