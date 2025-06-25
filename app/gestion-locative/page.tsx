@@ -17,7 +17,7 @@ import { useState } from "react";
 const sectionsOne = [
     {
       title: "Assurer votre gestion financière, fiscale et comptable",
-      description: "Nous assurons la tenue de votre comptabilité sur le logiciel Lojii de la société Neoteem et vous adressons à la période de votre choix (mensuel ou trimestriel) un relevé de compte de gérance accompagné de votre règlement , À tout moment, vos comptes sont consultables sur Internet (via notre accès client), Nous vous adressons tous les ans un récapitulatif afin de vous aider à réaliser votre déclaration des revenus fonciers , Nous vous proposons une garantie des loyers impayés, une assurance Propriétaire Non Occupant…"
+      description: "Nous assurons la tenue de votre comptabilité sur le logiciel Lojii de la société Neoteem et vous adressons à la période de votre choix (mensuel ou trimestriel) un relevé de compte de gérance accompagné de votre règlement. À tout moment, vos comptes sont consultables sur Internet (via notre accès client). Nous vous adressons tous les ans un récapitulatif afin de vous aider à réaliser votre déclaration des revenus fonciers. Nous vous proposons une garantie des loyers impayés, une assurance Propriétaire Non Occupant…"
     },
     {
       title: "Respect de la réglementation",
@@ -25,11 +25,11 @@ const sectionsOne = [
     },
     {
       title: "Assurer la gestion technique de vos biens",
-      description: "Nous assurons pour votre compte les appels d’offre auprès des entreprises, suivons les travaux d’amélioration ou d’entretien afin de maintenir la valeur locative de votre bien et répondre aux obligations règlementaires , Notre équipe a acquis une réelle compétence dans le suivi des travaux dans les immeubles anciens , Nous assurons le suivi des sinistres de tous ordres et engageons les différentes assurances et garanties dont vous bénéficiez."
+      description: "Nous assurons pour votre compte les appels d'offre auprès des entreprises, suivons les travaux d'amélioration ou d'entretien afin de maintenir la valeur locative de votre bien et répondre aux obligations règlementaires. Notre équipe a acquis une réelle compétence dans le suivi des travaux dans les immeubles anciens. Nous assurons le suivi des sinistres de tous ordres et engageons les différentes assurances et garanties dont vous bénéficiez."
     },
     {
       title: "Assurer la gestion locative",
-      description: "Nous mettons en location votre bien, au prix du marché , Nous nous occupons de votre bien, de l’entrée de vos locataires jusqu’à leur départ , Nous gérons les sinistres, nous réglons vos litiges , Nous entretenons et valorisons votre patrimoine immobilier."
+      description: "Nous mettons en location votre bien, au prix du marché. Nous nous occupons de votre bien, de l’entrée de vos locataires jusqu’à leur départ. Nous gérons les sinistres, nous réglons vos litiges. Nous entretenons et valorisons votre patrimoine immobilier."
     }
   ];
 const sectionsTwo = [
@@ -39,15 +39,15 @@ const sectionsTwo = [
     },
     {
       title: "De nombreux avantages",
-      description: "un service extranet qui vous permet de récupérer vos avis d’échéance, factures, position de compte , règlement de vos loyers par prélèvement automatique , des collaboratrices qui sont disponibles et accessibles grâce à leurs lignes directes et leurs mails personnels , des baux signés par voie électronique."
+      description: "un service extranet qui vous permet de récupérer vos avis d’échéance, factures, position de compte, règlement de vos loyers par prélèvement automatique, des collaboratrices qui sont disponibles et accessibles grâce à leurs lignes directes et leurs mails personnels, des baux signés par voie électronique."
     },
     {
       title: "Assurer la gestion technique de vos biens",
-      description: "Nous assurons pour votre compte les appels d’offre auprès des entreprises, suivons les travaux d’amélioration ou d’entretien afin de maintenir la valeur locative de votre bien et répondre aux obligations règlementaires , Notre équipe a acquis une réelle compétence dans le suivi des travaux dans les immeubles anciens , Nous assurons le suivi des sinistres de tous ordres et engageons les différentes assurances et garanties dont vous bénéficiez."
+      description: "Nous assurons pour votre compte les appels d'offre auprès des entreprises, suivons les travaux d'amélioration ou d'entretien afin de maintenir la valeur locative de votre bien et répondre aux obligations règlementaires. Notre équipe a acquis une réelle compétence dans le suivi des travaux dans les immeubles anciens. Nous assurons le suivi des sinistres de tous ordres et engageons les différentes assurances et garanties dont vous bénéficiez."
     },
     {
       title: "Assurer la gestion locative",
-      description: "Nous mettons en location votre bien, au prix du marché , Nous nous occupons de votre bien, de l’entrée de vos locataires jusqu’à leur départ , Nous gérons les sinistres, nous réglons vos litiges , Nous entretenons et valorisons votre patrimoine immobilier."
+      description: "Nous mettons en location votre bien, au prix du marché. Nous nous occupons de votre bien, de l’entrée de vos locataires jusqu’à leur départ. Nous gérons les sinistres, nous réglons vos litiges. Nous entretenons et valorisons votre patrimoine immobilier."
     }
   ];
 const GestionLocative: React.FC = () => {
@@ -56,7 +56,7 @@ const GestionLocative: React.FC = () => {
             <Breadcrumb className="ml-24 mt-12">
                 <BreadcrumbList>
                     <BreadcrumbItem>
-                        <BreadcrumbLink href="/">Acceuil</BreadcrumbLink>
+                        <BreadcrumbLink href="/">Accueil</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
@@ -74,7 +74,7 @@ const GestionLocative: React.FC = () => {
             <Separator />
             <BannerInformative type="gestion-locative" />
             <Feature badge='propriétaire' title="Nos principaux services" sections={sectionsOne}/>
-            <BannerInformative  />
+            <BannerInformative type="gestion-proprio" />
             <BannerDocument />
 
             

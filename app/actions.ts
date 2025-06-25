@@ -4,7 +4,7 @@ import { defaultSession, SessionData, sessionOptions } from "./lib";
 import bcrypt from "bcryptjs"
 import { cookies } from "next/headers";
 import { RowDataPacket } from "mysql2";
-import { query } from "@/lib/db";
+import { query } from "@/lib/auth-db";
 
 export async function getSessionStatus() {
 	const session = await getSession()

@@ -18,7 +18,7 @@ function CabinetPage() {
 
                     </h1>
                     <p className="text-lg text-gray-500 mb-4">
-                    Spécialiste de l'administration d'immeubles et de biens immobiliers, Cabinet Michou accompagne propriétaires et copropriétaires dans la gestion locative, le syndic de copropriété et les transactions immobilières. Grâce à une expertise pointue et un suivi rigoureux, nous assurons une gestion transparente et optimisée pour valoriser votre patrimoine et garantir votre sérénité.
+                    Spécialiste de l'administration d'immeubles et de biens immobiliers, le Cabinet Michou accompagne propriétaires et copropriétaires dans la gestion locative, le syndic de copropriété et les transactions immobilières. Grâce à une expertise pointue et un suivi rigoureux, nous assurons une gestion transparente et optimisée pour valoriser votre patrimoine et garantir votre sérénité.
 
                     </p>
                     

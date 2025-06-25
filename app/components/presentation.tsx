@@ -26,7 +26,7 @@ const Presentation: React.FC = () => {
                         La gestion du cabinet est assurée par Angélique Mouton et Alexandre Baboz, accompagnés de leurs collaborateurs qui sont à votre disposition pour vous renseigner et vous épauler au quotidien.
                     </p>
                     <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-6">
-                        Notre service extranet offre un accès 24h/24 7j/7 aux clients afin qu'ils puissent retrouver les informations/documents de leur choix en libre service.
+                        Notre service extranet offre un accès 24h/24 7j/7 aux clients afin qu'ils puissent retrouver les informations/documents de leur choix en libre-service.
                     </p>
                 </div>
                 <div className="flex justify-center order-1 md:order-2 mb-6 md:mb-0">

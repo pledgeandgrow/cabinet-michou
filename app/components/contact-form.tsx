@@ -74,7 +74,7 @@ export default function ContactForm() {
           Envoyez-nous un message
         </h2>
         <p className="mt-2 text-sm md:text-base text-gray-600 dark:text-gray-400">
-          Nous vous répondrons dans les plus brefs délais
+          Nous vous répondrons dans les plus brefs délais.
         </p>
       </div>
 
@@ -184,7 +184,7 @@ export default function ContactForm() {
         <div className="flex justify-center mt-4 overflow-hidden">
           <div className="transform scale-90 md:scale-100">
             <ReCAPTCHA
-              sitekey="6Ldk9NEqAAAAAMyq1LfunVJcxxby0U42CXQ0p2fx"
+              sitekey="6LeqLG0rAAAAABKLXtpltQxndzME4TBFWap18pWg"
               onChange={(token) => setRecaptchaToken(token)}
             />
           </div>

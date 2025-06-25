@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mise à jour du favicon</title>
+  <script>
+    // Force le navigateur à recharger le favicon
+    function updateFavicon() {
+      // Supprime l'ancien favicon
+      var links = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
+      links.forEach(function(link) {
+        document.head.removeChild(link);
+      });
+      
+      // Ajoute le nouveau favicon avec un timestamp
+      var link = document.createElement('link');
+      link.rel = 'icon';
+      link.href = '/favicon.ico?' + new Date().getTime();
+      document.head.appendChild(link);
+      
+      // Redirection vers la page d'accueil après 2 secondes
+      setTimeout(function() {
+        window.location.href = '/';
+      }, 2000);
+    }
+  </script>
+</head>
+<body onload="updateFavicon()">
+  <h1>Mise à jour du favicon en cours...</h1>
+  <p>Vous allez être redirigé vers la page d'accueil dans 2 secondes.</p>
+</body>
+</html>
