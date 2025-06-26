@@ -171,7 +171,24 @@ export async function getListings() {
       ORDER BY l.id DESC
     `,
   })
-  return results
+  
+  // Formater les données pour l'affichage dans le frontend
+  const formattedResults = results.map(annonce => {
+    return {
+      ...annonce,
+      // S'assurer que le prix est correctement formaté
+      prix: annonce.prix || "N/C",
+      prix_avec_honoraires: annonce.prix_avec_honoraires || annonce.prix || "N/C",
+      // Utiliser directement le champ cp pour le code postal
+      code_postal: annonce.cp || "N/A",
+      // S'assurer que la ville est une chaîne de caractères
+      ville: annonce.ville ? String(annonce.ville) : "N/A",
+      // Convertir publie en booléen
+      publie: annonce.publie === 1
+    };
+  });
+  
+  return formattedResults
 }
 
 export async function getListing(id: number) {
@@ -288,6 +305,29 @@ export async function deleteListing(id: number) {
     values: [id],
   })
   return results
+}
+
+export async function toggleAnnoncePublie(id: number) {
+  // D'abord, récupérer l'état actuel de publication
+  const annonce = await query<RowDataPacket[]>({
+    query: "SELECT publie FROM annonces WHERE id = ?",
+    values: [id],
+  })
+  
+  if (!annonce || annonce.length === 0) {
+    throw new Error("Annonce non trouvée")
+  }
+  
+  // Inverser l'état de publication
+  const newPublieState = annonce[0].publie === 1 ? 0 : 1
+  
+  // Mettre à jour la base de données
+  const results = await query<RowDataPacket[]>({
+    query: "UPDATE annonces SET publie = ? WHERE id = ?",
+    values: [newPublieState, id],
+  })
+  
+  return { success: true, publie: newPublieState === 1 }
 }
 
 

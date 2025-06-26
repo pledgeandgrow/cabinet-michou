@@ -85,6 +85,9 @@ export async function getAnnonceById(id: string) {
 
 // Fonction pour récupérer les photos d'une annonce
 export async function getAnnoncePhotos(annonceId: string | number) {
+  // Ajouter un timestamp pour éviter le cache
+  const timestamp = Date.now();
+  
   const photos = await query({
     query: `
       SELECT id, nom as url
@@ -95,10 +98,19 @@ export async function getAnnoncePhotos(annonceId: string | number) {
     values: [annonceId],
   });
 
-  return photos.map((photo: any) => ({
-    id: photo.id,
-    url: `https://cabinet-michou.com/uploads/annonces/${annonceId}/${photo.url}`
-  }));
+  return photos.map((photo: any) => {
+    // Vérifier si c'est une URL Cloudinary ou un nom de fichier local
+    const isCloudinaryUrl = photo.url.startsWith('http') || photo.url.includes('cloudinary.com');
+    
+    return {
+      id: photo.id,
+      // Si c'est une URL Cloudinary, utiliser directement l'URL complète
+      // Sinon, construire l'URL locale avec un paramètre de cache
+      url: isCloudinaryUrl 
+        ? `${photo.url}?t=${timestamp}` 
+        : `/uploads/annonces/${annonceId}/${photo.url}?t=${timestamp}`
+    };
+  });
 }
 
 // Récupérer les annonces de location

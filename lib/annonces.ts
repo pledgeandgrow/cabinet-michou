@@ -71,12 +71,19 @@ export async function getAnnoncePhotos(annonceId: number | string) {
     values: [annonceId]
   });
 
-  return photos.map((photo: any) => ({
-    id: photo.id,
-    url: `/annonces/${annonceId}/${photo.nom}`,
-    principale: photo.principale === 1,
-    ordre: photo.ordre
-  }));
+  return photos.map((photo: any) => {
+    // Vérifier si c'est une URL Cloudinary ou un nom de fichier local
+    const isCloudinaryUrl = photo.nom.startsWith('http') || photo.nom.includes('cloudinary.com');
+    
+    return {
+      id: photo.id,
+      // Si c'est une URL Cloudinary, utiliser directement l'URL complète
+      // Sinon, construire l'URL locale
+      url: isCloudinaryUrl ? photo.nom : `/uploads/annonces/${annonceId}/${photo.nom}`,
+      principale: photo.principale === 1,
+      ordre: photo.ordre
+    };
+  });
 }
 
 // Fonction pour récupérer une annonce par son ID

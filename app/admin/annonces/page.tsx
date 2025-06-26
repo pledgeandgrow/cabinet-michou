@@ -30,26 +30,22 @@ interface Annonce {
   reference: string
   prix: number | "N/C"
   prix_hors_charges: number | "N/C"
+  prix_avec_honoraires?: number | "N/C"
+  prix_hors_honoraires?: number | "N/C"
   charges: number | "N/C"
   surface: number | "N/C"
   nb_pieces: number | "N/C"
   nb_chambres: number | "N/C"
-  typeLogement: string
-  typebien_nom: string  // Ajout de la propriété manquante
-  transaction: "Location" | "Vente"
-  chauffage: string
-  dpe_conso: string | "N/C"
-  dpe_emission: string | "N/C"
-  description: string
-  ville: string
-  code_postal: string
-  etage: string
+  nb_sdb: number | "N/C"
+  nb_wc: number | "N/C"
+  etage: number | "N/C"
   ascenseur: "Oui" | "Non"
   balcon: "Oui" | "Non"
   terrasse: "Oui" | "Non"
+  jardin: "Oui" | "Non"
   cave: "Oui" | "Non"
   parking: "Oui" | "Non"
-  publie: boolean  // Ajout de la propriété manquante
+  publie: boolean
   meuble: "Oui" | "Non"
   photos: Photo[]
   equipements: Equipements
@@ -62,6 +58,10 @@ interface Annonce {
   prix_m2?: string
   copropriete?: "Oui" | "Non"
   nb_lots?: number | "N/C"
+  code_postal?: string
+  ville?: string
+  transaction_nom?: string
+  typebien_nom?: string
 }
 
 export default function RealEstateTable({ items }: { items?: Annonce[] }) {
@@ -106,7 +106,54 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
 
   const handleDelete = async (id: string) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cette annonce ?")) {
-      console.log("Delete annonce:", id)
+      try {
+        const response = await fetch(`/api/annonces/${id}`, {
+          method: "DELETE",
+        });
+
+        if (!response.ok) {
+          throw new Error("Erreur lors de la suppression");
+        }
+
+        // Rafraîchir la liste des annonces après suppression
+        const updatedAnnonces = annonces.filter(annonce => annonce.id !== id);
+        setAnnonces(updatedAnnonces);
+        setFilteredAnnonces(updatedAnnonces);
+        
+        alert("Annonce supprimée avec succès");
+      } catch (error) {
+        console.error("Erreur lors de la suppression:", error);
+        alert("Une erreur est survenue lors de la suppression de l'annonce");
+      }
+    }
+  }
+  
+  // Fonction pour basculer l'état de publication d'une annonce
+  const togglePublie = async (id: string) => {
+    try {
+      const response = await fetch(`/api/annonces/${id}/toggle-publie`, {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la mise à jour du statut");
+      }
+
+      const result = await response.json();
+      
+      // Mettre à jour l'état local des annonces
+      const updatedAnnonces = annonces.map(annonce => {
+        if (annonce.id === id) {
+          return { ...annonce, publie: result.publie };
+        }
+        return annonce;
+      });
+      
+      setAnnonces(updatedAnnonces as any);
+      setFilteredAnnonces(updatedAnnonces as any);
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour du statut:", error);
+      alert("Une erreur est survenue lors de la mise à jour du statut de publication");
     }
   }
 
@@ -163,20 +210,24 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
                     <X className="h-4 w-4" />
                   </button>
                 </TableCell>
-                <TableCell>{annonce.id}</TableCell>
-                <TableCell>{annonce.typebien_nom}</TableCell>
-                <TableCell>{annonce.reference}</TableCell>
-                <TableCell>{annonce.surface} m²</TableCell>
+                <TableCell>{annonce.transaction_nom || "N/A"}</TableCell>
+                <TableCell>{annonce.typebien_nom || "N/A"}</TableCell>
+                <TableCell>{annonce.reference || "N/A"}</TableCell>
+                <TableCell>{annonce.surface ? `${annonce.surface} m²` : "N/A"}</TableCell>
                 <TableCell className="whitespace-nowrap">
-                  {annonce.prix === "N/C" ? "N/C" : `${annonce.prix} €`}
-                  {annonce.charges !== "N/C" && (
+                  {annonce.prix_avec_honoraires ? `${annonce.prix_avec_honoraires} €` : "N/C"}
+                  {annonce.charges && annonce.charges !== "N/C" && (
                     <span className="text-sm text-gray-500 block">{`(+${annonce.charges}€ charges)`}</span>
                   )}
                 </TableCell>
-                <TableCell>{annonce.code_postal}</TableCell>
-                <TableCell>{annonce.ville}</TableCell>
+                <TableCell>{annonce.code_postal || "N/A"}</TableCell>
+                <TableCell>{annonce.ville || "N/A"}</TableCell>
                 <TableCell>
-                  <div className={`h-3 w-3 rounded-full ${annonce.publie ? "bg-green-500" : "bg-red-500"}`} />
+                  <div 
+                    className={`h-3 w-3 rounded-full ${annonce.publie ? "bg-green-500" : "bg-red-500"} cursor-pointer hover:opacity-80 transition-opacity`}
+                    onClick={() => togglePublie(annonce.id)}
+                    title={annonce.publie ? "Cliquez pour masquer l'annonce" : "Cliquez pour publier l'annonce"}
+                  />
                 </TableCell>
               </TableRow>
             ))}

@@ -37,7 +37,9 @@ export async function GET() {
       meuble: annonce.meuble ? 'Oui' : 'Non',
       photos: [{
         id: annonce.id,
-        url: `https://cabinet-michou.com/uploads/annonces/${annonce.id}/${annonce.photo}`,
+        url: annonce.photo && annonce.photo.startsWith('http') 
+          ? annonce.photo 
+          : `/uploads/annonces/${annonce.id}/${annonce.photo}`,
         principale: true
       }],
       // Informations spécifiques à la location
