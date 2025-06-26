@@ -3,13 +3,21 @@ import { RowDataPacket } from 'mysql2';
 import { createAndUploadAnnonceCSV } from './ftp';
 
 export async function createConnection() {
-  return await mysql.createConnection({
-    host: 'mysql-michouuu.alwaysdata.net',
-    port: 3306,
-    user: '419773',
-    password: 'Pledgedatamysql2025!',
-    database: 'pledgeandgrow_cabinet-michou'
-  });
+  const connectionConfig = {
+    host: process.env.DB_HOST || 'mysql-michouuu.alwaysdata.net',
+    port: parseInt(process.env.DB_PORT || '3306'),
+    user: process.env.DB_USER || '419773',
+    password: process.env.DB_PASSWORD || 'Pledgedatamysql2025!',
+    database: process.env.DB_NAME || 'pledgeandgrow_cabinet-michou',
+    ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined
+  };
+  
+  try {
+    return await mysql.createConnection(connectionConfig);
+  } catch (error) {
+    console.error('Database connection error:', error);
+    throw error;
+  }
 }
 
 export async function query<T extends RowDataPacket[]>({ 
