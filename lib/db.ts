@@ -4,7 +4,7 @@ import { createAndUploadAnnonceCSV } from './ftp';
 
 export async function createConnection() {
   const connectionConfig = {
-    host: process.env.DB_HOST || 'mysql-michouuu.alwaysdata.net',
+    host: process.env.DB_HOST || 'mysql-michou.alwaysdata.net',
     port: parseInt(process.env.DB_PORT || '3306'),
     user: process.env.DB_USER || '419773',
     password: process.env.DB_PASSWORD || 'Pledgedatamysql2025!',
