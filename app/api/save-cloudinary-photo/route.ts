@@ -1,23 +1,47 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { query } from "@/lib/db"
+import { type NextRequest, NextResponse } from "next/server";
+import { getSupabaseClient, addAnnoncePhoto } from "@/lib/db";
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
-    const { annonceId, cloudinary_url, principale } = await request.json()
+    console.log('Received request to save Cloudinary photo');
+    const body = await request.json();
+    console.log('Request body:', body);
+    
+    const { annonceId, cloudinary_url, principale } = body;
 
     if (!annonceId || !cloudinary_url) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+      console.error('Missing required fields:', { annonceId, cloudinary_url });
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Insert the photo with Cloudinary URL in the nom field
-    const result = await query({
-      query: "INSERT INTO annonces_photos (annonce_id, nom, principale) VALUES (?, ?, ?)",
-      values: [annonceId, cloudinary_url, principale],
-    })
+    console.log(`Saving Cloudinary photo for annonce ${annonceId}:`, { cloudinary_url, principale });
+    
+    // Utiliser la fonction addAnnoncePhoto qui a déjà été migrée vers Supabase
+    const result = await addAnnoncePhoto(annonceId, cloudinary_url, principale);
+    
+    console.log('Photo saved successfully:', result);
 
-    return NextResponse.json({ success: true, id: result.insertId })
-  } catch (error) {
-    console.error("Error saving Cloudinary photo:", error)
-    return NextResponse.json({ error: "Failed to save photo" }, { status: 500 })
+    // Ajouter des en-têtes pour désactiver la mise en cache
+    const headers = {
+      'Cache-Control': 'no-store, max-age=0, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    };
+    
+    // S'assurer que nous retournons des valeurs primitives et non des objets complexes
+    return NextResponse.json({
+      success: true,
+      id: result.id,
+      nom: result.nom,
+      principale: result.principale
+    }, { headers });
+  } catch (error: any) {
+    console.error("Error saving Cloudinary photo:", error);
+    return NextResponse.json({ 
+      error: "Failed to save photo", 
+      details: error.message || String(error)
+    }, { status: 500 });
   }
 }

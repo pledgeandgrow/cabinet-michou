@@ -1,7 +1,6 @@
-import { query } from '@/lib/db';
-import { RowDataPacket } from 'mysql2';
+import { getSupabaseClient } from '@/lib/db';
 
-interface AnnonceRow extends RowDataPacket {
+interface AnnonceRow {
   id: number;
   nom: string;
   reference: string;
@@ -24,19 +23,48 @@ interface AnnonceRow extends RowDataPacket {
 // Récupérer toutes les annonces avec leur photo principale
 export async function getAllAnnonces() {
   try {
-    const annonces = await query<AnnonceRow[]>({
-      query: `
-        SELECT a.*, t.nom as typeLogement, p.nom as photo 
-        FROM annonces a 
-        LEFT JOIN typebien t ON a.typebien_id = t.id 
-        INNER JOIN annonces_photos p ON p.annonce_id = a.id
-        WHERE a.publie = ? AND p.principale = ?
-        ORDER BY RAND()
-      `,
-      values: [1, 1]
+    const supabase = getSupabaseClient();
+    
+    console.log('Fetching all annonces with their main photo');
+    
+    // Utiliser une requête SQL via Supabase
+    const { data: annonces, error } = await supabase
+      .from('annonces')
+      .select(`
+        *,
+        typebien!inner (
+          nom
+        ),
+        annonces_photos!inner (
+          id,
+          nom,
+          principale
+        )
+      `)
+      .eq('publie', 1)
+      .eq('annonces_photos.principale', 1)
+      .order('id', { ascending: false });
+    
+    if (error) {
+      console.error('Error fetching annonces:', error);
+      return [];
+    }
+    
+    console.log(`Found ${annonces.length} annonces`);
+    
+    // Transformer les données pour correspondre à l'ancien format
+    return annonces.map((annonce: any) => {
+      // Récupérer le nom de la photo principale
+      const photoNom = annonce.annonces_photos[0]?.nom || '';
+      
+      console.log(`Annonce ${annonce.id} photo: ${photoNom}`);
+      
+      return {
+        ...annonce,
+        typeLogement: annonce.typebien?.nom || '',
+        photo: photoNom // URL Cloudinary directe
+      };
     });
-
-    return annonces;
   } catch (error) {
     console.error('Error fetching annonces:', error);
     return [];
@@ -46,37 +74,90 @@ export async function getAllAnnonces() {
 // Récupérer une annonce par son ID
 export async function getAnnonceById(id: string) {
   try {
-    const annonces = await query({
-      query: `
-        SELECT a.*, 
-               t.nom as typeLogement, 
-               tr.nom as transaction, 
-               c.nom as chauffage, 
-               cu.nom as cuisine, 
-               bc.nom as dpe_conso, 
-               be.nom as dpe_emission, 
-               h.nom as honoraires, 
-               ch.nom as nom_charges 
-        FROM annonces a 
-        LEFT JOIN typebien t ON a.typebien_id = t.id 
-        LEFT JOIN transaction tr ON a.transaction_id = tr.id
-        LEFT JOIN chauffage c ON a.chauffage_id = c.id
-        LEFT JOIN cuisine cu ON a.cuisine_id = cu.id
-        LEFT JOIN honoraires h ON a.honoraires_id = h.id
-        LEFT JOIN charges ch ON a.charges_id = ch.id
-        LEFT JOIN bilan_conso bc ON a.bilan_conso_id = bc.id
-        LEFT JOIN bilan_emission be ON a.bilan_emission_id = be.id
-        LEFT JOIN sous_typebien st ON a.sous_typebien_id = st.id
-        WHERE a.id = ?
-      `,
-      values: [id]
-    });
-
-    if (!annonces || annonces.length === 0) {
+    const supabase = getSupabaseClient();
+    
+    // Utiliser une requête avec jointures via Supabase
+    const { data: annonces, error } = await supabase
+      .from('annonces')
+      .select(`
+        *,
+        typebien (nom),
+        transaction (nom),
+        chauffage (nom),
+        cuisine (nom),
+        bilan_conso (nom),
+        bilan_emission (nom),
+        honoraires (nom),
+        charges (nom),
+        sous_typebien (nom)
+      `)
+      .eq('id', id)
+      .single();
+    
+    if (error) {
+      console.error('Error fetching annonce:', error);
       return null;
     }
-
-    return annonces[0];
+    
+    if (!annonces) {
+      return null;
+    }
+    
+    // Extraire les valeurs des objets pour éviter de passer des objets comme enfants React
+    const typebienNom = typeof annonces.typebien === 'object' && annonces.typebien ? 
+      (typeof annonces.typebien.nom === 'string' ? annonces.typebien.nom : '') : '';
+    
+    const transactionNom = typeof annonces.transaction === 'object' && annonces.transaction ? 
+      (typeof annonces.transaction.nom === 'string' ? annonces.transaction.nom : '') : '';
+    
+    const chauffageNom = typeof annonces.chauffage === 'object' && annonces.chauffage ? 
+      (typeof annonces.chauffage.nom === 'string' ? annonces.chauffage.nom : '') : '';
+    
+    const cuisineNom = typeof annonces.cuisine === 'object' && annonces.cuisine ? 
+      (typeof annonces.cuisine.nom === 'string' ? annonces.cuisine.nom : '') : '';
+    
+    const bilanConsoNom = typeof annonces.bilan_conso === 'object' && annonces.bilan_conso ? 
+      (typeof annonces.bilan_conso.nom === 'string' ? annonces.bilan_conso.nom : '') : '';
+    
+    const bilanEmissionNom = typeof annonces.bilan_emission === 'object' && annonces.bilan_emission ? 
+      (typeof annonces.bilan_emission.nom === 'string' ? annonces.bilan_emission.nom : '') : '';
+    
+    const honorairesNom = typeof annonces.honoraires === 'object' && annonces.honoraires ? 
+      (typeof annonces.honoraires.nom === 'string' ? annonces.honoraires.nom : '') : '';
+    
+    const chargesNom = typeof annonces.charges === 'object' && annonces.charges ? 
+      (typeof annonces.charges.nom === 'string' ? annonces.charges.nom : '') : '';
+    
+    const sousTypebienNom = typeof annonces.sous_typebien === 'object' && annonces.sous_typebien ? 
+      (typeof annonces.sous_typebien.nom === 'string' ? annonces.sous_typebien.nom : '') : '';
+    
+    // Créer un nouvel objet sans les propriétés objets
+    const annonceClean = { ...annonces };
+    delete annonceClean.typebien;
+    delete annonceClean.transaction;
+    delete annonceClean.chauffage;
+    delete annonceClean.cuisine;
+    delete annonceClean.bilan_conso;
+    delete annonceClean.bilan_emission;
+    delete annonceClean.honoraires;
+    delete annonceClean.charges;
+    delete annonceClean.sous_typebien;
+    
+    // Ajouter les propriétés extraites comme chaînes de caractères
+    return {
+      ...annonceClean,
+      typeLogement: typebienNom,
+      transaction: transactionNom,
+      chauffage: chauffageNom,
+      cuisine: cuisineNom,
+      dpe_conso: bilanConsoNom,
+      dpe_emission: bilanEmissionNom,
+      honoraires: honorairesNom,
+      nom_charges: chargesNom,
+      sous_type: sousTypebienNom,
+      // S'assurer que nom est une chaîne et non un objet
+      nom: typeof annonceClean.nom === 'string' ? annonceClean.nom : String(annonceClean.nom || '')
+    };
   } catch (error) {
     console.error('Error fetching annonce:', error);
     return null;
@@ -85,50 +166,101 @@ export async function getAnnonceById(id: string) {
 
 // Fonction pour récupérer les photos d'une annonce
 export async function getAnnoncePhotos(annonceId: string | number) {
-  // Ajouter un timestamp pour éviter le cache
-  const timestamp = Date.now();
-  
-  const photos = await query({
-    query: `
-      SELECT id, nom as url
-      FROM annonces_photos
-      WHERE annonce_id = ?
-      ORDER BY principale DESC
-    `,
-    values: [annonceId],
-  });
-
-  return photos.map((photo: any) => {
-    // Vérifier si c'est une URL Cloudinary ou un nom de fichier local
-    const isCloudinaryUrl = photo.url.startsWith('http') || photo.url.includes('cloudinary.com');
+  try {
+    // Ajouter un timestamp pour éviter le cache
+    const timestamp = Date.now();
+    const supabase = getSupabaseClient();
     
-    return {
-      id: photo.id,
-      // Si c'est une URL Cloudinary, utiliser directement l'URL complète
-      // Sinon, construire l'URL locale avec un paramètre de cache
-      url: isCloudinaryUrl 
-        ? `${photo.url}?t=${timestamp}` 
-        : `/uploads/annonces/${annonceId}/${photo.url}?t=${timestamp}`
-    };
-  });
+    console.log(`Fetching photos for annonce ${annonceId}`);
+    
+    const { data: photos, error } = await supabase
+      .from('annonces_photos')
+      .select('id, nom, principale')
+      .eq('annonce_id', annonceId)
+      .order('principale', { ascending: false });
+    
+    if (error) {
+      console.error(`Error fetching photos for annonce ${annonceId}:`, error);
+      return [];
+    }
+    
+    console.log(`Found ${photos.length} photos for annonce ${annonceId}`);
+    
+    // Transformer les photos pour ne retourner que id et url
+    const transformedPhotos = photos.map((photo: any) => {
+      // Vérifier si photo.nom existe
+      if (!photo.nom) {
+        console.error(`Invalid photo.nom for photo ${photo.id}:`, photo.nom);
+        return {
+          id: photo.id,
+          url: '/placeholder.svg?height=400&width=600'
+        };
+      }
+      
+      // Traiter photo.nom selon son type
+      let photoUrl = '';
+      
+      if (typeof photo.nom === 'string') {
+        photoUrl = photo.nom;
+      } else if (typeof photo.nom === 'object') {
+        try {
+          // Si c'est un objet, essayer de le convertir en chaîne
+          photoUrl = String(photo.nom);
+          console.warn(`photo.nom est un objet pour photo ${photo.id}, converti en: ${photoUrl}`);
+        } catch (e) {
+          photoUrl = '/placeholder.svg?height=400&width=600';
+          console.error(`Erreur lors de la conversion de photo.nom en chaîne pour photo ${photo.id}:`, e);
+        }
+      }
+      
+      // Ajouter le paramètre de cache si nécessaire
+      if (photoUrl && !photoUrl.includes('?')) {
+        photoUrl = `${photoUrl}?t=${timestamp}`;
+      }
+      
+      // Ne retourner que id et url, pas d'autres propriétés
+      return {
+        id: photo.id,
+        url: photoUrl || '/placeholder.svg?height=400&width=600'
+      };
+    });
+    
+    console.log('Photos transformées:', JSON.stringify(transformedPhotos));
+    return transformedPhotos;
+  } catch (error) {
+    console.error(`Error fetching photos for annonce ${annonceId}:`, error);
+    return [];
+  }
 }
 
 // Récupérer les annonces de location
 export async function getLocationAnnonces() {
   try {
-    const annonces = await query({
-      query: `
-        SELECT a.*, t.nom as typeLogement, p.nom as photo 
-        FROM annonces a 
-        LEFT JOIN typebien t ON a.typebien_id = t.id 
-        INNER JOIN annonces_photos p ON p.annonce_id = a.id
-        WHERE a.publie = ? AND p.principale = ? AND a.transaction_id = ?
-        ORDER BY a.id DESC
-      `,
-      values: [1, 1, 1]
-    });
-
-    return annonces;
+    const supabase = getSupabaseClient();
+    
+    const { data: annonces, error } = await supabase
+      .from('annonces')
+      .select(`
+        *,
+        typebien (nom),
+        annonces_photos!inner (nom)
+      `)
+      .eq('publie', 1)
+      .eq('transaction_id', 1)
+      .eq('annonces_photos.principale', 1)
+      .order('id', { ascending: false });
+    
+    if (error) {
+      console.error('Error fetching location annonces:', error);
+      return [];
+    }
+    
+    // Transformer les données pour correspondre à l'ancien format
+    return annonces.map((annonce: any) => ({
+      ...annonce,
+      typeLogement: annonce.typebien?.nom || '',
+      photo: annonce.annonces_photos[0]?.nom || ''
+    }));
   } catch (error) {
     console.error('Error fetching location annonces:', error);
     return [];
@@ -138,19 +270,31 @@ export async function getLocationAnnonces() {
 // Récupérer les annonces de vente
 export async function getVenteAnnonces() {
   try {
-    const annonces = await query({
-      query: `
-        SELECT a.*, t.nom as typeLogement, p.nom as photo 
-        FROM annonces a 
-        LEFT JOIN typebien t ON a.typebien_id = t.id 
-        INNER JOIN annonces_photos p ON p.annonce_id = a.id
-        WHERE a.publie = ? AND p.principale = ? AND a.transaction_id = ?
-        ORDER BY a.id DESC
-      `,
-      values: [1, 1, 2]
-    });
-
-    return annonces;
+    const supabase = getSupabaseClient();
+    
+    const { data: annonces, error } = await supabase
+      .from('annonces')
+      .select(`
+        *,
+        typebien (nom),
+        annonces_photos!inner (nom)
+      `)
+      .eq('publie', 1)
+      .eq('transaction_id', 2)
+      .eq('annonces_photos.principale', 1)
+      .order('id', { ascending: false });
+    
+    if (error) {
+      console.error('Error fetching vente annonces:', error);
+      return [];
+    }
+    
+    // Transformer les données pour correspondre à l'ancien format
+    return annonces.map((annonce: any) => ({
+      ...annonce,
+      typeLogement: annonce.typebien?.nom || '',
+      photo: annonce.annonces_photos[0]?.nom || ''
+    }));
   } catch (error) {
     console.error('Error fetching vente annonces:', error);
     return [];

@@ -1,6 +1,5 @@
 import { getAnnonceById, getAnnoncePhotos } from "@/lib/queries";
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import he from 'he'
@@ -25,13 +24,17 @@ import {
   Info,
   Home,
   Key,
-  ChevronLeft,
-  ChevronRight,
   Phone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import MapView from "@/app/components/MapView";
+import dynamic from "next/dynamic";
+import AnnonceCarousel from "@/app/components/AnnonceCarousel";
+
+// Import dynamique de MapView avec SSR désactivé pour éviter l'erreur window is not defined
+const MapView = dynamic(
+  () => import("@/app/components/MapView"),
+  { ssr: false }
+);
 
 const DPE_COLORS: { [key: string]: string } = {
   A: "bg-green-500",
@@ -62,17 +65,33 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
   const annonce = await getAnnonceById(params.id);
   if (!annonce) notFound();
 
+  // Récupérer les photos directement sans transformation
   const photos = await getAnnoncePhotos(params.id);
+  
+  // Ajouter un log pour déboguer
+  console.log("Photos récupérées pour l'annonce:", JSON.stringify(photos));
 
   const isLocation = annonce.transaction_id === 1;
-  const decodeHtml = (html) => {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    return doc.body.textContent || "";
+  // Utiliser la bibliothèque he pour décoder le HTML au lieu de DOMParser qui n'est pas disponible côté serveur
+  const decodeHtml = (html: string | null | undefined): string => {
+    return html ? he.decode(html) : "";
   };
-  const numberToWords = (num) => {
+  const numberToWords = (num: number | string | null | undefined): string => {
+    // S'assurer que num est un nombre valide
+    if (typeof num !== 'number') {
+      // Essayer de convertir en nombre si possible
+      const parsedNum = parseInt(String(num), 10);
+      if (isNaN(parsedNum)) return "N/C";
+      num = parsedNum;
+    }
+    
     const words = [
       "A", "B", "C", "D", "E", "F", "G", "H"
     ];
+    
+    // Vérifier que l'index est valide
+    if (num < 1 || num > words.length) return "N/C";
+    
     return words[num - 1]; // Convert number to corresponding word
   };
 
@@ -81,7 +100,7 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
       {/* Mobile Header - Only visible on small screens */}
       <div className="md:hidden mb-3">
         <Badge className="mb-1">{isLocation ? "Location" : "Vente"}</Badge>
-        <h1 className="text-lg font-bold mb-1">{annonce.nom}</h1>
+        <h1 className="text-lg font-bold mb-1">{typeof annonce.nom === 'string' ? annonce.nom : String(annonce.nom || '')}</h1>
         <p className="text-muted-foreground flex items-center gap-1 text-xs">
           <MapPin className="h-3 w-3 flex-shrink-0" />
           {annonce.ville} ({annonce.cp})
@@ -90,49 +109,11 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
 
       <div className="grid gap-3 md:gap-8 md:grid-cols-2">
         {/* Images */}
-        <div className="space-y-2 md:space-y-4 mb-11">
-          <Carousel className="w-full">
-            <CarouselContent>
-              {photos.map((photo: Photo, index: number) => (
-                <CarouselItem key={photo.id}>
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-                    <Image
-                      src={photo.url}
-                      alt={`${annonce.nom} - Photo`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      priority
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            {photos.length > 1 && (
-              <>
-                <CarouselPrevious className="left-2 h-8 w-8 md:h-10 md:w-10" />
-                <CarouselNext className="right-2 h-8 w-8 md:h-10 md:w-10" />
-              </>
-            )}
-          </Carousel>
-          {photos.length > 1 && (
-            <div className="flex gap-1 md:gap-2 overflow-x-auto pb-1 snap-x scrollbar-thin">
-              {photos.map((photo: Photo, index: number) => (
-                <div
-                  key={photo.id}
-                  className="relative aspect-[4/3] w-14 md:w-20 flex-shrink-0 overflow-hidden rounded-md cursor-pointer hover:opacity-80 transition-opacity snap-start"
-                >
-                  <Image
-                    src={photo.url}
-                    alt={`${annonce.nom} - Miniature ${index + 1}`}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-          <MapView postalCode={annonce.cp}/>
+        <div>
+          <AnnonceCarousel photos={photos} annonceName={typeof annonce.nom === 'string' ? annonce.nom : String(annonce.nom || '')} />
+          <div className="mt-4">
+            <MapView postalCode={annonce.cp}/>
+          </div>
         </div>
 
         {/* Informations principales */}
@@ -140,7 +121,7 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
           {/* Desktop Header - Hidden on small screens */}
           <div className="hidden md:block">
             <Badge className="mb-2 md:mb-3">{isLocation ? "Location" : "Vente"}</Badge>
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">{annonce.nom}</h1>
+            <h1 className="text-2xl md:text-3xl font-bold mb-2">{typeof annonce.nom === 'string' ? annonce.nom : String(annonce.nom || '')}</h1>
             <p className="text-muted-foreground flex items-center gap-2 text-sm md:text-base">
               <MapPin className="h-4 w-4 flex-shrink-0" />
               {annonce.ville} ({annonce.cp})
@@ -236,32 +217,38 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
 
           {/* DPE */}
           {(annonce.bilan_conso_id || annonce.bilan_emission_id) && (
-  <Card className="shadow-sm">
-    <CardHeader className="pb-1 px-2 pt-2 md:pb-2 md:px-4 md:pt-4">
-      <CardTitle className="text-xs md:text-lg">Diagnostic énergétique</CardTitle>
-    </CardHeader>
-    <CardContent className="flex flex-col gap-1 px-2 pb-2 md:flex-row md:gap-3 md:px-4 md:pb-4">
-      {annonce.bilan_conso_id && (
-        <Badge 
-          variant="secondary" 
-          className={cn("px-1.5 py-0.5 text-xs w-full md:w-auto justify-center md:justify-start", DPE_COLORS[annonce.bilan_conso_id])}
-        >
-          <Thermometer className="h-3 w-3 mr-1 flex-shrink-0 md:h-3.5 md:w-3.5 md:mr-1.5" />
-          DPE {numberToWords(annonce.bilan_conso_id)} - {annonce.consos} kWh/m²/an
-        </Badge>
-      )}
-      {annonce.bilan_emission_id && (
-        <Badge 
-          variant="secondary" 
-          className={cn("px-1.5 py-0.5 text-xs w-full md:w-auto justify-center md:justify-start", DPE_COLORS[annonce.bilan_emission_id])}
-        >
-          <Leaf className="h-3 w-3 mr-1 flex-shrink-0 md:h-3.5 md:w-3.5 md:mr-1.5" />
-          GES {numberToWords(annonce.bilan_emission_id)} - {annonce.emissions} kgCO₂/m²/an
-        </Badge>
-      )}
-    </CardContent>
-  </Card>
-)}
+            <Card className="shadow-sm">
+              <CardHeader className="pb-1 px-2 pt-2 md:pb-2 md:px-4 md:pt-4">
+                <CardTitle className="text-xs md:text-lg">Diagnostic énergétique</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-1 px-2 pb-2 md:flex-row md:gap-3 md:px-4 md:pb-4">
+                {annonce.bilan_conso_id && (
+                  <Badge 
+                    variant="secondary" 
+                    className={cn("px-1.5 py-0.5 text-xs w-full md:w-auto justify-center md:justify-start", 
+                      typeof annonce.bilan_conso_id === 'string' || typeof annonce.bilan_conso_id === 'number' 
+                        ? DPE_COLORS[String(annonce.bilan_conso_id)] 
+                        : '')}
+                  >
+                    <Thermometer className="h-3 w-3 mr-1 flex-shrink-0 md:h-3.5 md:w-3.5 md:mr-1.5" />
+                    DPE {numberToWords(annonce.bilan_conso_id)} - {typeof annonce.consos === 'string' || typeof annonce.consos === 'number' ? String(annonce.consos) : 'N/C'} kWh/m²/an
+                  </Badge>
+                )}
+                {annonce.bilan_emission_id && (
+                  <Badge 
+                    variant="secondary" 
+                    className={cn("px-1.5 py-0.5 text-xs w-full md:w-auto justify-center md:justify-start", 
+                      typeof annonce.bilan_emission_id === 'string' || typeof annonce.bilan_emission_id === 'number' 
+                        ? DPE_COLORS[String(annonce.bilan_emission_id)] 
+                        : '')}
+                  >
+                    <Leaf className="h-3 w-3 mr-1 flex-shrink-0 md:h-3.5 md:w-3.5 md:mr-1.5" />
+                    GES {numberToWords(annonce.bilan_emission_id)} - {typeof annonce.emissions === 'string' || typeof annonce.emissions === 'number' ? String(annonce.emissions) : 'N/C'} kgCO₂/m²/an
+                  </Badge>
+                )}
+              </CardContent>
+            </Card>
+          )}
 
           {/* Informations complémentaires */}
           {isLocation && (
@@ -297,7 +284,10 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
               <CardTitle className="text-xs md:text-lg">Description</CardTitle>
             </CardHeader>
             <CardContent className="px-2 pb-2 md:px-4 md:pb-4">
-              <p className="whitespace-pre-line text-xs md:text-sm">      {he.decode(annonce.description)}
+              <p className="whitespace-pre-line text-xs md:text-sm">
+                {decodeHtml(typeof annonce.description === 'string' 
+                  ? annonce.description 
+                  : (annonce.description ? String(annonce.description) : ''))}
               </p>
             </CardContent>
           </Card>

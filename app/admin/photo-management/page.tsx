@@ -19,6 +19,7 @@ interface Photo {
   preview?: string
   isNew?: boolean
   isCloudinary?: boolean
+  url?: string // URL complète de l'image (ajoutée par getAnnoncePhotos)
 }
 
 interface CloudinaryResult {
@@ -57,14 +58,32 @@ const PhotoManagementContent = () => {
       if (!response.ok) throw new Error("Failed to fetch photos")
 
       const data = await response.json()
-      setPhotos(
-        data.map((photo: Photo) => ({
-          ...photo,
-          preview: isCloudinaryUrl(photo.nom) ? photo.nom : `/uploads/${photo.nom}`,
-          isCloudinary: isCloudinaryUrl(photo.nom),
+      console.log('Photos récupérées:', data)
+      
+      // S'assurer que toutes les propriétés sont du bon type
+      const processedPhotos = data.map((photo: any) => {
+        // Vérifier si photo.nom est un objet ou une chaîne
+        let nomValue = ''
+        if (typeof photo.nom === 'string') {
+          nomValue = photo.nom
+        } else if (photo.nom && typeof photo.nom === 'object') {
+          // Si c'est un objet, essayer d'extraire une propriété utilisable
+          nomValue = photo.nom.toString() || ''
+          console.warn('photo.nom est un objet:', photo.nom)
+        }
+        
+        return {
+          id: photo.id || 0,
+          annonce_id: id,
+          nom: nomValue,
+          principale: typeof photo.principale === 'boolean' ? (photo.principale ? 1 : 0) : Number(photo.principale) || 0,
+          preview: photo.url || (isCloudinaryUrl(nomValue) ? nomValue : `/uploads/${nomValue}`),
+          isCloudinary: isCloudinaryUrl(nomValue),
           isNew: false, // Photos from database are not new
-        })),
-      )
+        }
+      })
+      
+      setPhotos(processedPhotos)
     } catch (error) {
       console.error("Error fetching photos:", error)
       toast({
@@ -123,12 +142,14 @@ const PhotoManagementContent = () => {
         if (!dbResponse.ok) throw new Error(`Failed to save ${file.name} to database`)
 
         const dbResult = await dbResponse.json()
+        console.log('Database result after saving photo:', dbResult)
 
+        // Utiliser les données retournées par l'API
         return {
           id: dbResult.id,
           annonce_id: Number.parseInt(annonceId),
           nom: cloudinaryResult.secure_url, // Store Cloudinary URL in nom field
-          principale: isPrincipal,
+          principale: dbResult.principale || isPrincipal,
           preview: cloudinaryResult.secure_url,
           isCloudinary: true,
           isNew: false, // Already saved to database
@@ -357,8 +378,8 @@ const PhotoManagementContent = () => {
               </div>
 
               <div className="p-3 bg-white">
-                <p className="text-sm truncate" title={photo.nom}>
-                  {photo.isCloudinary ? "Image Cloudinary" : photo.nom}
+                <p className="text-sm truncate" title={typeof photo.nom === 'string' ? photo.nom : 'Photo'}>
+                  {photo.isCloudinary ? "Image Cloudinary" : (typeof photo.nom === 'string' ? photo.nom : 'Photo')}
                 </p>
                 {photo.isCloudinary && <p className="text-xs text-green-600 mt-1">☁️ Cloudinary</p>}
               </div>

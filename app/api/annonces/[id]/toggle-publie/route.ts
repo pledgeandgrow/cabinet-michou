@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { toggleAnnoncePublie } from "@/lib/db";
+import { toggleListingPublication } from "@/lib/db";
 
 export async function POST(
   request: Request,
@@ -9,7 +9,7 @@ export async function POST(
     const id = params.id;
     
     // Appeler la fonction pour basculer l'état de publication
-    const result = await toggleAnnoncePublie(Number(id));
+    const result = await toggleListingPublication(Number(id));
 
     return NextResponse.json(result);
   } catch (error) {

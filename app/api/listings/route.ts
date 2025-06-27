@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { insertListing, getListings, getListing, updateListing, deleteListing, insertAnnonce } from "@/lib/db"
+import { createListing, getListings, getListing, updateListing, deleteListing } from "@/lib/db"
 
 export async function POST(req: Request) {
 	try {
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 	 
   
 	  try {
-		const result = await insertAnnonce(body)
+		const result = await createListing(body)
 		console.log("Database insert result:", result)
   
 		return NextResponse.json(

@@ -270,16 +270,15 @@ export default function AnnoncesPage() {
               <Card className="overflow-hidden transition-all hover:shadow-lg h-full">
                 <CardHeader className="p-0 relative aspect-[4/3]">
                   {annonce.photos?.[0] ? (
-                    annonce.photos.map((photo: any, key: any) => (
-                      <Image
-                        key={key}
-                        src={photo.url}
-                        alt={annonce.titre}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    ))
+                    // N'afficher que la première photo (principale)
+                    <Image
+                      key={annonce.photos[0].id}
+                      src={annonce.photos[0].url}
+                      alt={annonce.titre}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
                   ) : (
                     <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                       <Building2 className="h-12 w-12 text-gray-400" />
