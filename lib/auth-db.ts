@@ -1,28 +1,42 @@
-import mysql from 'mysql2/promise';
-import { RowDataPacket } from 'mysql2';
+import { createClient } from '@/utils/supabase/server';
+import { cookies } from 'next/headers';
 
-export async function createConnection() {
-  return await mysql.createConnection({
-    host: 'mysql-pledgeandgrow.alwaysdata.net',
-    port: 3306,
-    user: '419773',
-    password: 'Pledgedatamysql2025!',
-    database: 'pledgeandgrow_cabinet-michou'
-  });
+// Fonction pour obtenir le client Supabase
+export function getSupabaseClient() {
+  const cookieStore = cookies();
+  return createClient(cookieStore);
 }
 
-export async function query<T extends RowDataPacket[]>({ 
-  query, 
-  values = [] 
-}: { 
-  query: string; 
-  values?: any[] 
-}): Promise<T> {
-  const connection = await createConnection();
-  try {
-    const [results] = await connection.execute<T>(query, values);
-    return results;
-  } finally {
-    connection.end();
+// Fonction pour récupérer un administrateur par son login
+export async function getAdmin(login: string) {
+  const supabase = getSupabaseClient();
+  
+  const { data, error } = await supabase
+    .from('admin')
+    .select('*')
+    .eq('login', login)
+    .maybeSingle();
+  
+  if (error) {
+    console.error('Error fetching admin:', error);
+    throw error;
   }
+  
+  return data;
+}
+
+// Fonction pour récupérer tous les administrateurs
+export async function getAllAdmins() {
+  const supabase = getSupabaseClient();
+  
+  const { data, error } = await supabase
+    .from('admin')
+    .select('*');
+  
+  if (error) {
+    console.error('Error fetching all admins:', error);
+    throw error;
+  }
+  
+  return data;
 }

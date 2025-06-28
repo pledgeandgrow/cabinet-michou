@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { insertListing, getListings, getListing, updateListing, deleteListing, insertAnnonce } from "@/lib/db"
+import { getListings, getListing, updateListing, deleteListing, insertAnnonce, createListing } from "@/lib/db"
 import { supabase } from "@/lib/supabase"
 
 export async function POST(req: Request) {

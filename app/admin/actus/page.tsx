@@ -98,6 +98,33 @@ export default function NewsManagement() {
     }
   };
   
+  // Fonction pour basculer l'état de publication d'une actualité
+  const handleTogglePublie = async (id: number, currentState: boolean) => {
+    try {
+      const response = await fetch(`/api/actualites/${id}/toggle-publie`, {
+        method: 'POST',
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(errorData.error || 'Failed to toggle publication state');
+        return;
+      }
+      
+      const result = await response.json();
+      
+      // Mettre à jour l'état local
+      setActualites((prevActualites) => 
+        prevActualites.map((item) =>
+          item.id === id ? { ...item, publie: result.publie } : item
+        )
+      );
+    } catch (error) {
+      console.error('Error during toggle publication:', error);
+      alert('Une erreur est survenue lors du changement d\'état de publication');
+    }
+  };
+  
 
   return (
     <div className="max-w-5xl mx-auto py-8">
@@ -164,7 +191,13 @@ export default function NewsManagement() {
                 <TableCell>{item.titre}</TableCell>
                 <TableCell>{item.lien ? "Oui" : "Non"}</TableCell>
                 <TableCell>
-                  <div className={`h-3 w-3 rounded-full ${item.publie ? "bg-green-500" : "bg-red-500"}`} />
+                  <button
+                    onClick={() => handleTogglePublie(item.id, item.publie)}
+                    className="cursor-pointer hover:opacity-80 transition-opacity"
+                    title={item.publie ? "Cliquez pour dépublier" : "Cliquez pour publier"}
+                  >
+                    <div className={`h-3 w-3 rounded-full ${item.publie ? "bg-green-500" : "bg-red-500"}`} />
+                  </button>
                 </TableCell>
               </TableRow>
             ))}

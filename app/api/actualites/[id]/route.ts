@@ -1,23 +1,28 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { deleteActualite, updateActualite } from "@/lib/db"
 
+export const dynamic = 'force-dynamic';
+
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   const id = params.id
 
   try {
-    const { titre, contenu, lien, publie } = await req.json()
+    const data = await req.json()
 
-    if (!id || !titre || !contenu ) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    if (!id) {
+      return NextResponse.json({ error: "ID d'actualité manquant" }, { status: 400 })
     }
 
-    const result = await updateActualite(Number(id), titre, contenu, lien, publie)
+    const result = await updateActualite(Number(id), data)
 
-    if (result.affectedRows === 0) {
-      return NextResponse.json({ error: "No record found to update" }, { status: 404 })
-    }
-
-    return NextResponse.json({ message: "Actualité updated successfully" })
+    // Ajouter des en-têtes pour désactiver la mise en cache
+    const headers = {
+      'Cache-Control': 'no-store, max-age=0, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    };
+    
+    return NextResponse.json({ success: true, data: result }, { headers })
   } catch (error) {
     console.error(error)
     return NextResponse.json({ error: "Erreur lors de la mise à jour de l'actualité" }, { status: 500 })
@@ -37,14 +42,14 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 	try {
 	  const result = await deleteActualite(Number(id));
   
-	  if (result.affectedRows === 0) {
-		return NextResponse.json(
-		  { error: 'No record found to delete' },
-		  { status: 404 }
-		);
-	  }
-  
-	  return NextResponse.json({ message: 'Actualité deleted successfully' });
+	  // Ajouter des en-têtes pour désactiver la mise en cache
+    const headers = {
+      'Cache-Control': 'no-store, max-age=0, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    };
+    
+    return NextResponse.json({ success: true }, { headers });
 	} catch (error) {
 	  console.error(error);
 	  return NextResponse.json(
