@@ -1,9 +1,10 @@
 import { getTypeBiens, getTypeTransactions } from '@/lib/db';
+import { supabase } from '@/lib/supabase';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-	const typetransactions= await getTypeTransactions();
+	const typetransactions= await supabase.from("transaction").select()
 
 	
 

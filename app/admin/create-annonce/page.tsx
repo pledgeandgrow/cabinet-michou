@@ -170,8 +170,8 @@ export default function CreateListingPage() {
           typestransactionsRes.json(),
         ])
 
-        setTypesBien(typesbiensData)
-        setTypesTransactions(typestransactionsData)
+        setTypesBien(typesbiensData.data)
+        setTypesTransactions(typestransactionsData.data)
       } catch (err) {
         console.error(err)
       } finally {
@@ -239,7 +239,6 @@ export default function CreateListingPage() {
         securite: formData.securite,
         historique: formData.historique,
         parking_inclus: formData.parking_inclus,
-        dpe_id: formData.dpe_id ? Number(formData.dpe_id) : null,
         emissions: formData.emissions,
         coup_de_coeur: formData.coup_de_coeur,
         interphone: formData.interphone,

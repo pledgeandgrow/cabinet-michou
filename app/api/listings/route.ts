@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { insertListing, getListings, getListing, updateListing, deleteListing, insertAnnonce } from "@/lib/db"
+import { supabase } from "@/lib/supabase"
 
 export async function POST(req: Request) {
 	try {
@@ -57,7 +58,7 @@ export async function GET(req: Request) {
       return NextResponse.json(listing)
     }
 
-    const listings = await getListings()
+    const listings = await supabase.from("annonces").select()
     return NextResponse.json(listings)
   } catch (error) {
     console.error(error)

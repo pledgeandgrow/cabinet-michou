@@ -7,6 +7,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 
 interface Photo {
   id: string
@@ -85,8 +86,8 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
           const response = await fetch("/api/listings")
           if (!response.ok) throw new Error("Failed to fetch")
           const data = await response.json()
-          setAnnonces(data)
-          setFilteredAnnonces(data)
+          setAnnonces(data.data)
+          setFilteredAnnonces(data.data)
         } catch (error) {
           console.error("Error fetching annonces:", error)
         } finally {
@@ -106,7 +107,8 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
 
   const handleDelete = async (id: string) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cette annonce ?")) {
-      console.log("Delete annonce:", id)
+      await supabase.from("annonces").delete().eq("id",id)
+      window.location.reload()
     }
   }
 
