@@ -3,9 +3,9 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { titre, contenu, lien, publie } = await req.json();
+    const body= await req.json();
     
-    await insertActualite(titre, contenu, lien, publie);
+    await insertActualite(body);
 
     return NextResponse.json({ message: 'Actualité créée avec succès!' }, { status: 200 });
   } catch (error) {
