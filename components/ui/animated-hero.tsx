@@ -86,7 +86,17 @@ export default function AnimatedHero() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center mt-4">
           <Button size="lg" className="gap-2 w-full sm:w-auto" variant="outline">
             <Link href="/annonces" className="flex items-center gap-2 w-full justify-center">
-              Nos annonces <Home className="w-4 h-4" />
+              Toutes nos annonces <Home className="w-4 h-4" />
+            </Link>
+          </Button>
+          <Button size="lg" className="gap-2 w-full sm:w-auto" variant="outline">
+            <Link href="/annonces?transaction=Vente" className="flex items-center gap-2 w-full justify-center">
+              Nos biens à vendre <MoveRight className="w-4 h-4" />
+            </Link>
+          </Button>
+          <Button size="lg" className="gap-2 w-full sm:w-auto" variant="outline">
+            <Link href="/annonces?transaction=Location" className="flex items-center gap-2 w-full justify-center">
+              Nos biens à louer <MoveRight className="w-4 h-4" />
             </Link>
           </Button>
           <Button size="lg" className="gap-2 w-full sm:w-auto">

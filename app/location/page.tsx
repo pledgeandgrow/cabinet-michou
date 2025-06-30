@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "Découvrez toutes nos locations disponibles",
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function LocationPage() {
   const annonces = await getLocationAnnonces();
 

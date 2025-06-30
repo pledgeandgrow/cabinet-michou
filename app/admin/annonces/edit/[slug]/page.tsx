@@ -282,6 +282,16 @@ export default function EditListingPage({ params }: { params: PageParams }) {
 
       const result = await response.json()
       console.log("Update successful:", result)
+      
+      // Afficher un message de confirmation
+      const successMessage = document.createElement("div")
+      successMessage.className = "fixed top-16 right-4 bg-green-500 text-white px-6 py-3 rounded shadow-lg z-50"
+      successMessage.textContent = "Annonce enregistrée avec succès !"
+      document.body.appendChild(successMessage)
+      
+      setTimeout(() => {
+        successMessage.remove()
+      }, 5000)
     } catch (error: any) {
       console.error("Update error:", error)
 
@@ -308,9 +318,9 @@ export default function EditListingPage({ params }: { params: PageParams }) {
     <div className="max-w-5xl mx-auto py-8">
       <div className="mb-8">
         <div className="text-sm text-muted-foreground mb-4">
-          <span className="hover:underline cursor-pointer">Accueil</span>
+          <span className="hover:underline cursor-pointer" onClick={() => router.push("/")}>Accueil</span>
           <span className="mx-2">/</span>
-          <span className="hover:underline cursor-pointer">Gestion des annonces</span>
+          <span className="hover:underline cursor-pointer" onClick={() => router.push("/admin/annonces")}>Gestion des annonces</span>
           <span className="mx-2">/</span>
           <span>Modifier une annonce</span>
         </div>

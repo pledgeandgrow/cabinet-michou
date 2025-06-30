@@ -32,17 +32,16 @@ export async function getAllAnnonces() {
       .from('annonces')
       .select(`
         *,
-        typebien!inner (
+        typebien (
           nom
         ),
-        annonces_photos!inner (
+        annonces_photos (
           id,
           nom,
           principale
         )
       `)
       .eq('publie', 1)
-      .eq('annonces_photos.principale', 1)
       .order('id', { ascending: false });
     
     if (error) {
@@ -54,8 +53,16 @@ export async function getAllAnnonces() {
     
     // Transformer les données pour correspondre à l'ancien format
     return annonces.map((annonce: any) => {
-      // Récupérer le nom de la photo principale
-      const photoNom = annonce.annonces_photos[0]?.nom || '';
+      // Récupérer le nom de la photo principale, en cherchant d'abord une photo marquée comme principale
+      let photoNom = '';
+      
+      if (annonce.annonces_photos && Array.isArray(annonce.annonces_photos) && annonce.annonces_photos.length > 0) {
+        // Chercher d'abord une photo marquée comme principale
+        const photoPrincipale = annonce.annonces_photos.find((photo: any) => photo.principale === true);
+        
+        // Si aucune photo principale n'est trouvée, prendre la première photo disponible
+        photoNom = photoPrincipale ? photoPrincipale.nom : annonce.annonces_photos[0]?.nom || '';
+      }
       
       console.log(`Annonce ${annonce.id} photo: ${photoNom}`);
       

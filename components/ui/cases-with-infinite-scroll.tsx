@@ -100,11 +100,15 @@ export function Case({ items }: CaseProps) {
 
   useEffect(() => {
     const filtered = annonces.filter(annonce => {
-      const matchTransaction = filters.transaction === "all" || annonce.transaction === filters.transaction;
+      const matchTransaction = filters.transaction === "all" || 
+                              annonce.transaction.toLowerCase() === filters.transaction.toLowerCase();
       const matchType = filters.type === "all" || annonce.typeLogement === filters.type;
       return matchTransaction && matchType;
     });
     setFilteredAnnonces(filtered);
+    
+    console.log('Filtres appliqués:', filters);
+    console.log('Nombre d\'annonces filtrées:', filtered.length);
   }, [filters, annonces]);
 
   useEffect(() => {
@@ -129,7 +133,7 @@ export function Case({ items }: CaseProps) {
       setCurrent(api.selectedScrollSnap());
     });
   }, [api]);
-  const numberToWords = (num) => {
+  const numberToWords = (num: number): string => {
     const words = [
       "A", "B", "C", "D", "E", "F", "G", "H"
     ];
@@ -139,6 +143,33 @@ export function Case({ items }: CaseProps) {
   return (
     <section className="py-12 px-4 md:px-12 lg:px-24 mt-10 mx-4 md:mx-0">
       <div className="max-w-6xl mx-auto">
+        <div className="flex justify-center gap-4 mb-8">
+          <Button
+            variant={filters.transaction === "all" ? "default" : "outline"}
+            onClick={() => setFilters({ ...filters, transaction: "all" })}
+          >
+            Tous les biens
+          </Button>
+          {/* Utiliser des boutons simples pour le filtrage local */}
+          <Button
+            variant={filters.transaction === "Vente" ? "default" : "outline"}
+            onClick={() => setFilters({ ...filters, transaction: "Vente" })}
+          >
+            Vente
+          </Button>
+          <Button
+            variant={filters.transaction === "Location" ? "default" : "outline"}
+            onClick={() => setFilters({ ...filters, transaction: "Location" })}
+          >
+            Location
+          </Button>
+          {/* Ajouter un bouton pour voir toutes les annonces */}
+          <Link href="/annonces">
+            <Button variant="outline">
+              Voir toutes les annonces
+            </Button>
+          </Link>
+        </div>
         {isLoading ? (
           <div className="flex gap-4 overflow-x-auto pb-4">
             {[...Array(6)].map((_, i) => (
@@ -197,7 +228,7 @@ export function Case({ items }: CaseProps) {
                     )}
 
                     <CardHeader>
-                      <CardTitle className="line-clamp-1">{annonce.titre}</CardTitle>
+                      <CardTitle className="line-clamp-1">{annonce.reference || "Réf. non disponible"}</CardTitle>
                       <CardDescription className="flex items-center gap-2">
                         <MapPin className="h-4 w-4" />
                         {annonce.ville} ({annonce.code_postal})
@@ -237,7 +268,7 @@ export function Case({ items }: CaseProps) {
                               className={cn(DPE_COLORS[annonce.dpe_conso])}
                             >
                               <Thermometer className="h-4 w-4 mr-1" />
-                              DPE {numberToWords(annonce.dpe_conso)}
+                              DPE {numberToWords(parseInt(annonce.dpe_conso) || 0)}
                             </Badge>
                           )}
                           {annonce.dpe_emission !== 'N/C' && (
@@ -246,7 +277,7 @@ export function Case({ items }: CaseProps) {
                               className={cn(DPE_COLORS[annonce.dpe_emission])}
                             >
                               <Leaf className="h-4 w-4 mr-1" />
-                              GES {numberToWords(annonce.dpe_emission)}
+                              GES {numberToWords(parseInt(annonce.dpe_emission) || 0)}
                             </Badge>
                           )}
                         </div>

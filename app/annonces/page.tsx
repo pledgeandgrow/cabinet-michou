@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,6 +15,7 @@ import { cn } from "@/lib/utils";
 type Annonce = {
   id: number;
   titre: string;
+  reference: string;
   prix: number;
   surface: number;
   nb_pieces: number;
@@ -55,8 +57,14 @@ export default function AnnoncesPage() {
     nbPieces: "all",
   });
 
+  // Référence pour savoir si c'est le premier rendu
+  const isFirstRender = React.useRef(true);
+  
+  // Effet pour initialiser les filtres à partir de l'URL au chargement initial
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
+    console.log('Paramètres URL au chargement:', Object.fromEntries(searchParams.entries()));
+    
     const urlFilters = {
       transaction: searchParams.get('transaction') || 'all',
       type: searchParams.get('type') || 'all',
@@ -66,10 +74,41 @@ export default function AnnoncesPage() {
       maxSurface: searchParams.get('maxSurface') || '',
       nbPieces: searchParams.get('nbPieces') || 'all',
     };
+    
+    console.log('Initialisation des filtres avec:', urlFilters);
     setFilters(urlFilters);
+    
+    // Ajouter un écouteur d'événements pour les changements d'URL
+    const handleUrlChange = () => {
+      const newSearchParams = new URLSearchParams(window.location.search);
+      const newUrlFilters = {
+        transaction: newSearchParams.get('transaction') || 'all',
+        type: newSearchParams.get('type') || 'all',
+        minPrix: newSearchParams.get('minPrix') || '',
+        maxPrix: newSearchParams.get('maxPrix') || '',
+        minSurface: newSearchParams.get('minSurface') || '',
+        maxSurface: newSearchParams.get('maxSurface') || '',
+        nbPieces: newSearchParams.get('nbPieces') || 'all',
+      };
+      console.log('Changement d\'URL détecté, nouveaux filtres:', newUrlFilters);
+      setFilters(newUrlFilters);
+    };
+
+    window.addEventListener('popstate', handleUrlChange);
+    
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange);
+    };
   }, []);
 
+  // Effet pour mettre à jour l'URL lorsque les filtres changent (mais pas au premier rendu)
   useEffect(() => {
+    // Ne pas mettre à jour l'URL lors du premier rendu
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    
     const searchParams = new URLSearchParams();
     if (filters.transaction !== 'all') searchParams.set('transaction', filters.transaction);
     if (filters.type !== 'all') searchParams.set('type', filters.type);
@@ -80,6 +119,7 @@ export default function AnnoncesPage() {
     if (filters.nbPieces !== 'all') searchParams.set('nbPieces', filters.nbPieces);
 
     const newUrl = `${window.location.pathname}${searchParams.toString() ? '?' + searchParams.toString() : ''}`;
+    console.log('Mise à jour de l\'URL avec les filtres:', filters);
     window.history.pushState({}, '', newUrl);
   }, [filters]);
 
@@ -90,7 +130,27 @@ export default function AnnoncesPage() {
         if (!response.ok) throw new Error('Failed to fetch');
         const data = await response.json();
         setAnnonces(data);
-        setFilteredAnnonces(data);
+        
+        console.log('Filtres actuels:', filters);
+        console.log('Nombre d\'annonces récupérées:', data.length);
+        
+        // Appliquer les filtres immédiatement
+        const filtered = data.filter((annonce: any) => {
+          // Rendre la comparaison insensible à la casse
+          const matchTransaction = filters.transaction === "all" || 
+                                  annonce.transaction.toLowerCase() === filters.transaction.toLowerCase();
+          
+          const matchType = filters.type === "all" || annonce.typeLogement === filters.type;
+          const matchPrix = (!filters.minPrix || annonce.prix >= Number(filters.minPrix)) &&
+                         (!filters.maxPrix || annonce.prix <= Number(filters.maxPrix));
+          const matchSurface = (!filters.minSurface || annonce.surface >= Number(filters.minSurface)) &&
+                            (!filters.maxSurface || annonce.surface <= Number(filters.maxSurface));
+          const matchPieces = filters.nbPieces === "all" || annonce.nb_pieces === Number(filters.nbPieces);
+          
+          return matchTransaction && matchType && matchPrix && matchSurface && matchPieces;
+        });
+        
+        setFilteredAnnonces(filtered);
       } catch (error) {
         console.error('Error fetching annonces:', error);
       } finally {
@@ -99,22 +159,9 @@ export default function AnnoncesPage() {
     };
 
     fetchAnnonces();
-  }, []);
+  }, [filters]);
 
-  useEffect(() => {
-    const filtered = annonces.filter(annonce => {
-      const matchTransaction = filters.transaction === "all" || annonce.transaction === filters.transaction;
-      const matchType = filters.type === "all" || annonce.typeLogement === filters.type;
-      const matchPrix = (!filters.minPrix || annonce.prix >= Number(filters.minPrix)) &&
-                       (!filters.maxPrix || annonce.prix <= Number(filters.maxPrix));
-      const matchSurface = (!filters.minSurface || annonce.surface >= Number(filters.minSurface)) &&
-                          (!filters.maxSurface || annonce.surface <= Number(filters.maxSurface));
-      const matchPieces = filters.nbPieces === "all" || annonce.nb_pieces === Number(filters.nbPieces);
-      
-      return matchTransaction && matchType && matchPrix && matchSurface && matchPieces;
-    });
-    setFilteredAnnonces(filtered);
-  }, [filters, annonces]);
+  // L'effet de filtrage est maintenant intégré dans fetchAnnonces
 
   const uniqueTypes = [...new Set(annonces.map(a => a.typeLogement))];
   const uniqueTransactions = [...new Set(annonces.map(a => a.transaction))];
@@ -317,7 +364,7 @@ export default function AnnoncesPage() {
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <CardTitle className="text-lg mb-1">{annonce.titre}</CardTitle>
+                      <CardTitle className="text-lg mb-1">{annonce.reference || "Réf. non disponible"}</CardTitle>
                       <CardDescription className="flex items-center gap-1">
                         <MapPin className="h-4 w-4" />
                         {annonce.ville} ({annonce.code_postal})

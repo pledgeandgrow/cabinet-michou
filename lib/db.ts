@@ -1,9 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as os from 'os';
-import { Client } from 'basic-ftp';
 
 export function getSupabaseClient() {
   const cookieStore = cookies();
@@ -433,15 +429,7 @@ export async function createListing(data: any) {
       throw error;
     }
     
-    // Générer et envoyer le CSV si l'annonce est publiée
-    if (data.publie && result && result.length > 0) {
-      try {
-        await createAndUploadAnnonceCSV(result[0].id);
-      } catch (csvError) {
-        console.error(`Error creating CSV for annonce ${result[0].id}:`, csvError);
-        // Ne pas faire échouer la création de l'annonce si le CSV échoue
-      }
-    }
+    // Suppression de la génération et de l'envoi CSV via FTP
     
     return result;
   } catch (error) {
@@ -488,17 +476,6 @@ export async function updateListing(id: number, data: any) {
     if (error) {
       console.error(`Error updating listing ${id}:`, error);
       throw error;
-    }
-    
-    // Générer et envoyer le CSV si l'annonce est publiée et n'était pas publiée avant
-    // ou si elle était déjà publiée et reste publiée (mise à jour)
-    if (data.publie && result && result.length > 0) {
-      try {
-        await createAndUploadAnnonceCSV(id);
-      } catch (csvError) {
-        console.error(`Error creating CSV for annonce ${id}:`, csvError);
-        // Ne pas faire échouer la mise à jour de l'annonce si le CSV échoue
-      }
     }
     
     return result;
@@ -573,15 +550,7 @@ export async function toggleListingPublication(id: number) {
       throw updateError;
     }
     
-    // Si l'annonce est maintenant publiée, générer et envoyer le CSV
-    if (newPublieState) {
-      try {
-        await createAndUploadAnnonceCSV(id);
-      } catch (csvError) {
-        console.error(`Error creating CSV for annonce ${id}:`, csvError);
-        // Ne pas faire échouer la mise à jour de l'annonce si le CSV échoue
-      }
-    }
+    // Suppression de la génération et de l'envoi CSV via FTP
     
     return result;
   } catch (error) {
@@ -590,109 +559,5 @@ export async function toggleListingPublication(id: number) {
   }
 }
 
-// Fonction pour générer et envoyer un fichier CSV pour une annonce
-export async function createAndUploadAnnonceCSV(annonceId: number) {
-  const supabase = getSupabaseClient();
-  
-  try {
-    // Récupérer les détails de l'annonce
-    const { data: annonce, error } = await supabase
-      .from('annonces')
-      .select(`
-        *,
-        typebien (id, nom),
-        transaction (id, nom),
-        chauffage (id, nom),
-        cuisine (id, nom),
-        bilan_conso (id, nom),
-        bilan_emission (id, nom),
-        honoraires (id, nom),
-        charges (id, nom),
-        sous_typebien (id, nom),
-        annonces_photos (id, nom, principale)
-      `)
-      .eq('id', annonceId)
-      .single();
-    
-    if (error) {
-      console.error(`Error fetching annonce ${annonceId} for CSV:`, error);
-      throw error;
-    }
-    
-    if (!annonce) {
-      throw new Error(`Annonce ${annonceId} not found`);
-    }
-    
-    // Trouver la photo principale
-    const photosPrincipales = annonce.annonces_photos.filter((p: any) => p.principale);
-    const photoPrincipale = photosPrincipales.length > 0 ? photosPrincipales[0].nom : 
-                          annonce.annonces_photos.length > 0 ? annonce.annonces_photos[0].nom : null;
-    
-    // Utiliser directement l'URL Cloudinary pour la photo principale
-    const photoUrl = photoPrincipale || '';
-    
-    // Générer le contenu CSV
-    const csvHeader = 'reference;type_bien;type_transaction;ville;code_postal;adresse;prix;surface;nb_pieces;nb_chambres;description;photo_url\n';
-    const csvLine = [
-      annonce.id,
-      annonce.typebien?.nom || '',
-      annonce.transaction?.nom || '',
-      annonce.ville || '',
-      annonce.code_postal || '',
-      annonce.adresse || '',
-      annonce.prix_avec_honoraires || annonce.prix || 0,
-      annonce.surface || 0,
-      annonce.nb_pieces || 0,
-      annonce.nb_chambres || 0,
-      annonce.description?.replace(/[\n\r;]/g, ' ') || '',
-      photoUrl
-    ].join(';');
-    
-    const csvContent = csvHeader + csvLine;
-    
-    // Créer un fichier temporaire
-    const tempDir = os.tmpdir();
-    const tempFilePath = path.join(tempDir, `annonce_${annonceId}.csv`);
-    
-    fs.writeFileSync(tempFilePath, csvContent);
-    
-    // Envoyer le fichier via FTP
-    const client = new Client();
-    client.ftp.verbose = true;
-    
-    try {
-      await client.access({
-        host: process.env.FTP_HOST || 'transferts.seloger.com',
-        port: parseInt(process.env.FTP_PORT || '990'),
-        user: process.env.FTP_USER || 'PLEDGEANDGROW',
-        password: process.env.FTP_PASSWORD || '1YL60thR',
-        secure: process.env.FTP_SECURE === 'true',
-        secureOptions: { rejectUnauthorized: false } // Pour ignorer les problèmes de certificat
-      });
-      
-      console.log('FTP connection established');
-      
-      // Envoyer le fichier
-      await client.uploadFrom(tempFilePath, `annonce_${annonceId}.csv`);
-      
-      console.log(`CSV file for annonce ${annonceId} uploaded successfully`);
-    } catch (ftpError) {
-      console.error('FTP error:', ftpError);
-      throw ftpError;
-    } finally {
-      client.close();
-      
-      // Supprimer le fichier temporaire
-      try {
-        fs.unlinkSync(tempFilePath);
-      } catch (unlinkError) {
-        console.error(`Error deleting temp file ${tempFilePath}:`, unlinkError);
-      }
-    }
-    
-    return { success: true };
-  } catch (error) {
-    console.error(`Error in createAndUploadAnnonceCSV(${annonceId}):`, error);
-    throw error;
-  }
-}
+// Fonction pour générer un fichier CSV pour une annonce - supprimée car non utilisée
+// La fonctionnalité FTP a été supprimée pour améliorer les performances

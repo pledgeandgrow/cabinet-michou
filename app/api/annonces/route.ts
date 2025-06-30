@@ -1,14 +1,17 @@
 import { NextResponse } from 'next/server';
-import { getListings } from '@/lib/db';
+import { getAllAnnonces } from '@/lib/queries';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    const annonces = await getListings();
+    const annonces = await getAllAnnonces();
+    
+    // Filtrer pour ne garder que les annonces publiées
+    const annoncesPubliees = annonces.filter((annonce: any) => annonce.publie === true);
 
     // Formatér les données
-    const formattedAnnonces = annonces.map((annonce: any) => {
+    const formattedAnnonces = annoncesPubliees.map((annonce: any) => {
       // Toutes les photos sont des URLs Cloudinary
       console.log(`API: Annonce ${annonce.id} photo: ${annonce.photo}`);
       

@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server"
-import { createListing, getListings, getListing, updateListing, deleteListing } from "@/lib/db"
+import { createListing, getListings, getListing, deleteListing } from "@/lib/db"
+import { updateListingFixed } from "@/lib/listing-utils"
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
 	try {
 	  const body = await req.json()
 	  console.log("API received body:", body)
-  
+
 	  // Validate required fields
 	 
   

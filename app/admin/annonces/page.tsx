@@ -131,6 +131,19 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
   // Fonction pour basculer l'état de publication d'une annonce
   const togglePublie = async (id: string) => {
     try {
+      // Mettre à jour l'état local immédiatement pour une réactivité instantanée
+      const currentAnnonces = [...annonces];
+      const annonceIndex = currentAnnonces.findIndex(a => a.id === id);
+      
+      if (annonceIndex !== -1) {
+        // Inverser l'état de publication dans l'interface avant la réponse du serveur
+        const newPublieState = !currentAnnonces[annonceIndex].publie;
+        currentAnnonces[annonceIndex] = { ...currentAnnonces[annonceIndex], publie: newPublieState };
+        setAnnonces(currentAnnonces);
+        setFilteredAnnonces(currentAnnonces);
+      }
+      
+      // Envoyer la requête au serveur
       const response = await fetch(`/api/annonces/${id}/toggle-publie`, {
         method: "POST",
       });
@@ -141,19 +154,35 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
 
       const result = await response.json();
       
-      // Mettre à jour l'état local des annonces
+      // Mettre à jour l'état local avec la réponse du serveur pour s'assurer de la cohérence
       const updatedAnnonces = annonces.map(annonce => {
         if (annonce.id === id) {
-          return { ...annonce, publie: result.publie };
+          // Utiliser la valeur retournée par le serveur
+          return { ...annonce, publie: result[0].publie };
         }
         return annonce;
       });
       
-      setAnnonces(updatedAnnonces as any);
-      setFilteredAnnonces(updatedAnnonces as any);
+      setAnnonces(updatedAnnonces);
+      setFilteredAnnonces(updatedAnnonces);
     } catch (error) {
       console.error("Erreur lors de la mise à jour du statut:", error);
       alert("Une erreur est survenue lors de la mise à jour du statut de publication");
+      
+      // En cas d'erreur, récupérer les données à jour depuis le serveur
+      const fetchAnnonces = async () => {
+        try {
+          const response = await fetch("/api/listings");
+          if (!response.ok) throw new Error("Failed to fetch");
+          const data = await response.json();
+          setAnnonces(data);
+          setFilteredAnnonces(data);
+        } catch (fetchError) {
+          console.error("Error fetching annonces:", fetchError);
+        }
+      };
+      
+      fetchAnnonces();
     }
   }
 

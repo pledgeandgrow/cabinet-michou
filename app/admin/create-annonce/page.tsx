@@ -280,9 +280,18 @@ export default function CreateListingPage() {
 
       const data = await response.json()
       console.log("Response data:", data)
-
-      alert("Annonce created successfully!")
-      router.push("/annonces")
+      
+      // Afficher un message de confirmation élégant
+      const successMessage = document.createElement("div")
+      successMessage.className = "fixed top-16 right-4 bg-green-500 text-white px-6 py-3 rounded shadow-lg z-50"
+      successMessage.textContent = "Annonce créée avec succès !"
+      document.body.appendChild(successMessage)
+      
+      // Rediriger après un court délai
+      setTimeout(() => {
+        successMessage.remove()
+        router.push("/annonces")
+      }, 2000)
     } catch (error: any) {
       console.error("Submission error:", {
         name: error.name,
@@ -303,9 +312,9 @@ export default function CreateListingPage() {
     <div className="max-w-5xl mx-auto py-8">
       <div className="mb-8">
         <div className="text-sm text-muted-foreground mb-4">
-          <span className="hover:underline cursor-pointer">Accueil</span>
+          <span className="hover:underline cursor-pointer" onClick={() => router.push("/")}>Accueil</span>
           <span className="mx-2">/</span>
-          <span className="hover:underline cursor-pointer">Gestion des annonces</span>
+          <span className="hover:underline cursor-pointer" onClick={() => router.push("/admin/annonces")}>Gestion des annonces</span>
           <span className="mx-2">/</span>
           <span>Créer une annonce</span>
         </div>
