@@ -4,16 +4,25 @@ import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { existsSync } from "fs";
 
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads", "annonces");
+// Utiliser un répertoire temporaire compatible avec Vercel
+const UPLOAD_DIR = process.env.NODE_ENV === 'production' 
+  ? path.join(process.env.TEMP || process.env.TMP || '/tmp', 'uploads', 'annonces')
+  : path.join(process.cwd(), "public", "uploads", "annonces");
 
 export const dynamic = 'force-dynamic';
 
 async function ensureUploadDir(annonceId: string) {
   const annonceDir = path.join(UPLOAD_DIR, annonceId);
-  if (!existsSync(annonceDir)) {
+  
+  try {
     await mkdir(annonceDir, { recursive: true });
+    return annonceDir;
+  } catch (error) {
+    console.error("Erreur lors de la création du répertoire:", error);
+    // En cas d'échec, retourner quand même le chemin pour que le code continue
+    // Les opérations d'écriture échoueront mais le code de Cloudinary fonctionnera
+    return annonceDir;
   }
-  return annonceDir;
 }
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
@@ -82,17 +91,24 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       const fileInfo = fileInfos[i];
       let filename = fileInfo.name;
 
-      // Si c'est un téléchargement traditionnel (pas d'URL Cloudinary), enregistrer le fichier localement
-      if (!fileInfo.cloudinary_url) {
-        const timestamp = Date.now();
-        const uniqueFilename = `${timestamp}-${fileInfo.name}`;
-
-        const buffer = Buffer.from(await file.arrayBuffer());
-        await writeFile(path.join(annonceDir, uniqueFilename), buffer);
-        filename = uniqueFilename;
+      // En production ou si une URL Cloudinary est fournie, utiliser Cloudinary
+      if (process.env.NODE_ENV === 'production' || fileInfo.cloudinary_url) {
+        // Utiliser l'URL Cloudinary comme nom de fichier si disponible
+        filename = fileInfo.cloudinary_url || fileInfo.name;
       } else {
-        // Utiliser l'URL Cloudinary comme nom de fichier
-        filename = fileInfo.cloudinary_url;
+        // En développement, enregistrer le fichier localement
+        try {
+          const timestamp = Date.now();
+          const uniqueFilename = `${timestamp}-${fileInfo.name}`;
+
+          const buffer = Buffer.from(await file.arrayBuffer());
+          await writeFile(path.join(annonceDir, uniqueFilename), buffer);
+          filename = uniqueFilename;
+        } catch (error) {
+          console.error("Erreur lors de l'écriture du fichier:", error);
+          // En cas d'échec, utiliser simplement le nom du fichier
+          filename = fileInfo.name;
+        }
       }
 
       // Ajouter la photo à la base de données
