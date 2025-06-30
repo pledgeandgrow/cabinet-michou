@@ -182,28 +182,61 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
               <CardTitle className="text-xs md:text-lg">Caractéristiques</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-1 px-2 pb-2 text-xs md:text-sm md:gap-3 md:px-4 md:pb-4">
+              {/* Pièces */}
               <div className="flex items-center gap-1 md:gap-2">
                 <Home className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-gray-500" />
                 <span className="truncate">
-                  {annonce.pieces} pièce{annonce.pieces !== 1 ? "s" : ""}
+                  {(annonce.pieces || annonce.nb_pieces)} pièce{(annonce.pieces || annonce.nb_pieces) !== 1 ? "s" : ""}
                 </span>
               </div>
-              {annonce.chambres && (
+              
+              {/* Chambres */}
+              {(annonce.chambres || annonce.nb_chambres) && (
                 <div className="flex items-center gap-1 md:gap-2">
                   <BedDouble className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-gray-500" />
-                  <span className="truncate">{annonce.chambres} chambre{annonce.chambres !== 1 ? "s" : ""}</span>
+                  <span className="truncate">
+                    {(annonce.chambres || annonce.nb_chambres)} chambre{(annonce.chambres || annonce.nb_chambres) !== 1 ? "s" : ""}
+                  </span>
                 </div>
               )}
-              {annonce.etage !== null && (
+              
+              {/* Salles de bain */}
+              {(annonce.sdb || annonce.nb_sdb) && (
+                <div className="flex items-center gap-1 md:gap-2">
+                  <Bath className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-gray-500" />
+                  <span className="truncate">
+                    {(annonce.sdb || annonce.nb_sdb)} salle{(annonce.sdb || annonce.nb_sdb) !== 1 ? "s" : ""} de bain
+                  </span>
+                </div>
+              )}
+              
+              {/* WC */}
+              {(annonce.wc || annonce.nb_wc) && (
+                <div className="flex items-center gap-1 md:gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-gray-500">
+                    <path d="M8 10h8"></path>
+                    <path d="M8 14h8"></path>
+                    <path d="M11 3h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path>
+                  </svg>
+                  <span className="truncate">
+                    {(annonce.wc || annonce.nb_wc)} WC
+                  </span>
+                </div>
+              )}
+              
+              {/* Étage */}
+              {annonce.etage !== null && annonce.etage !== undefined && (
                 <div className="flex items-center gap-1 md:gap-2">
                   <Building2 className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-gray-500" />
                   <span className="truncate">
                     {annonce.etage}
                     {annonce.nb_etages ? `/${annonce.nb_etages}` : ""}
-                    {annonce.ascenseur ? " (asc.)" : ""}
+                    {(annonce.ascenseur === "Oui" || annonce.ascenseur === 1 || annonce.ascenseur === true) ? " (asc.)" : ""}
                   </span>
                 </div>
               )}
+              
+              {/* Date disponibilité */}
               {isLocation && annonce.date_dispo && (
                 <div className="flex items-center gap-1 md:gap-2">
                   <Calendar className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-gray-500" />
@@ -212,6 +245,118 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
                   </span>
                 </div>
               )}
+            </CardContent>
+          </Card>
+          
+          {/* Équipements et options */}
+          <Card className="shadow-sm">
+            <CardHeader className="pb-1 px-2 pt-2 md:pb-2 md:px-4 md:pt-4">
+              <CardTitle className="text-xs md:text-lg">Équipements et options</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 gap-1 px-2 pb-2 text-xs md:text-sm md:gap-3 md:px-4 md:pb-4">
+              {/* Affichage des équipements disponibles */}
+              {(() => {
+                // Ajouter un log pour déboguer les valeurs des équipements
+                console.log("Valeurs des équipements:", {
+                  balcon: annonce.balcon,
+                  terrasse: annonce.terrasse,
+                  jardin: annonce.jardin,
+                  parking: annonce.parking,
+                  ascenseur: annonce.ascenseur,
+                  cave: annonce.cave,
+                  meuble: annonce.meuble,
+                });
+                
+                // Fonction améliorée pour vérifier si une caractéristique est présente
+                const isFeaturePresent = (value: any) => {
+                  if (value === undefined || value === null) return false;
+                  if (typeof value === "string") {
+                    return value.toLowerCase() === "oui" || value === "1" || value.toLowerCase() === "true";
+                  }
+                  if (typeof value === "number") return value === 1;
+                  if (typeof value === "boolean") return value === true;
+                  return false;
+                };
+                
+                // Liste des caractéristiques avec leur nom d'affichage et icône
+                const features = [
+                  { key: "balcon", label: "Balcon", icon: (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-gray-500">
+                      <rect x="4" y="4" width="16" height="16" rx="2"/>
+                      <path d="M4 12h16"/>
+                      <path d="M12 4v16"/>
+                    </svg>
+                  ) },
+                  { key: "terrasse", label: "Terrasse", icon: (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-gray-500">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/>
+                      <path d="M3 9h18"/>
+                    </svg>
+                  ) },
+                  { key: "jardin", label: "Jardin", icon: (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-gray-500">
+                      <path d="M12 22a9 9 0 0 0 9-9"/>
+                      <path d="M3 13a9 9 0 0 1 9-9"/>
+                      <path d="M18 3a6 6 0 0 0-9 9 6 6 0 0 0-9 9"/>
+                      <circle cx="12" cy="12" r="1"/>
+                    </svg>
+                  ) },
+                  { key: "parking", label: "Parking", icon: (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-gray-500">
+                      <rect x="3" y="5" width="18" height="14" rx="2"/>
+                      <path d="M10 9h4"/>
+                      <path d="M12 9v6"/>
+                    </svg>
+                  ) },
+                  { key: "ascenseur", label: "Ascenseur", icon: (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-gray-500">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/>
+                      <path d="M8 12h8"/>
+                      <path d="M12 8l4 4"/>
+                      <path d="M12 16l-4-4"/>
+                    </svg>
+                  ) },
+                  { key: "cave", label: "Cave", icon: (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-gray-500">
+                      <path d="M2 22v-5l5-5 5 5 5-5 5 5v5"/>
+                      <path d="M7 17v5"/>
+                      <path d="M17 17v5"/>
+                      <path d="M2 12V7l5-5 5 5 5-5 5 5v5"/>
+                    </svg>
+                  ) },
+                  { key: "meuble", label: "Meublé", icon: (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0 text-gray-500">
+                      <rect x="3" y="10" width="18" height="12" rx="2"/>
+                      <path d="M5 10V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/>
+                    </svg>
+                  ) },
+                ];
+                
+                // Créer un tableau des équipements présents manuellement pour déboguer
+                const manualFeatures = [];
+                
+                // Vérifier chaque équipement individuellement
+                if (isFeaturePresent(annonce.balcon)) manualFeatures.push(features.find(f => f.key === "balcon")!);
+                if (isFeaturePresent(annonce.terrasse)) manualFeatures.push(features.find(f => f.key === "terrasse")!);
+                if (isFeaturePresent(annonce.jardin)) manualFeatures.push(features.find(f => f.key === "jardin")!);
+                if (isFeaturePresent(annonce.parking)) manualFeatures.push(features.find(f => f.key === "parking")!);
+                if (isFeaturePresent(annonce.ascenseur)) manualFeatures.push(features.find(f => f.key === "ascenseur")!);
+                if (isFeaturePresent(annonce.cave)) manualFeatures.push(features.find(f => f.key === "cave")!);
+                if (isFeaturePresent(annonce.meuble)) manualFeatures.push(features.find(f => f.key === "meuble")!);
+                
+                console.log("Équipements détectés:", manualFeatures.map(f => f.label));
+                
+                return manualFeatures.length > 0 ? (
+                  manualFeatures.map((feature, index) => (
+                    <div key={index} className="flex items-center gap-1 md:gap-2">
+                      {feature.icon}
+                      <span className="truncate">{feature.label}</span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="col-span-2 text-muted-foreground">Aucun équipement spécifique mentionné</div>
+                );
+              })()}
             </CardContent>
           </Card>
 

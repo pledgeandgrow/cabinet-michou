@@ -11,47 +11,53 @@ import { useRouter } from "next/navigation"
 import { format } from "date-fns"
 
 interface FormData {
-  reference: string
-  surface: string
-  transaction_id: string
-  typebien_id: string
-  sous_typebien_id: string
-  date_dispo: string
-  adresse: string
-  quartier: string
-  ville: string
-  cp: string // code postal
-  prix_hors_honoraires: string
-  prix_avec_honoraires: string
-  prix_hors_charges: string
-  charges: string
-  charges_details: string
-  prix_m2: string
-  publie: string | boolean
-  honoraires_id: string
-  honoraires_acheteur: string
-  honoraires_locataire: string
-  etat_des_lieux: string
-  depot_garantie: string
-  copro: boolean
-  lots: string
-  quote_part: string
-  procedure_syndic: boolean
-  detail_procedure: string
-  nb_pieces: string
-  nb_chambres: string
-  nb_sdb: string
-  nb_wc: string
-  etage: string
-  ascenseur: string
-  balcon: string
-  terrasse: string
-  jardin: string
-  cave: string
-  parking: string
-  meuble: string
-  titre: string
-  description: string
+  id?: string;
+  reference: string;
+  transaction_id: string;
+  typebien_id: string;
+  sous_typebien_id: string;
+  nom: string;
+  description: string;
+  date_dispo: string;
+  prix_hors_honoraires: string;
+  prix_avec_honoraires: string;
+  prix_hors_charges: string;
+  charges: string;
+  charges_details: string;
+  prix_m2: string;
+  honoraires_id: string;
+  honoraires_acheteur: string;
+  honoraires_locataire: string;
+  etat_des_lieux: string;
+  depot_garantie: string;
+  copro: boolean;
+  lots: string;
+  quote_part: string;
+  procedure_syndic: boolean;
+  detail_procedure: string;
+  pieces: string;
+  chambres: string;
+  sdb: string;
+  wc: string;
+  etage: string;
+  ascenseur: string;
+  balcon: string;
+  terrasse: string;
+  jardin: string;
+  cave: string;
+  parking: string;
+  meuble: string;
+  titre: string;
+  surface: string;
+  adresse: string;
+  quartier: string;
+  cp: string;
+  ville: string;
+  pays: string;
+  publie: string | boolean;
+  photos?: any[];
+  bilan_conso_id?: string;
+  bilan_emission_id?: string;
 }
 
 interface PageParams {
@@ -92,10 +98,10 @@ export default function EditListingPage({ params }: { params: PageParams }) {
     quote_part: "",
     procedure_syndic: false,
     detail_procedure: "",
-    nb_pieces: "",
-    nb_chambres: "",
-    nb_sdb: "",
-    nb_wc: "",
+    pieces: "",
+    chambres: "",
+    sdb: "",
+    wc: "",
     etage: "",
     ascenseur: "Non",
     balcon: "Non",
@@ -105,7 +111,11 @@ export default function EditListingPage({ params }: { params: PageParams }) {
     parking: "Non",
     meuble: "Non",
     titre: "",
-    description: ""
+    description: "",
+    nom: "",
+    pays: "France",
+    bilan_conso_id: "none",
+    bilan_emission_id: "none",
   })
 
   const router = useRouter()
@@ -146,7 +156,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
           transaction_id: annonceData.transaction_id?.toString() || "",
           typebien_id: annonceData.typebien_id?.toString() || "",
           sous_typebien_id: annonceData.sous_typebien_id?.toString() || "",
-          date_dispo: annonceData.date_dispo || format(new Date(), "yyyy-MM-dd"),
+          date_dispo: annonceData.date_dispo ? format(new Date(annonceData.date_dispo), "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"),
           adresse: annonceData.adresse || "",
           quartier: annonceData.quartier || "",
           ville: annonceData.ville || "",
@@ -159,28 +169,34 @@ export default function EditListingPage({ params }: { params: PageParams }) {
           prix_m2: annonceData.prix_m2?.toString() || "",
           honoraires_id: annonceData.honoraires_id?.toString() || "1",
           honoraires_acheteur: annonceData.honoraires_acheteur?.toString() || "",
-          honoraires_locataire: annonceData.honoraires_locataire || "",
+          honoraires_locataire: annonceData.honoraires_locataire?.toString() || "",
           etat_des_lieux: annonceData.etat_des_lieux || "",
-          depot_garantie: annonceData.depot_garantie || "",
+          depot_garantie: annonceData.depot_garantie?.toString() || "",
           copro: annonceData.copro || false,
           lots: annonceData.lots?.toString() || "",
           quote_part: annonceData.quote_part?.toString() || "",
-          nb_pieces: annonceData.nb_pieces?.toString() || "",
-          nb_chambres: annonceData.nb_chambres?.toString() || "",
-          nb_sdb: annonceData.nb_sdb?.toString() || "",
-          nb_wc: annonceData.nb_wc?.toString() || "",
-          etage: annonceData.etage?.toString() || "",
-          ascenseur: annonceData.ascenseur || "Non",
-          balcon: annonceData.balcon || "Non",
-          terrasse: annonceData.terrasse || "Non",
-          jardin: annonceData.jardin || "Non",
-          cave: annonceData.cave || "Non",
-          parking: annonceData.parking || "Non",
-          meuble: annonceData.meuble || "Non",
-          titre: annonceData.titre || "",
-          description: annonceData.description || "",
           procedure_syndic: annonceData.procedure_syndic || false,
           detail_procedure: annonceData.detail_procedure || "",
+          pieces: annonceData.pieces?.toString() || "",
+          chambres: annonceData.chambres?.toString() || "",
+          sdb: annonceData.sdb?.toString() || "",
+          wc: annonceData.wc?.toString() || "",
+          etage: annonceData.etage?.toString() || "",
+          ascenseur: annonceData.ascenseur?.toString() || "Non",
+          balcon: annonceData.balcon?.toString() || "Non",
+          terrasse: annonceData.terrasse?.toString() || "Non",
+          jardin: annonceData.jardin?.toString() || "Non",
+          cave: annonceData.cave?.toString() || "Non",
+          parking: annonceData.parking?.toString() || "Non",
+          meuble: annonceData.meuble?.toString() || "Non",
+          titre: annonceData.titre || "",
+          description: annonceData.description || "",
+          nom: annonceData.nom || "",
+          pays: annonceData.pays || "France",
+          id: annonceData.id?.toString(),
+          photos: annonceData.photos || [],
+          bilan_conso_id: annonceData.bilan_conso_id || "none",
+          bilan_emission_id: annonceData.bilan_emission_id || "none",
         })
       } catch (err) {
         console.error("Error fetching data:", err)
@@ -235,10 +251,10 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         quote_part: formData.quote_part ? Number(formData.quote_part) : null,
         procedure_syndic: formData.procedure_syndic,
         detail_procedure: formData.detail_procedure,
-        nb_pieces: formData.nb_pieces ? Number(formData.nb_pieces) : null,
-        nb_chambres: formData.nb_chambres ? Number(formData.nb_chambres) : null,
-        nb_sdb: formData.nb_sdb ? Number(formData.nb_sdb) : null,
-        nb_wc: formData.nb_wc ? Number(formData.nb_wc) : null,
+        pieces: formData.pieces ? Number(formData.pieces) : null,
+        chambres: formData.chambres ? Number(formData.chambres) : null,
+        sdb: formData.sdb ? Number(formData.sdb) : null,
+        wc: formData.wc ? Number(formData.wc) : null,
         etage: formData.etage ? Number(formData.etage) : null,
         ascenseur: formData.ascenseur,
         balcon: formData.balcon,
@@ -249,6 +265,8 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         meuble: formData.meuble,
         titre: formData.titre,
         description: formData.description,
+        bilan_conso_id: formData.bilan_conso_id || null,
+        bilan_emission_id: formData.bilan_emission_id || null,
       }
 
       // Validate required fields
@@ -526,42 +544,42 @@ export default function EditListingPage({ params }: { params: PageParams }) {
           <h2 className="text-2xl font-bold text-[#00458E] mb-6">Caractéristiques du bien</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="nb_pieces">Nombre de pièces</Label>
+              <Label htmlFor="pieces">Nombre de pièces</Label>
               <Input
-                id="nb_pieces"
+                id="pieces"
                 type="number"
-                value={formData.nb_pieces}
-                onChange={(e) => setFormData({ ...formData, nb_pieces: e.target.value })}
+                value={formData.pieces}
+                onChange={(e) => setFormData({ ...formData, pieces: e.target.value })}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="nb_chambres">Nombre de chambres</Label>
+              <Label htmlFor="chambres">Nombre de chambres</Label>
               <Input
-                id="nb_chambres"
+                id="chambres"
                 type="number"
-                value={formData.nb_chambres}
-                onChange={(e) => setFormData({ ...formData, nb_chambres: e.target.value })}
+                value={formData.chambres}
+                onChange={(e) => setFormData({ ...formData, chambres: e.target.value })}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="nb_sdb">Nombre de salles de bain</Label>
+              <Label htmlFor="sdb">Nombre de salles de bain</Label>
               <Input
-                id="nb_sdb"
+                id="sdb"
                 type="number"
-                value={formData.nb_sdb}
-                onChange={(e) => setFormData({ ...formData, nb_sdb: e.target.value })}
+                value={formData.sdb}
+                onChange={(e) => setFormData({ ...formData, sdb: e.target.value })}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="nb_wc">Nombre de WC</Label>
+              <Label htmlFor="wc">Nombre de WC</Label>
               <Input
-                id="nb_wc"
+                id="wc"
                 type="number"
-                value={formData.nb_wc}
-                onChange={(e) => setFormData({ ...formData, nb_wc: e.target.value })}
+                value={formData.wc}
+                onChange={(e) => setFormData({ ...formData, wc: e.target.value })}
               />
             </div>
 
@@ -762,6 +780,55 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 <SelectContent>
                   <SelectItem value="1">oui</SelectItem>
                   <SelectItem value="0">non</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Diagnostics énergétiques</h2>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="bilan_conso_id">DPE - Consommation énergétique</Label>
+              <Select
+                value={formData.bilan_conso_id || "none"}
+                onValueChange={(value) => setFormData({ ...formData, bilan_conso_id: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Non renseigné</SelectItem>
+                  <SelectItem value="A">A</SelectItem>
+                  <SelectItem value="B">B</SelectItem>
+                  <SelectItem value="C">C</SelectItem>
+                  <SelectItem value="D">D</SelectItem>
+                  <SelectItem value="E">E</SelectItem>
+                  <SelectItem value="F">F</SelectItem>
+                  <SelectItem value="G">G</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="bilan_emission_id">GES - Émission de gaz à effet de serre</Label>
+              <Select
+                value={formData.bilan_emission_id || "none"}
+                onValueChange={(value) => setFormData({ ...formData, bilan_emission_id: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Non renseigné</SelectItem>
+                  <SelectItem value="A">A</SelectItem>
+                  <SelectItem value="B">B</SelectItem>
+                  <SelectItem value="C">C</SelectItem>
+                  <SelectItem value="D">D</SelectItem>
+                  <SelectItem value="E">E</SelectItem>
+                  <SelectItem value="F">F</SelectItem>
+                  <SelectItem value="G">G</SelectItem>
                 </SelectContent>
               </Select>
             </div>

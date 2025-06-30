@@ -459,12 +459,47 @@ export async function updateListing(id: number, data: any) {
     const columnsToExclude = ['balcon', 'terrasse', 'jardin', 'parking', 'ascenseur'];
     const filteredData = { ...data };
     
+    // Supprimer les colonnes qui n'existent pas dans la table
     columnsToExclude.forEach(column => {
       if (filteredData.hasOwnProperty(column)) {
         console.log(`Removing non-existent column ${column} from update data`);
         delete filteredData[column];
       }
     });
+    
+    // S'assurer que les champs numériques sont correctement convertis
+    const numericFields = [
+      'nb_pieces', 'nb_chambres', 'nb_sdb', 'nb_wc', 'etage',
+      'surface', 'prix_hors_honoraires', 'prix_avec_honoraires',
+      'prix_hors_charges', 'charges', 'prix_m2', 'lots', 'quote_part'
+    ];
+    
+    numericFields.forEach(field => {
+      if (filteredData.hasOwnProperty(field) && filteredData[field] !== null && filteredData[field] !== undefined) {
+        // Convertir en nombre si c'est une chaîne non vide
+        if (typeof filteredData[field] === 'string' && filteredData[field].trim() !== '') {
+          filteredData[field] = Number(filteredData[field]);
+        }
+        // Si c'est une chaîne vide ou 'N/C', mettre à null
+        else if (filteredData[field] === '' || filteredData[field] === 'N/C') {
+          filteredData[field] = null;
+        }
+      }
+    });
+    
+    // Convertir les booléens
+    const booleanFields = ['publie', 'copro', 'procedure_syndic'];
+    booleanFields.forEach(field => {
+      if (filteredData.hasOwnProperty(field)) {
+        if (filteredData[field] === '1' || filteredData[field] === 'true' || filteredData[field] === true) {
+          filteredData[field] = true;
+        } else if (filteredData[field] === '0' || filteredData[field] === 'false' || filteredData[field] === false) {
+          filteredData[field] = false;
+        }
+      }
+    });
+    
+    console.log('Filtered data to update:', filteredData);
     
     // Mettre à jour l'annonce
     const { data: result, error } = await supabase

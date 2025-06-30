@@ -34,19 +34,25 @@ interface Annonce {
   prix_hors_honoraires?: number | "N/C"
   charges: number | "N/C"
   surface: number | "N/C"
-  nb_pieces: number | "N/C"
-  nb_chambres: number | "N/C"
-  nb_sdb: number | "N/C"
-  nb_wc: number | "N/C"
+  // Champs avec les deux formats possibles (ancien et nouveau)
+  nb_pieces?: number | "N/C"
+  pieces?: number | "N/C"
+  nb_chambres?: number | "N/C"
+  chambres?: number | "N/C"
+  nb_sdb?: number | "N/C"
+  sdb?: number | "N/C"
+  nb_wc?: number | "N/C"
+  wc?: number | "N/C"
   etage: number | "N/C"
-  ascenseur: "Oui" | "Non"
-  balcon: "Oui" | "Non"
-  terrasse: "Oui" | "Non"
-  jardin: "Oui" | "Non"
-  cave: "Oui" | "Non"
-  parking: "Oui" | "Non"
+  // Champs booléens qui peuvent avoir plusieurs formats
+  ascenseur?: "Oui" | "Non" | boolean | number
+  balcon?: "Oui" | "Non" | boolean | number
+  terrasse?: "Oui" | "Non" | boolean | number
+  jardin?: "Oui" | "Non" | boolean | number
+  cave?: "Oui" | "Non" | boolean | number
+  parking?: "Oui" | "Non" | boolean | number
   publie: boolean
-  meuble: "Oui" | "Non"
+  meuble?: "Oui" | "Non" | boolean | number
   photos: Photo[]
   equipements: Equipements
   honoraires_locataire?: string
@@ -56,7 +62,7 @@ interface Annonce {
   date_disponibilite?: string
   honoraires_acheteur?: string
   prix_m2?: string
-  copropriete?: "Oui" | "Non"
+  copropriete?: "Oui" | "Non" | boolean | number
   nb_lots?: number | "N/C"
   code_postal?: string
   ville?: string

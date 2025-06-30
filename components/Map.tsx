@@ -5,8 +5,7 @@ import { MapPin } from "lucide-react"
 
 export default function Map() {
   return (
-    <Card className="w-full ove
-    rflow-hidden mt-16">
+    <Card className="w-full overflow-hidden mt-16">
 
       <div className="relative w-full">
         <iframe
