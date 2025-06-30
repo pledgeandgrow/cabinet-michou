@@ -71,6 +71,8 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   const [isEditMode, setIsEditMode] = useState(false)
   const router = useRouter();
+  const [isPublishingToSeLoger, setIsPublishingToSeLoger] = useState(false);
+  const [publishMessage, setPublishMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
   const [currentAnnonce, setCurrentAnnonce] = useState<Annonce | null>(null)
 
@@ -186,6 +188,72 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
     }
   }
 
+  // Fonction pour publier les annonces sur SeLoger
+  const publishToSeLoger = async () => {
+    try {
+      setIsPublishingToSeLoger(true);
+      setPublishMessage(null);
+      
+      // Faire la requête avec responseType blob pour récupérer directement le fichier ZIP
+      const response = await fetch('/api/annonces/csv', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}), // Envoyer toutes les annonces publiées
+      });
+      
+      // Vérifier si la réponse est OK
+      if (response.ok) {
+        // Récupérer le nom du fichier depuis l'en-tête Content-Disposition
+        const contentDisposition = response.headers.get('Content-Disposition');
+        let filename = 'SeLogerExport.zip';
+        
+        if (contentDisposition) {
+          const filenameMatch = contentDisposition.match(/filename="(.+)"/i);
+          if (filenameMatch && filenameMatch[1]) {
+            filename = filenameMatch[1];
+          }
+        }
+        
+        // Récupérer le blob
+        const blob = await response.blob();
+        
+        // Créer une URL pour le blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Créer un lien temporaire pour le téléchargement
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        
+        // Nettoyer
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+        
+        setPublishMessage({ 
+          type: 'success', 
+          text: 'Export réussi! Téléchargement du fichier en cours...' 
+        });
+      } else {
+        // En cas d'erreur, essayer de lire la réponse JSON pour obtenir le message d'erreur
+        try {
+          const errorData = await response.json();
+          setPublishMessage({ type: 'error', text: errorData.message || 'Erreur lors de la génération du fichier' });
+        } catch {
+          setPublishMessage({ type: 'error', text: `Erreur ${response.status}: ${response.statusText}` });
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors de la génération du fichier:', error);
+      setPublishMessage({ type: 'error', text: 'Erreur lors de la génération du fichier' });
+    } finally {
+      setIsPublishingToSeLoger(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="max-w-5xl mx-auto py-8">
@@ -203,67 +271,88 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
           <span>Gestion des annonces</span>
         </div>
         <h1 className="text-4xl font-bold text-black dark:text-white mb-8">Gestion des annonces</h1>
-        <div className="flex justify-end gap-4">
-              <Link href={'/admin/create-annonce'} className={`bg-[#F5A623] ${buttonVariants()} hover:bg-[#E59512] text-white`}>Créer une annonce</Link>
+        <div className="flex flex-col sm:flex-row justify-between gap-4 mb-4">
+          <div>
+            {publishMessage && (
+              <div className={`px-4 py-2 rounded ${publishMessage.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                {publishMessage.text}
+              </div>
+            )}
+          </div>
+          <div className="flex gap-4">
+            <Link href={'/admin/create-annonce'} className={`bg-[#F5A623] ${buttonVariants()} hover:bg-[#E59512] text-white`}>Créer une annonce</Link>
             
-          <Button className="bg-[#F5A623] hover:bg-[#E59512] text-white">Publier sur Se Loger</Button>
+            <Button 
+              className="bg-[#F5A623] hover:bg-[#E59512] text-white" 
+              onClick={publishToSeLoger}
+              disabled={isPublishingToSeLoger}
+            >
+              {isPublishingToSeLoger ? (
+                <>
+                  <span className="mr-2">Publication en cours...</span>
+                  <span className="animate-spin">⏳</span>
+                </>
+              ) : (
+                'Publier sur Se Loger'
+              )}
+            </Button>
+          </div>
         </div>
-      </div>
 
-      <div className="border rounded-lg overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px] bg-[#00458E] text-white">ACTIONS</TableHead>
-              <TableHead className="bg-[#00458E] text-white">TRANSACTION</TableHead>
-              <TableHead className="bg-[#00458E] text-white">TYPE DE BIEN</TableHead>
-              <TableHead className="bg-[#00458E] text-white">RÉFÉRENCE</TableHead>
-              <TableHead className="bg-[#00458E] text-white">SURFACE</TableHead>
-              <TableHead className="bg-[#00458E] text-white">PRIX</TableHead>
-              <TableHead className="bg-[#00458E] text-white">CP</TableHead>
-              <TableHead className="bg-[#00458E] text-white">VILLE</TableHead>
-              <TableHead className="bg-[#00458E] text-white">PUBLIÉ</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredAnnonces.map((annonce) => (
-              <TableRow key={annonce.id}>
-                <TableCell className="flex space-x-2">
-                  <button className="text-blue-600 hover:text-blue-800" onClick={() => router.push(`/admin/annonces/edit/${annonce.id}`)}>
-                    <Pencil className="h-4 w-4" />
-                  </button>
-                  <Link href={`/admin/photo-management?id=${annonce.id}`} className={`text-blue-600 hover:text-blue-800`}>
-                    <Camera className="h-4 w-4" />
-                  </Link>
-                  <button className="text-red-600 hover:text-red-800" onClick={() => handleDelete(annonce.id)}>
-                    <X className="h-4 w-4" />
-                  </button>
-                </TableCell>
-                <TableCell>{annonce.transaction_nom || "N/A"}</TableCell>
-                <TableCell>{annonce.typebien_nom || "N/A"}</TableCell>
-                <TableCell>{annonce.reference || "N/A"}</TableCell>
-                <TableCell>{annonce.surface ? `${annonce.surface} m²` : "N/A"}</TableCell>
-                <TableCell className="whitespace-nowrap">
-                  {annonce.prix_avec_honoraires ? `${annonce.prix_avec_honoraires} €` : "N/C"}
-                  {annonce.charges && annonce.charges !== "N/C" && (
-                    <span className="text-sm text-gray-500 block">{`(+${annonce.charges}€ charges)`}</span>
-                  )}
-                </TableCell>
-                <TableCell>{annonce.code_postal || "N/A"}</TableCell>
-                <TableCell>{annonce.ville || "N/A"}</TableCell>
-                <TableCell>
-                  <div 
-                    className={`h-3 w-3 rounded-full ${annonce.publie ? "bg-green-500" : "bg-red-500"} cursor-pointer hover:opacity-80 transition-opacity`}
-                    onClick={() => togglePublie(annonce.id)}
-                    title={annonce.publie ? "Cliquez pour masquer l'annonce" : "Cliquez pour publier l'annonce"}
-                  />
-                </TableCell>
+        <div className="border rounded-lg overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[100px] bg-[#00458E] text-white">ACTIONS</TableHead>
+                <TableHead className="bg-[#00458E] text-white">TRANSACTION</TableHead>
+                <TableHead className="bg-[#00458E] text-white">TYPE DE BIEN</TableHead>
+                <TableHead className="bg-[#00458E] text-white">RÉFÉRENCE</TableHead>
+                <TableHead className="bg-[#00458E] text-white">SURFACE</TableHead>
+                <TableHead className="bg-[#00458E] text-white">PRIX</TableHead>
+                <TableHead className="bg-[#00458E] text-white">CP</TableHead>
+                <TableHead className="bg-[#00458E] text-white">VILLE</TableHead>
+                <TableHead className="bg-[#00458E] text-white">PUBLIÉ</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {filteredAnnonces.map((annonce) => (
+                <TableRow key={annonce.id}>
+                  <TableCell className="flex space-x-2">
+                    <button className="text-blue-600 hover:text-blue-800" onClick={() => router.push(`/admin/annonces/edit/${annonce.id}`)}>
+                      <Pencil className="h-4 w-4" />
+                    </button>
+                    <Link href={`/admin/photo-management?id=${annonce.id}`} className={`text-blue-600 hover:text-blue-800`}>
+                      <Camera className="h-4 w-4" />
+                    </Link>
+                    <button className="text-red-600 hover:text-red-800" onClick={() => handleDelete(annonce.id)}>
+                      <X className="h-4 w-4" />
+                    </button>
+                  </TableCell>
+                  <TableCell>{annonce.transaction_nom || "N/A"}</TableCell>
+                  <TableCell>{annonce.typebien_nom || "N/A"}</TableCell>
+                  <TableCell>{annonce.reference || "N/A"}</TableCell>
+                  <TableCell>{annonce.surface ? `${annonce.surface} m²` : "N/A"}</TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {annonce.prix_avec_honoraires ? `${annonce.prix_avec_honoraires} €` : "N/C"}
+                    {annonce.charges && annonce.charges !== "N/C" && (
+                      <span className="text-sm text-gray-500 block">{`(+${annonce.charges}€ charges)`}</span>
+                    )}
+                  </TableCell>
+                  <TableCell>{annonce.code_postal || "N/A"}</TableCell>
+                  <TableCell>{annonce.ville || "N/A"}</TableCell>
+                  <TableCell>
+                    <div 
+                      className={`h-3 w-3 rounded-full ${annonce.publie ? "bg-green-500" : "bg-red-500"} cursor-pointer hover:opacity-80 transition-opacity`}
+                      onClick={() => togglePublie(annonce.id)}
+                      title={annonce.publie ? "Cliquez pour masquer l'annonce" : "Cliquez pour publier l'annonce"}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   )
 }
-

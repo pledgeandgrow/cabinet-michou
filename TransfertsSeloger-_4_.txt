@@ -1,0 +1,2065 @@
+Spécifications Techniques d’Exportation
+        Transfert automatisé d’annonces vers les supports SeLoger.com
+
+                                           Version 4.12 - Octobre 2023
+L'objet de ce document est de spécifier :
+
+
+        ✔ Les caractéristiques des fichiers qui doivent être envoyés pour une intégration d’annonces sur
+            les services et supports gérés par le Groupe SeLoger
+
+
+        ✔ La marche à suivre pour assurer une bonne réception par nos services.
+
+
+
+
+                                            CONTACT
+
+
+
+    ●   Demande d’information sur le flux d’un client, activation de flux pour un nouveau client,
+        contact clientèle :
+
+        Mail de contact :                              hotline.passerelles@seloger.com
+        Téléphone :                                    01 53 38 80 00
+
+
+
+
+    ●   Equipe Relation Partenaires Logiciel - Flux Logiciels & CRM :
+
+        Mail de contact :                              connect@aviv-group.com
+
+
+
+
+                                                                   SeLoger - 65, rue Ordener - 75018 Paris France
+   2
+                                                                     Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+                                                           SOMMAIRE
+
+  Fichiers à fournir........................................................................................................................ 4
+  Spécifications du fichier d’annonces.......................................................................................4
+  Liste des champs au format SeLoger...................................................................................... 6
+  Unicité des références d’annonces........................................................................................ 23
+  Spécifications du fichier de configuration.............................................................................23
+  Spécifications du fichier de configuration des photos........................................................ 23
+  Spécifications des fichiers photos / plans / visites virtuelles..............................................24
+  Loi Alur (Mars 2017)................................................................................................................. 25
+  Codifications des champs spéciaux...................................................................................... 27
+  Locations Vacances................................................................................................................. 29
+  Publications.............................................................................................................................. 30
+  Évolutions DPE 1er juillet 2021 puis 1er janvier 2022.......................................................... 30
+  Évolutions DPE du 1er janvier 2023....................................................................................... 31
+  Géolocalisation.........................................................................................................................31
+  Envoi sur le serveur FTP......................................................................................................... 31
+  Envois groupés........................................................................................................................ 33
+  Tests et mise en production de votre passerelle.................................................................. 33
+  Formats spécifiques................................................................................................................ 33
+  Notes et recommandations..................................................................................................... 34
+  Historique des Révisions........................................................................................................ 35
+
+
+
+
+SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                                            3
+Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+                                              Fichiers à fournir
+
+   Le fichier à transmettre doit être un fichier ZIP contenant les fichiers suivants:
+
+        ✔ Annonces.csv
+
+        ✔ Config.txt
+
+        ✔ Photos.cfg
+
+        ✔ Fichiers photos / plans (si transmission des visuels dans le fichier ZIP)
+
+
+
+                               Spécifications du fichier d’annonces
+
+   Vos données doivent être fournies au format CSV. Le fichier Annonces.csv contient l’ensemble des
+annonces, à raison d’un enregistrement par ligne. Chaque enregistrement (chaque annonce) est séparé du
+suivant par un retour à la ligne (CRLF).
+
+   Chaque champ doit être :
+    - séparé du suivant par le séparateur    !# (sans espace),
+    - délimité par des guillemets du type    ".
+Exemple :     "contenu du champ1" !# "contenu du champ2" !# "contenu du champ3"
+
+   Les champs ne doivent pas contenir de retour à la ligne. Si vous souhaitez indiquer des sauts de ligne
+dans les descriptifs vous pouvez les remplacer par la chaîne <BR>.
+
+Si la valeur du champ comporte des guillemets, ceux-ci doivent être remplacés par des apostrophes '
+Exemple :      "Camping 'Les flots bleus' "
+
+Pour les valeurs de type décimal, le séparateur de décimale à utiliser est le caractère point.
+Exemple :        "12.56"
+
+   Même si le champ est dépourvu de valeur, les caractères !# séparant ce champ du précédent et du suivant
+doivent être présents.
+
+
+        Attention: Le fichier annonces.csv doit toujours contenir la totalité des annonces.
+
+   Notre système fonctionne en mode « Annule et Remplace », c'est-à-dire que nous supprimons la totalité
+des annonces du transfert précédent qui ne sont pas présentes dans le nouveau fichier reçu.
+
+   Ci-dessous figure la liste des champs qu'il est possible de documenter pour chaque annonce. Les champs
+notés comme obligatoires doivent contenir une information valide pour que l’annonce soit prise en compte.
+
+
+
+
+                                                                       SeLoger - 65, rue Ordener - 75018 Paris France
+   4
+                                                                         Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+Les autres champs peuvent rester vides. Nous vous recommandons vivement de fournir une information
+pour chacun des champs énumérés pour être certain de répondre au mieux aux utilisateurs.
+
+   Les numéros (ou rangs) des champs ne sont PAS inclus dans les données que vous nous transmettez :
+L'ORDRE SEUL DES CHAMPS FAIT FOI.
+
+
+
+
+ SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                  5
+ Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+                                      Liste des champs au format SeLoger
+
+
+RA        NOM DU CHAMP          TYPE                  EXEMPLE                    COMMENTAIRES
+NG
+
+1    Identifiant agence       Texte (16)   "monagence"          Identifiant agence fourni par nos services
+
+2    Référence agence du      Texte (20)   "VE950"              Obligatoire
+     bien                                                       Référence de l’annonce
+
+3    Type d’annonce           Texte        "Vente"              Obligatoire - Choisir entre :
+                                                                cession de bail, location, location vacances, produit
+                                                                d'investissement, vente, vente de prestige,
+                                                                vente-fonds-de-commerce, viager, produit
+                                                                catalogue
+
+                                                                Le type produit catalogue ne peut être utilisé que
+                                                                dans le cadre d’une publication sur SeLoger
+                                                                Construire
+
+4    Type de bien             Texte        "Maison"             Obligatoire - Choisir entre :
+                                                                Appartement, bâtiment, boutique, bureaux,
+                                                                château, inconnu, hôtel particulier, immeuble,
+                                                                local, loft/atelier/surface, maison/villa,
+                                                                parking/box, entreprises, terrain, maison avec
+                                                                terrain, modèle de maison
+
+                                                                Le type modèle de maison ne peut être utilisé que
+                                                                dans le cadre d’une publication sur SeLoger
+                                                                Construire
+
+5    CP                       Texte (5)    "06210"              Obligatoire - Code postal à afficher
+
+6    Ville                    Texte (50)   "MANDELIEU"          Obligatoire - Doit correspondre au code postal
+
+7    Pays                     Texte        "France"
+
+8    Adresse                  Texte        "18 avenue Renoir"
+                              (128)
+
+9    Quartier / Proximité     Texte (64)   "Métro république"
+
+10   Activités                Texte        "BAR, TABAC, PMU"
+     commerciales
+
+11   Prix / Loyer / Prix de   Décimal      "1250000"            Obligatoire
+     cession                                                    Prix du bien exprimé charges Acquéreur
+                                                                comprises
+                                                                Le loyer doit être exprimé charges & complément
+                                                                de loyer compris
+
+
+
+                                                                SeLoger - 65, rue Ordener - 75018 Paris France
+          6
+                                                                  Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+12   Loyer / mois murs        Décimal      ""                                 Dans le cas de Cession de Bail
+
+13   Loyer CC                 Texte (3)    "OUI"                              OUI / NON - loyer charges comprises
+
+14   Loyer HT                 Texte (3)    "NON"                              OUI / NON - loyer hors taxes
+
+15   Honoraires               Décimal      (Vente) "2.5"                      Obligatoire -
+                                           (Location) "750"                   Ventes : Honoraires TTC à la charge de l’acquéreur
+                                                                              en pourcentage du prix du bien hors honoraires
+                                                                              Locations : Montant des honoraires en TTC à la
+                                                                              charge du locataire (en euros)
+
+16   Surface (m²)             Décimal      "135.5"                            Obligatoire
+
+17   Surface terrain (m²)     Décimal      "2500"
+
+18   NB de pièces             Entier       "3"                                Obligatoire
+
+19   NB de chambres           Entier       "2"
+
+20   Libellé                  Texte (64)   "Maison 3 pièces"                  Obligatoire - Libellé court
+
+21   Descriptif               Texte        "Très belle maison"                Obligatoire - Ne pas mettre de caractères spéciaux.
+                              (4000)
+
+22   Date de disponibilité    Date         "14/04/2003"                       Format JJ/MM/AAAA
+
+23   Charges                  Décimal      "350"                              Obligatoire (locations) - Montant des charges pour
+                                                                              le locataire en euros.
+                                                                              Voir champ 304 pour préciser le type de charges
+
+24   Etage                    Entier       "0"                                "0" pour Rez-de-chaussée / Rez-de-jardin
+                                                                              "1" pour le premier étage
+
+25   NB d’étages              Entier       "2"
+
+26   Meublé                   Texte (3)    "OUI"                              OUI / NON
+
+27   Année de construction    Entier       "1985"                             Champ Numérique
+
+28   Refait à neuf            Texte (3)    ""                                 OUI / NON
+
+29   NB de salles de bain     Entier       "2"
+
+30   NB de salles d’eau       Entier       "2"
+
+31   NB de WC                 Entier       "2"
+
+32   WC séparés               Texte (3)    "OUI                               OUI / NON
+
+33   Type de chauffage        Entier       "512"                              Voir codifications en Annexe
+
+34   Type de cuisine          Entier       "3"                                Voir codifications en Annexe
+
+35   Orientation sud          Texte (3)    "OUI"                              OUI / NON
+
+36   Orientation est          Texte (3)    ""                                 OUI / NON
+
+
+
+
+      SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                         7
+      Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+37   Orientation ouest    Texte (3)   ""      OUI / NON
+
+38   Orientation nord     Texte (3)   ""      OUI / NON
+
+39   NB balcons           Entier      "2"
+
+40   SF Balcon            Décimal     ""
+
+41   Ascenseur            Texte (3)   "NON"   OUI / NON
+
+42   Cave                 Texte (3)   "OUI"   OUI / NON
+
+43   NB de parkings       Entier      ""
+
+44   NB de boxes          Entier      ""
+
+45   Digicode             Texte (3)   "OUI"   OUI / NON
+
+46   Interphone           Texte (3)   "NON    OUI / NON
+
+47   Gardien              Texte (3)   ""      OUI / NON
+
+48   Terrasse             Texte (3)   "OUI"   OUI / NON
+
+49   Prix semaine         Décimal     ""      Locations vacances uniquement
+     Basse Saison
+
+50   Prix quinzaine       Décimal     ""
+     Basse Saison
+
+51   Prix mois / Basse    Décimal     ""
+     Saison
+
+52   Prix semaine         Décimal     ""
+     Haute Saison
+
+53   Prix quinzaine       Décimal     ""
+     Haute Saison
+
+54   Prix mois            Décimal     ""
+     Haute Saison
+
+55   NB de personnes      Entier      ""      Locations vacances : Capacité d’accueil
+
+56   Type de résidence    Texte (3)   ""      Locations vacances - Choisir entre :
+                                              GIT pour Gîte
+                                              HOT pour Chambre d'hôte
+
+57   Situation            Texte       "mer"   Choisir entre : montagne, mer, campagne, ville
+
+58   NB de couverts       Entier      ""
+
+59   NB de lits doubles   Entier      ""
+
+60   NB de lits simples   Entier      ""
+
+61   Alarme               Texte (3)   "OUI"   OUI / NON
+
+62   Câble TV             Texte (3)   ""      OUI / NON
+
+
+
+                                              SeLoger - 65, rue Ordener - 75018 Paris France
+        8
+                                                Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+63   Calme                    Texte (3)    "OUI"                              OUI / NON
+
+64   Climatisation            Texte (3)    "OUI"                              OUI / NON
+
+65   Piscine                  Texte (3)    "OUI"                              OUI / NON
+
+66   Aménagement pour         Texte (3)    ""                                 OUI / NON
+     handicapés
+
+67   Animaux acceptés         Texte (3)    ""                                 OUI / NON
+
+68   Cheminée                 Texte (3)    ""                                 OUI / NON
+
+69   Congélateur              Texte (3)    ""                                 OUI / NON
+
+70   Four                     Texte (3)    ""                                 OUI / NON
+
+71   Lave-vaisselle           Texte (3)    ""                                 OUI / NON
+
+72   Micro-ondes              Texte (3)    ""                                 OUI / NON
+
+73   Placards                 Texte (3)    ""                                 OUI / NON
+
+74   Téléphone                Texte (3)    ""                                 OUI / NON
+
+75   Proche lac               Texte (3)    ""                                 OUI / NON
+
+76   Proche tennis            Texte (3)    ""                                 OUI / NON
+
+77   Proche pistes de ski     Texte (3)    ""                                 OUI / NON
+
+78   Vue dégagée              Texte (3)    "OUI"                              OUI / NON
+
+79   Chiffre d’affaire        Décimal      ""
+
+80   Longueur façade (m)      Décimal      "23"
+
+81   Duplex                   Texte (3)    ""                                 OUI / NON
+
+82   Publications             Texte        "SL,BD,WA"                         Voir chapitre publications
+
+83   Mandat en exclusivité    Texte (3)    "OUI"                              OUI / NON
+
+84   Coup de cœur             Texte (3)    "NON"                              OUI / NON (utilisé sur le site de l’agence si géré par
+                                                                              Seloger.com)
+
+85   Photo 1                  Texte        "230.jpg"                          Nom du fichier définissant la photo 1 de l’annonce
+                              (256)
+
+86   Photo 2                  Texte        "231.jpg"                          ...
+                              (256)
+
+87   Photo 3                  Texte        "232.jpg"                          ...
+                              (256)
+
+88   Photo 4                  Texte        "233.jpg"                          ...
+                              (256)
+
+
+
+
+      SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                           9
+      Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+89    Photo 5                Texte        "234.jpg"                       ....
+                             (256)
+
+90    Photo 6                Texte        "235.jpg"                       ...
+                             (256)
+
+91    Photo 7                Texte        "236.jpg"                       …
+                             (256)
+
+92    Photo 8                Texte        "237.jpg"                       ...
+                             (256)
+
+93    Photo 9                Texte        "238.jpg"                       ...
+                             (256)
+
+94    Titre photo 1          Texte        "Entrée"
+                             (256)
+
+95    Titre photo 2          Texte        "Le Séjour"
+                             (256)
+
+96    Titre photo 3          Texte        "Cuisine"
+                             (256)
+
+97    Titre photo 4          Texte        "La piscine"
+                             (256)
+
+98    Titre photo 5          Texte        ""
+                             (256)
+
+99    Titre photo 6          Texte        ""
+                             (256)
+
+100   Titre photo 7          Texte        ""
+                             (256)
+
+101   Titre photo 8          Texte        ""
+                             (256)
+
+102   Titre photo 9          Texte        ""
+                             (256)
+
+103   Photo panoramique      Texte        ""                              Nom de la photo panoramique
+                             (128)                                        (voir chapitre Visites Virtuelles)
+
+104   URL visite virtuelle   Texte        "http://www.site.com/visitevi   URL d’une page affichant une visite virtuelle du
+                             (256)        rtuelle?ref=VE950"              bien (voir chapitre Visites Virtuelles)
+
+105   Téléphone à afficher   Texte (10)   "0123456789"                    Coordonnées à afficher sur l'annonce si différentes
+                                                                          des coordonnées de l’agence
+106   Contact à afficher     Texte (64)   "René Gossier"
+
+107   Email de contact       Texte (64)   "rgossier@agence.com"
+
+108   CP Réel du bien        Texte (5)    "06210"
+
+
+
+
+                                                                          SeLoger - 65, rue Ordener - 75018 Paris France
+         10
+                                                                            Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+109   Ville réelle du bien     Texte (50)   "MANDELIEU"
+
+110   Inter-cabinet            Texte (3)    "OUI"                              Utilisé dans le cas où l’agence dispose d’un site
+                                                                               géré par Seloger.com avec l’option d’inter-cabinet
+
+111   Inter-cabinet prive      Texte (3)    "NON"                              Autorise ou non l'affichage des informations
+                                                                               privées aux autres agences ayant accès à
+                                                                               l'inter-cabinet.
+                                                                               NON : accès autorisé
+                                                                               OUI : accès non autorisé
+
+112   N° de mandat             Texte (15)   "251"                              N° de mandat pour l'agence
+
+113   Date mandat              Date         "13/02/2003"                       Format : JJ/MM/AAAA
+
+114   Nom mandataire           Texte (64)   "DUPONT"
+
+115   Prénom mandataire        Texte (64)   "LOUIS"
+
+116   Raison sociale           Texte (64)
+      mandataire
+
+117   Adresse mandataire       Texte
+                               (128)
+
+118   CP mandataire            Texte (5)
+
+119   Ville mandataire         Texte (50)
+
+120   Téléphone mandataire     Texte (10)   "0123456789"
+
+121   Commentaires             Texte
+      mandataire               (4000)
+
+122   Commentaires privés      Texte        "Clefs à prendre chez le
+                               (4000)       gardien"
+
+123   Code négociateur         Texte (50)   "MARTIN"                           Code ou nom du négociateur
+
+124   Code Langue 1            Texte (3)                                       Pour Code Langue, choisir entre :
+                                                                               EN pour anglais,
+125   Proximité Langue 1       Texte (64)
+                                                                               ES pour espagnol,
+126   Libellé Langue 1         Texte (64)                                      DE pour allemand,
+                                                                               IT pour italien,
+127   Descriptif Langue 1      Texte                                           NL pour néerlandais,
+                               (4000)                                          PT pour portugais.
+128   Code Langue 2            Texte (3)
+                                                                               Pour Proximité, Libellé et Descriptif remplir avec les
+129   Proximité Langue 2       Texte (64)                                      données de la langue sélectionnée.
+
+130   Libellé Langue 2         Texte (64)
+
+131   Descriptif Langue 2      Texte
+                               (4000)
+
+132   Code Langue 3            Texte (3)
+
+
+
+       SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                          11
+       Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+133   Proximité Langue 3     Texte (64)
+
+134   Libellé Langue 3       Texte (64)
+
+135   Descriptif Langue 3    Texte
+                             (4000)
+
+136   Champ personnalisé 1                ""   Les 25 champs suivants peuvent être utilisés pour
+                                               nous transmettre des informations qui ne font pas
+137   Champ personnalisé 2                ""
+                                               partie des spécifications standards.
+138   Champ personnalisé 3                ""
+                                               Il peut s’agir de noms de photos supplémentaires
+139   Champ personnalisé 4                ""   ou tout autre information que vous jugerez utile de
+140   Champ personnalisé 5                ""   nous transmettre dans le cadre d’évolutions
+                                               futures.
+141   Champ personnalisé 6                ""
+                                               Si vous utilisez ces champs, veuillez prendre
+142   Champ personnalisé 7                ""
+                                               contact avec notre service technique pour nous
+143   Champ personnalisé 8                ""   indiquer leur contenu.
+
+144   Champ personnalisé 9                ""
+
+145   Champ personnalisé                  ""
+      10
+
+146   Champ personnalisé                  ""
+      11
+
+147   Champ personnalisé                  ""
+      12
+
+148   Champ personnalisé                  ""
+      13
+
+149   Champ personnalisé                  ""
+      14
+
+150   Champ personnalisé                  ""
+      15
+
+151   Champ personnalisé                  ""
+      16
+
+152   Champ personnalisé                  ""
+      17
+
+153   Champ personnalisé                  ""
+      18
+
+154   Champ personnalisé                  ""
+      19
+
+155   Champ personnalisé                  ""
+      20
+
+
+
+
+                                               SeLoger - 65, rue Ordener - 75018 Paris France
+         12
+                                                 Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+156   Champ personnalisé                    ""
+      21
+
+157   Champ personnalisé                    ""
+      22
+
+158   Champ personnalisé                    ""
+      23
+
+159   Champ personnalisé                    ""
+      24
+
+160   Champ personnalisé                    ""
+      25
+
+161   Dépôt de garantie        Décimal      "700"
+
+162   Récent                   Texte (3)    "OUI"                              OUI / NON
+
+163   Travaux à prévoir        Texte (3)    "OUI"                              OUI / NON
+
+164   Photo 10                 Texte        "Photo.jpg" ou "http://..."        Nom du fichier définissant la photo 10 de l’annonce
+                               (256)
+
+165   Photo 11                 Texte        "Photo.jpg" ou "http://..."
+                               (256)
+
+166   Photo 12                 Texte        "Photo.jpg" ou "http://..."
+                               (256)
+
+167   Photo 13                 Texte        "Photo.jpg" ou "http://..."
+                               (256)
+
+168   Photo 14                 Texte        "Photo.jpg" ou "http://..."
+                               (256)
+
+169   Photo 15                 Texte        "Photo.jpg" ou "http://..."
+                               (256)
+
+170   Photo 16                 Texte        "Photo.jpg" ou "http://..."
+                               (256)
+
+171   Photo 17                 Texte        "Photo.jpg" ou "http://..."
+                               (256)
+
+172   Photo 18                 Texte        "Photo.jpg" ou "http://..."
+                               (256)
+
+173   Photo 19                 Texte        "Photo.jpg" ou "http://..."
+                               (256)
+
+174   Photo 20                 Texte        "Photo.jpg" ou "http://..."
+                               (256)
+
+175   Identifiant technique    Texte (30)   "00001"                            Obligatoire - Identifiant unique de l’annonce.
+
+
+
+
+       SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                         13
+       Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+176   Consommation             Entier       "191"                      Consommation d’énergie en kWhEP/m²/an
+      énergie
+
+177   Bilan consommation       Texte (2)    "D", "VI", "NS"            Classification de la consommation d’énergie
+      énergie                                                          "VI" → Vierge         "NS" → Non soumis
+                                                                       (Cf section DPE)
+
+178   Emissions GES            Entier       "42"                       Estimation des émissions : kg éqCO2/m²/an
+
+179   Bilan émission GES       Texte (2)    "E", "VI", "NS"            Classification des émissions GES
+                                                                       "VI" → Vierge        "NS" → Non soumis
+
+180   Identifiant quartier
+      (obsolète)
+
+181   Sous type de bien        Texte        "Maison de village"        Voir liste des sous-types en Annexe
+
+182   Périodes de              Texte        Voir chapitre ‘Locations   Locations vacances uniquement
+      disponibilité                         vacances’
+
+183   Périodes basse saison    Texte
+
+184   Périodes haute saison    Texte
+
+185   Prix du bouquet          Décimal                                 Prix du bouquet (Viager)
+
+186   Rente mensuelle          Décimal                                 Rente mensuelle (Viager)
+
+187   Age de l’homme           Entier                                  Age de l’homme (Viager)
+
+188   Age de la femme          Entier                                  Age de la femme (Viager)
+
+189   Entrée                   Texte (3)                               OUI / NON - Le bien dispose d’une entrée
+
+190   Résidence                Texte (3)                               OUI / NON - (Location vacances uniquement) Le
+                                                                       bien fait partie d’une résidence
+
+191   Parquet                  Texte (3)                               OUI / NON
+
+192   Vis-à-vis                Texte (3)                               OUI / NON
+
+193   Transport : Ligne        Texte (5)    "8"
+
+194   Transport : Station      Texte (32)   "Opéra"
+
+195   Durée bail               Entier                                  Durée du bail pour les locations
+
+196   Places en salle          Entier                                  Nombre de places en salle (pour les restaurants par
+                                                                       exemple)
+
+197   Monte-charge             Texte (3)                               OUI / NON - Le bien dispose d’un monte-charge
+
+198   Quai                     Texte (3)                               OUI / NON - Pour les boutiques, hangar : Le bien
+                                                                       dispose d’un quai.
+
+199   Nombre de bureaux        Entier
+
+200   Prix du droit d’entrée   Décimal                                 Pour les locations
+
+
+
+
+                                                                       SeLoger - 65, rue Ordener - 75018 Paris France
+         14
+                                                                         Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+201   Prix masqué              Texte (3)                                       OUI / NON : Uniquement pour Belles Demeures :
+                                                                               affichage d’une tranche de prix (déterminé depuis
+                                                                               le prix renseigné dans le champ Prix) plutôt que le
+                                                                               prix
+
+202   Loyer annuel global      Décimal                                         (Uniquement bureaux, commerces, bâtiment,
+                                                                               boutique, local et entreprises)
+
+203   Charges annuelles        Décimal                                         (Uniquement bureaux, commerces, bâtiment,
+      globales                                                                 boutique, local et entreprises)
+
+204   Loyer annuel au m2       Décimal                                         (Uniquement bureaux, commerces, bâtiment,
+                                                                               boutique, local et entreprises)
+
+205   Charges annuelles au     Décimal                                         (Uniquement bureaux, commerces, bâtiment,
+      m2                                                                       boutique, local et entreprises)
+
+206   Charges mensuelles       Texte (3)    "NON"                              (Uniquement bureaux, commerces, bâtiment,
+      HT                                                                       boutique, local et entreprises)
+                                                                               OUI / NON – Charges mensuelles hors taxes
+
+207   Loyer annuel CC          Texte (3)    "OUI"                              (Uniquement bureaux, commerces, bâtiment,
+                                                                               boutique, local et entreprises)
+                                                                               OUI / NON - Loyer annuel charges comprises
+
+208   Loyer annuel HT          Texte (3)    "NON"                              (Uniquement bureaux, commerces, bâtiment,
+                                                                               boutique, local et entreprises)
+                                                                               OUI / NON - Loyer annuel hors taxes
+
+209   Charges annuelles HT     Texte (3)    "NON"                              (Uniquement bureaux, commerces, bâtiment,
+                                                                               boutique, local et entreprises)
+                                                                               OUI / NON - Charges annuelles hors taxes
+
+210   Loyer annuel au m2       Texte (3)    "OUI"                              (Uniquement bureaux, commerces, bâtiment,
+      CC                                                                       boutique, local et entreprises)
+                                                                               OUI / NON - Loyer annuel au m2 charges comprises
+
+211   Loyer annuel au m2       Texte (3)    "NON"                              (Uniquement bureaux, commerces, bâtiment,
+      HT                                                                       boutique, local et entreprises)
+                                                                               OUI / NON - Loyer annuel au m2 hors taxes
+
+212   Charges annuelles au     Texte (3)    "NON"                              (Uniquement bureaux, commerces, bâtiment,
+      m2 HT                                                                    boutique, local et entreprises)
+                                                                               OUI / NON - Charges annuelles au m2 hors taxes
+
+213   Divisible                Texte (3)    "OUI"                              (Uniquement bureaux, commerces, bâtiment,
+                                                                               boutique, local et entreprises)
+                                                                               OUI / NON - La surface est divisible
+
+214   Surface divisible        Décimal                                         (Uniquement bureaux, commerces, bâtiment,
+      minimale                                                                 boutique, local et entreprises)
+
+215   Surface divisible        Décimal                                         (Uniquement bureaux, commerces, bâtiment,
+      maximale                                                                 boutique, local et entreprises)
+
+
+
+       SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                         15
+       Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+216   Surface séjour           Décimal                                    Surface du séjour
+
+217   Nombre de véhicules      Entier      "2"                            (Uniquement parkings)
+
+218   Prix du droit au bail    Décimal     "250"                          (Uniquement locations)
+
+219   Valeur à l’achat         Décimal     "150000"                       (Uniquement produits d’investissement)
+
+220   Répartition du chiffre   Texte       "70 % bar / 30 % restaurant"   (Uniquement Ventes fonds de commerce)
+      d’affaire                (100)
+
+221   Terrain agricole         Texte (3)   "OUI "                         OUI/NON
+
+222   Equipement bébé          Texte (3)   "OUI"                          OUI/NON
+
+
+223   Terrain constructible    Texte (3)   "OUI"                          OUI/NON
+
+224   Résultat Année N-2       Entier      "65000"                        Résultats année N-2
+                                                                          (Uniquement Ventes fonds de commerce)
+
+225   Résultat Année N-1       Entier      "55000"                        Résultats année N-1
+                                                                          (Uniquement Ventes fonds de commerce)
+
+226   Résultat Actuel          Entier      "60000"                        Résultats année en cours
+                                                                          (Uniquement Ventes fonds de commerce)
+
+227   Immeuble de parkings     Texte (3)   "OUI"                          OUI/NON (Uniquement pour les parkings)
+
+228   Parking isolé            Texte (3)   "OUI"                          OUI/NON (Uniquement pour les parkings)
+
+229   Si Viager Vendu Libre    Texte (3)   "OUI"                          OUI/NON
+
+230   Logement à               Texte (3)   "OUI"                          OUI/NON Le commerce dispose d’un logement
+      disposition
+
+231   Terrain en pente         Texte (3)   "OUI"                          OUI/NON (Uniquement pour les terrains)
+
+232   Plan d’eau               Texte (3)   "OUI"                          OUI/NON : Le bien dispose d’un plan d’eau
+                                                                          (Uniquement pour les terrains et/ou les
+                                                                          châteaux)
+
+233   Lave-linge               Texte (3)   "OUI"                          OUI/NON
+
+234   Sèche-linge              Texte (3)   "OUI"                          OUI/NON
+
+235   Connexion internet       Texte (3)   "OUI"                          OUI/NON
+
+236   Chiffre affaire Année    Entier      "35000"                        Chiffre d’affaire année N-2
+      N-2
+
+237   Chiffre affaire Année    Entier      "45000"                        Chiffre d’affaire année N-1
+      N-1
+
+238   Conditions financières   Texte       "Frais de rédaction d'acte :   (Uniquement pour les bureaux)
+                               (4000)      4,5% du loyer annuel HT/HC"
+
+
+
+
+                                                                          SeLoger - 65, rue Ordener - 75018 Paris France
+         16
+                                                                            Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+239   Prestations diverses     Texte        "Interphone - Digicode"            (Uniquement pour les bureaux)
+                               (4000)
+
+240   Longueur façade          Décimal      "4,5"                              (Uniquement pour les boutiques ou terrains)
+
+241   Montant du rapport       Texte (20)   "650"                              (Uniquement pour les produits
+                                                                               d’investissement)
+
+242   Nature du bail           Texte (50)   "Location meublée"                 (Uniquement pour les locations)
+
+243   Nature bail              Texte (50)   "Tous commerces sauf               (Uniquement pour les ventes fonds de
+      commercial                            restauration"                      commerce)
+
+244   Nombre terrasses         Entier       "3"
+
+245   Prix hors taxes          Texte (3)    "OUI"                              OUI/NON
+
+246   Si Salle à manger        Texte (3)    "OUI"                              OUI/NON
+
+247   Si Séjour                Texte (3)    "OUI"                              OUI/NON
+
+248   Terrain donne sur la     Texte (3)    "OUI"                              OUI/NON
+      rue
+
+249   Immeuble de type         Texte (3)    "OUI"                              OUI/NON
+      bureaux
+
+250   Terrain viabilisé        Texte (3)    "OUI"                              OUI/NON
+
+251   Equipement Vidéo         Texte (3)    "OUI"                              OUI/NON
+
+252   Surface de la cave       Décimal      "10"
+
+253   Surface de la salle à    Décimal      "40"
+      manger
+
+254   Situation commerciale    Texte (64)   "Rue piétonne proche               (Uniquement pour les boutiques)
+                                            marché"
+
+255   Surface maximale         Décimal      "25"                               (Uniquement pour les bureaux)
+      d’un bureau
+
+256   Honoraires charge                                                        Remplacé par le champ 302
+      acquéreur (obsolète)
+
+257   Pourcentage                                                              Remplacé par le champ 15
+      honoraires TTC
+      (obsolète)
+
+258   En copropriété           Texte (3)    "OUI"                              OUI/NON (Loi Alur)
+                                                                               Le bien est-il dans une copropriété?
+
+259   Nombre de lots           Entier       10                                 Nombre de lots de la copropriété (Loi Alur)
+
+260   Charges annuelles        Décimal      "3500"                             Montant moyen annuel de la quote-part du budget
+                                                                               prévisionnel des dépenses courantes (Loi Alur)
+
+
+
+
+       SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                         17
+       Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+261   Syndicat des          Texte (3)   "OUI"                         OUI/NON (Loi Alur)
+      copropriétaires en                                              Le syndicat des copropriétaires fait-il l'objet d'une
+      procédure                                                       procédure?
+
+262   Détail procédure du   Texte                                     Détails sur la procédure en cours du syndicat des
+      syndicat des          (128)                                     copropriétaires (Loi Alur)
+      copropriétaires
+
+263   Champ personnalisé                ""
+      26
+
+264   Photo 21              Texte       "Photo.jpg" ou "http://..."
+                            (256)
+
+265   Photo 22              Texte       "Photo.jpg" ou "http://..."
+                            (256)
+
+266   Photo 23              Texte       "Photo.jpg" ou "http://..."
+                            (256)
+
+267   Photo 24              Texte       "Photo.jpg" ou "http://..."
+                            (256)
+
+268   Photo 25              Texte       "Photo.jpg" ou "http://..."
+                            (256)
+
+269   Photo 26              Texte       "Photo.jpg" ou "http://..."
+                            (256)
+
+270   Photo 27              Texte       "Photo.jpg" ou "http://..."
+                            (256)
+
+271   Photo 28              Texte       "Photo.jpg" ou "http://..."
+                            (256)
+
+272   Photo 29              Texte       "Photo.jpg" ou "http://..."
+                            (256)
+
+273   Photo 30              Texte       "Photo.jpg" ou "http://..."
+                            (256)
+
+274   Titre photo 10        Texte       ""
+                            (256)
+
+275   Titre photo 11        Texte       ""
+                            (256)
+
+276   Titre photo 12        Texte       ""
+                            (256)
+
+277   Titre photo 13        Texte       ""
+                            (256)
+
+278   Titre photo 14        Texte       ""
+                            (256)
+
+
+
+                                                                      SeLoger - 65, rue Ordener - 75018 Paris France
+         18
+                                                                        Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+279   Titre photo 15           Texte        ""
+                               (256)
+
+280   Titre photo 16           Texte        ""
+                               (256)
+
+281   Titre photo 17           Texte        ""
+                               (256)
+
+282   Titre photo 18           Texte        ""
+                               (256)
+
+283   Titre photo 19           Texte        ""
+                               (256)
+
+284   Titre photo 20           Texte        ""
+                               (256)
+
+285   Titre photo 21           Texte        ""
+                               (256)
+
+286   Titre photo 22           Texte        ""
+                               (256)
+
+287   Titre photo 23           Texte        ""
+                               (256)
+
+288   Titre photo 24           Texte        ""
+                               (256)
+
+289   Titre photo 25           Texte        ""
+                               (256)
+
+290   Titre photo 26           Texte        ""
+                               (256)
+
+291   Titre photo 27           Texte        ""
+                               (256)
+
+292   Titre photo 28           Texte        ""
+                               (256)
+
+293   Titre photo 29           Texte        ""
+                               (256)
+
+294   Titre photo 30           Texte        ""
+                               (256)
+
+295   Prix du terrain          Décimal      "85000"                            Construire : Dans le cas d'une vente de "maison
+                                                                               + terrain"→ prix du terrain seul
+
+296   Prix du modèle de        Décimal      "140000"                           Construire : Dans le cas d'une vente de "maison
+      maison                                                                   + terrain" → Prix de la maison seule
+
+
+
+
+       SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                     19
+       Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+297   Nom de l'agence          Texte        "Agence terra nova"             Construire : Dans le cas d'une vente de "maison
+      gérant le terrain        (256)                                        + terrain" → Nom de l'agence gérant la vente du
+                                                                            terrain
+
+298   Latitude                 Décimal      "48.87079"                      Latitude et longitude du bien (exemple
+                                                                            correspondant au 55 rue Faubourg Saint Honoré,
+299   Longitude                Décimal      "2.31689"
+                                                                            75008 Paris)
+
+300   Précision GPS            Entier       "1"                             Obligatoire pour la prise en compte des
+                                                                            coordonnées Degré de précision des coordonnées
+                                                                            GPS (Cf section Précision GPS)
+
+301   Version Format           Texte (10)   "4.12"                          Obligatoire
+                                                                            Version du format envoyé (Version-Révision)
+
+302   Honoraires à la charge   Entier       "1" - Acquéreur                 (Loi Alur 02/2017) Obligatoire VENTE
+      de                                    "2" - Vendeur                   UNIQUEMENT
+                                            "3" - Acquéreur ET Vendeur      Spécifie la(les) personne(s) en charge du règlement
+                                                                            des honoraires à l’issue de la transaction
+
+303   Prix hors honoraires     Décimal      "1200000"                       (Loi Alur 02/2017) Obligatoire si acquéreur
+      acquéreur                                                             VENTE UNIQUEMENT
+                                                                            Prix du bien hors honoraires acquéreur
+
+304   Modalités charges        Entier       "1" - Forfaitaires mensuelles   (Loi Alur 02/2017) Obligatoire LOCATION
+      locataire                             "2" - Prévisionnelles           UNIQUEMENT
+                                            mensuelles avec                 Modalité de règlement des charges par le locataire
+                                            régularisation annuelle
+                                            "3" - Remboursement annuel
+                                            par le locataire
+
+305   Complément loyer         Décimal      "750"                           (Loi Alur 02/2017) LOCATION UNIQUEMENT
+                                                                            Montant éventuel d’un complément de loyer
+
+306   Part honoraires          Décimal      "300"                           (Loi Alur 02/2017) Obligatoire LOCATION
+      état des lieux                                                        UNIQUEMENT
+                                                                            Montant TTC de la part des honoraires pour la
+                                                                            réalisation de l’état des lieux
+
+307   URL du Barème des        Texte(256    "http://www.monagence.com       (Loi Alur 02/2017)
+      honoraires de            )            /bareme"                        Lien direct vers le barème des honoraires de
+      l’Agence                                                              l’agence
+                                                                            Attention : URL identique sur les annonces d’une
+                                                                            même agences
+
+308   Prix minimum             Décimal      "150000"                        Obligatoire (modèle de maison)
+
+309   Prix maximum             Décimal      "450000"                        (Modèle de maison)
+
+310   Surface minimale         Décimal      "35.0"                          Obligatoire (modèle de maison)
+
+311   Surface maximale         Décimal      "185.0"                         (Modèle de maison)
+
+
+
+
+                                                                            SeLoger - 65, rue Ordener - 75018 Paris France
+         20
+                                                                              Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+312   Nombre de pièces         Entier       "2"                                Obligatoire (modèle de maison)
+      minimum
+
+313   Nombre de pièces         Entier       "6"                                (Modèle de maison)
+      maximum
+
+314   Nombre de chambres       Entier       "1"                                Obligatoire (modèle de maison)
+      minimum
+
+315   Nombre de chambres       Entier       "5"                                (Modèle de maison)
+      maximum
+
+316   ID type étage            Entier       "1"                                (Modèle de maison)
+
+317   Si combles               Texte (3)    "OUI"                              OUI/NON
+      aménageables                                                             (Modèle de maison)
+
+318   Si garage                Texte (3)    "OUI"                              OUI/NON
+                                                                               (Modèle de maison)
+
+319   ID type garage           Entier       "1"                                (Modèle de maison)
+
+320   Si possibilité           Texte (3)    "OUI"                              OUI/NON
+      mitoyenneté                                                              (Modèle de maison)
+
+321   Surface terrain          Décimal      "185.0"                            (Modèle de maison)
+      nécessaire
+
+322   Localisation             Texte        "75,92,93,94,95"                   Obligatoire (modèle de maison)
+                                                                               Liste de départements séparés par des virgules
+
+323   Nom du modèle            Texte(50)    "Tradition"                        (Modèle de maison)
+
+324   Date réalisation DPE     Date         “25/06/2021”                       Date de réalisation du DPE Format : JJ/MM/AAAA
+
+325   Version DPE              Texte(12)    “DPE_v01-2011”                     (Loi ELAN )Choisir entre DPE_v01-2011 ( DPE
+                                                                               effectué avant le 1 juillet 2021 ) et DPE_v07-2021(
+                                                                               après le 1 juillet 2021 )
+
+326   DPE coût min conso       Décimal      “700.50”                           Montant bas supposé et théorique des dépenses
+                                                                               énergétiques
+                                                                               Montant abonnement inclus
+
+327   DPE coût max conso       Décimal      “1100.22”                          Montant haut supposé et théorique des dépenses
+                                                                               énergétiques
+                                                                               Montant abonnement inclus
+
+328   DPE Année de             Entier       “2021”                             Année de référence utilisée pour établir la
+      référence conso                                                          simulation des dépenses annuelles (champs
+                                                                               326/327)
+                                                                               Est modifié DPE date référence conso
+
+      DPE date référence       Date         “01/01/2021”                       Date de référence utilisée pour établir la simulation
+      conso                                                                    des dépenses d’énergie
+                                                                               date au format JJ/MM/AAAA
+
+
+
+       SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                          21
+       Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+329   Surface terrasse       Décimal     “45.79”     Surface terrasse ( associé au champs 48 “terrasse” )
+
+330   DPE coût conso         Décimal     “2100.22”   Montant à utiliser pour les DPE réalisés avant le 1er
+      annuelle                                       juillet 2021
+                                                     Montant abonnement inclus
+
+331   Loyer de base          Décimal     “1000.00”   Loyer hors charge. A transmettre même si le bien
+                                                     n’est pas soumis à l’encadrement des loyers.
+                                                     https://www.legifrance.gouv.fr/jorf/id/JORFTEXT00
+                                                     0045118966
+
+332   Loyer de référence     Décimal     “1200.00”   Montant du loyer de référence majoré
+      majoré
+
+333   Encadrement des        Texte (3)   "OUI"       OUI / NON - Oui si soumis à l’encadrement des
+      loyers                                         loyers
+
+334   Conso énergie finale   Entier      “185”       Consommation annuelle en énergie finale au m2
+                                                     exprimée en kWh/m2/an.
+
+                                                     Pour être prise en compte :
+                                                        1. la date de réalisation du DPE (colonne 324)
+                                                              doit être supérieure ou égale au 1er janvier
+                                                              2023
+                                                        2. La version de la DPE doit correspondre à
+                                                              “DPE_v07-2021” (colonne 325).
+                                                        3. la valeur doit être un entier (l’unité ne doit
+                                                              pas être indiquée. Par exemple “185 kWh”
+                                                              n’est pas un format valide)
+
+                                                     Si la donnée ne respecte pas une des règles
+                                                     ci-dessus, elle ne sera pas exploitée.
+
+
+
+
+                                                     SeLoger - 65, rue Ordener - 75018 Paris France
+         22
+                                                       Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+                                Unicité des références d’annonces
+
+     Afin d’améliorer la mise en ligne des annonces, des traitements spécifiques ont été mis en place,
+cependant ces traitements reposent sur l’unicité des références des annonces.
+
+     Nous insistons donc sur l’importance du champ 175 (Identifiant technique) qui doit être renseigné de
+manière unique pour chaque annonce d’une même agence. Cet identifiant technique n’est pas affiché sur nos
+supports, seule la référence de l’annonce (champ 2) est affichée.
+
+      Cet identifiant doit être constant pour toute la durée de vie de l’annonce.
+
+      En cas d’anomalie, le flux du client concerné pourra être suspendu et les annonces dépubliées.
+
+
+                           Spécifications du fichier de configuration
+
+Le fichier de configuration nommé « Config.txt » comporte les lignes ci-dessous :
+
+        Version=4.12
+        Application= nom de votre logiciel / Version de votre logiciel
+        Devise=Euro
+
+      Dans le cas où vous transmettez des informations dans les champs personnalisés (champs 136 à 160)
+rajoutez pour chaque champ sa description
+
+Exemple :
+       Champperso1=Siret de l’agence
+       Champperso2=Numéro de carte pro
+       Champperso3=taxe foncière
+
+Attention : ces champs sont traités au cas par cas, si vous les utilisez, veuillez prendre contact avec notre
+service technique pour nous indiquer leur contenu.
+
+
+
+
+                  Spécifications du fichier de configuration des photos
+
+      Le fichier de configuration des photos nommé « Photos.cfg » comporte 1 ligne décrivant le mode d’envoi
+des photos :
+
+Mode=URL        Dans le cas où vous envoyez les url des photos dans le fichier annonces.
+
+Mode=FULL       Dans le cas où vous renvoyez l’intégralité des photos lors de chaque transfert.
+
+Mode=DIFF       Dans le cas où vous fonctionnez en mode différentiel, c’est à dire que vous ne renvoyez lors de
+                chaque transfert que les nouvelles photos ou les photos ayant été modifiées.
+
+
+ SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                            23
+ Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+              Spécifications des fichiers photos / plans / visites virtuelles
+     Les fichiers photos et plans doivent être au format JPG, GIF, PNG ou BMP et peuvent être transmis de 2
+manières :
+     Attention : Quel que soit le mode de transmission, le poids d'une photo ne doit pas excéder 40 Mo
+
+
+Transmission par URL (Conseillée)
+
+      Vous avez la possibilité de mentionner une URL pointant sur la photo dans les champs photo1, photo2,
+etc… La taille du fichier ZIP se trouve ainsi réduite car les photos ne sont plus jointes et le transfert vers notre
+serveur FTP est accéléré. Notre système se charge de télécharger les photos depuis l’URL mentionnée et de les
+stocker sur nos serveurs.
+
+      Point important :
+      D’un envoi à l’autre, seules les nouvelles URL ou les URL modifiées sont téléchargées. Si une image a été
+modifiée alors que son URL n’a pas changé, celle-ci ne sera pas mise à jour. Pour contourner ce problème, vous
+pouvez insérer dans les URL une variable donnant par exemple la date de dernière modification de la photo,
+ou un hash (CRC, MD5 …) exemple :
+
+                   http://www.serveurphotos.com/annonce123/photo1.jpg?200804011654
+
+      Attention : Vous ne devez EN AUCUN CAS changer la totalité des URL entre chaque envoi, ceci ralentit
+considérablement la mise en ligne des annonces et nous pourrions être amené à stopper le téléchargement
+des photos pour votre passerelle.
+
+Transmission par Fichiers Joints
+
+      Nous vous conseillons fortement d’utiliser le format JPG en retaillant si possible les images avant leur
+envoi de manière à réduire la taille du fichier transféré. Vous trouverez ci-dessous les standards que nous
+appliquons sur chaque image avant incorporation dans nos bases de données :
+
+                      Taille maximale (largeur / hauteur) : 1440 pixels / 1440 pixels
+                      DPI (ou PPP) :                                75
+
+Chaque image se trouve ainsi réduite à une taille d’environ 20 à 150 Ko maximum.
+
+Visites Virtuelles / Vidéos
+
+Les annonces peuvent disposer d’un seul des 2 types de visites virtuelles disponibles :
+
+    -   Champ 103 - Photo panoramique :            Image au format panoramique (vue à 360° complète) qui
+        sera affichée par une applet Java.
+
+    -   Champ 104 - URL :      Pointant OBLIGATOIREMENT vers une page qui sera affichée en pop-up ne
+        contenant aucune autre donnée que la visite virtuelle du bien.
+
+
+
+                                                                       SeLoger - 65, rue Ordener - 75018 Paris France
+  24
+                                                                         Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+Si vous disposez d’autres techniques, vous pouvez prendre contact avec nous.
+
+
+                                           Loi Alur (Mars 2017)
+
+      Dans le cadre de l'application de la loi Alur et de sa modification appliquée début 2017, nous avons
+ajouté les informations suivantes :
+
+Pour les Ventes
+
+    ⮚   Champ 256 (OBSOLETE – voir champs 302)
+
+    ⮚   Champ 15 - Honoraires - ATTENTION : MISE A JOUR DE L’UTILISATION DE CE CHAMP à partir de
+        la révision 006
+            o Si les honoraires sont à la charge de l'acquéreur, honoraires TTC en pourcentage du prix hors
+                honoraires.
+                Note : pour une annonce maison + terrain pour les clients Construire, les honoraires
+                s'appliquent sur le prix du terrain seul. (annonces de constructeurs de maisons individuelles)
+    ⮚   Champ 258 - Bien en copropriété: OUI / NON
+
+    ⮚   Champ 259 - Nombre de lots de la copropriété
+
+    ⮚   Champ 260 - Montant des charges annuelles :
+            o     Montant moyen annuel de la quote-part du budget prévisionnel des dépenses courantes
+    ⮚   Champ 261 - Syndicat des copropriétaires en procédure: OUI / NON
+
+    ⮚   Champ 262 - Détail de la procédure du syndicat des copropriétaires:
+            o  Si le syndicat des copropriétaires est en cours de procédure -> Détails concernant cette
+               procédure
+    ⮚   Champ 302 – Honoraires à la charge de :
+           o "1" pour Acquéreur
+           o "2" pour Vendeur
+           o "3" pour Acquéreur ET Vendeur
+    ⮚   Champ 303 – Prix du bien hors honoraires à la charge de l’acquéreur
+
+
+
+Pour les Locations
+
+    ⮚   Champ 15- Honoraires – ATTENTION : MISE A JOUR DE L’UTILISATION DE CE CHAMP à partir de
+      la révision 006
+          o Montant des honoraires en TTC à la charge du locataire (en euros)
+    ⮚ Champ 304 – Modalités charges locataire :
+          o "1" pour Forfaitaires mensuelles
+          o "2" pour Prévisionnelles mensuelles avec régularisation annuelle
+          o "3" pour Remboursement annuel par le locataire
+
+
+ SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                           25
+ Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+   ⮚   Champ 305 - Complément de loyer éventuel
+   ⮚   Champ 306 - Part honoraires état des lieux
+
+
+
+Donnée Agence
+
+   ⮚   Champ 307 – URL du Barème des honoraires de l’Agence
+   Si plusieurs URL sont renseignées pour une MÊME AGENCE, ces données seront IGNOREES.
+
+
+
+
+                                                              SeLoger - 65, rue Ordener - 75018 Paris France
+  26
+                                                                Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+                              Codifications des champs spéciaux
+
+                                             TYPES DE CHAUFFAGE
+
+128=radiateur,                   4480=collectif mixte,                  8704=individuel gaz,
+256=sol,                         4608=collectif gaz,                    8832=individuel gaz radiateur,
+384=mixte,                       4736=collectif gaz radiateur,          8960=individuel gaz sol,
+512=gaz,                         4864=collectif gaz sol,                9088=individuel gaz mixte,
+640=gaz radiateur,               4992=collectif gaz mixte,              9216=individuel fuel,
+768=gaz sol,                     5120=collectif fuel,                   9344=individuel fuel radiateur,
+896=gaz mixte,                   5248=collectif fuel radiateur,         9472=individuel fuel sol,
+1024=fuel,                       5376=collectif fuel sol,               9600=individuel fuel mixte,
+1152=fuel radiateur,             5504=collectif fuel mixte,             10240=individuel électrique,
+1280=fuel sol,                   6144=collectif électrique,             10368=individuel électrique radiateur,
+1408=fuel mixte,                 6272=collectif électrique radiateur,   10496=individuel électrique sol,
+2048=électrique,                 6400=collectif électrique sol,         10624=individuel électrique mixte,
+2176=électrique radiateur,       6528=collectif électrique mixte,       16384=climatisation réversible,
+2304=électrique sol,             8192=individuel,                       20480=climatisation réversible centrale,
+2432=électrique mixte,           8320=individuel radiateur,             24576=climatisation réversible
+4096=collectif,                  8448=individuel sol,                   individuelle
+4224=collectif radiateur,        8576=individuel mixte,
+4352=collectif sol,
+
+
+
+
+                                              TYPES DE CUISINES
+
+1 = aucune                       4 = industrielle                       7 = séparée équipée
+2 = américaine                   5 = coin cuisine                       8 = coin cuisine équipé
+3 = séparée                      6 = américaine équipée                 9 = équipée
+
+
+                                             SOUS-TYPES DE BIEN
+
+bastide                          Local d'activités                      mas
+bastidon                         Local de stockage                      mazet
+bergerie                         Loft                                   moulin
+cabanon                          Lotissement                            pavillon
+Chalet                           maison ancienne                        Programme
+Chambre de service               maison basque                          Projet (uniquement pour "Construire")
+corps de ferme                   maison charentaise                     propriété
+demeure                          maison contemporaine                   Propriété de chasse
+domaine                          maison d'architecte                    Propriété équestre
+Duplex                           Maison d'hôte                          Restauration
+échoppe                          Maison de loisirs                      Riad
+Entrepôt                         maison de maître                       Studette
+Exploitation agricole            maison de village                      Terrain agricole
+Exploitation viticole            maison de ville                        Terrain commercial
+ferme                            Maison en pierre                       Terrain de loisirs
+Fermette                         maison jumelée                         Terrain industriel
+grange                           maison landaise                        Terrain viticole
+
+
+
+SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                27
+Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+Île                     maison longère                     toulousaine
+Immeuble commercial     Maison provençale                  Triplex
+Immeuble de bureaux     Maison traditionnelle              villa
+Immeuble mixte          manoir
+
+
+
+
+                      TYPES DE GARAGE (modèle de maison)
+
+1 = accolé
+2 = intégré
+3 = en sous-sol
+
+
+
+                       TYPES D’ETAGE (modèle de maison)
+
+1 = étage plein
+2 = étage partiel
+3 = demi étage
+
+
+
+
+                                                      SeLoger - 65, rue Ordener - 75018 Paris France
+ 28
+                                                        Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+                                            Locations Vacances
+
+      Au niveau de chaque annonce, vous avez la possibilité de nous envoyer une liste complète des périodes
+de disponibilité et des périodes pour définir la signification de basse / haute saison. Voici le détail du format
+des champs 182, 183 & 184 réservés à cet effet.
+
+       Champ 182 (Périodes de disponibilité)
+
+       Vous devez nous envoyer une liste des périodes séparées par le caractère ; . Nous allons traiter chaque
+période de votre liste et nous allons déclarer l’annonce de location vacances comme étant DISPONIBLE entre
+le jour de début de votre période (incluse dans la disponibilité) et le jour de fin de votre période (incluse dans
+la disponibilité). Un jour qui n’est pas compris dans au moins une des périodes indiquées sera considéré
+comme étant NON DISPONIBLE.
+
+       Voici le format de la liste :
+
+             jj/mm/aaaa- jj/mm/aaaa; jj/mm/aaaa- jj/mm/aaaa;…….. ; jj/mm/aaaa- jj/mm/aaaa;
+
+       Si ce champ est vide, le bien est par défaut disponible sans restriction de dates.
+
+Exemple 1 : Votre annonce est disponible entre 1er janvier 2009 et 1er juin 2009 et entre 1er septembre 2009 et 30
+Novembre 2009. Dans le champ 182, nous aurons l’information suivante :
+
+                                  01/01/2009-01/06/2009;01/09/2009-30/11/2009
+
+Exemple 2 : Votre annonce est disponible toute l’année 2009 sauf entre 15 juillet 2009 et 25 août 2009. Dans le
+champ 182, nous aurons l’information suivante :
+
+                                  01/01/2009-14/07/2009;26/08/2009-31/12/2009
+
+
+         Champ 183 & 184 (Périodes basse / haute saison)
+
+      Vous avez la possibilité de nous envoyer les périodes qui définissent la signification de basse / haute
+saison pour une location vacances.. Pour cela, il faut nous envoyer dans la colonne n° 183 / 184 la liste des
+périodes séparées par le caractère ‘ ;’.
+
+Voici le format de la liste :
+
+                                jj/mm - jj/mm; jj/mm - jj/mm;…….. ; jj/mm - jj/mm;
+
+
+
+
+ SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                     29
+ Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+                                                Publications
+
+       Vous pouvez laisser la possibilité à l’agence de choisir pour chaque annonce sur quel(s) support(s) elle
+paraîtra en remplissant le champ 82 (Publications).
+       Par défaut, lorsque cette zone est vide, l’annonce paraît automatiquement sur tous les supports dont
+dispose l’agence. Si vous utilisez cette zone, vous devez y inclure la liste des codes de supports sur lesquels
+paraîtra l’annonce séparés par des virgules.
+
+        Codes supports :
+
+SL       = Seloger (et services partenaires)                                 www.seloger.com
+BD       = Belles Demeures                                                   www.bellesdemeures.com
+WA       = Site web de l’agence si celui-ci est géré par Seloger.com
+WI       = Webimm                                                            www.webimm.com
+AGB      = Agorabiz                                                          www.agorabiz.com
+RIPP     = Réseau International Profil Plus
+PC       = Pack commercialisateur
+
+
+
+                    Évolutions DPE 1er juillet 2021 puis 1er janvier 2022
+
+       Les évolutions DPE du 1er juillet 2021 concernent à ce jour exclusivement les annonces de vente et de
+location de biens anciens à usage d’habitation.
+       Autrement dit, la notion de DPE demeure inchangée pour les autres types de biens.
+
+       Afin de prendre en compte les biens non soumis aux DPE et les DPE vierges, nous avons fait évoluer nos
+spécifications. Désormais vous pouvez mentionner dans les champs 177 (Bilan consommation énergie) et 179
+(Bilan émission GES) les valeurs suivantes :
+
+
+    ⮚    "VI"    dans le cas d'un DPE vierge
+
+    ⮚    "NS"    dans le cas d'un DPE non soumis
+
+    Lorsque le DPE est vierge ou non soumis, il suffit alors de laisser les champs 176 (Consommation énergie)
+et 178 (Emission GES) vides car ceux-ci ne seront pas pris en compte.
+
+     Suite à la loi ELAN, la notion de DPE vierge disparaît pour les nouveaux DPE et des nouveaux champs
+apparaissent : “Date réalisation DPE” et “Version DPE” visent à sécuriser la qualité des données et la bonne
+distinction des DPE ante 1er juillet 2021 et les DPE post 30 juin 2021 ( Champs 324 et 325 )
+
+      Les données des champs 326 à 328 ne seront utilisées en publication sur nos supports grands publics
+qu’à compter du 1er janvier 2022. Les champs sont disponibles en entrée de flux pour vous permettre dès à
+présent de réaliser le projet en une seule itération, si vous le souhaitez.
+
+
+
+
+                                                                       SeLoger - 65, rue Ordener - 75018 Paris France
+  30
+                                                                         Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+                                Évolutions DPE du 1er janvier 2023
+
+       Au 1er janvier 2023, la consommation d’énergie primaire et la consommation d’énergie finale doivent
+figurer sur la première page du DPE.
+
+       Afin de prendre en compte l’évolution de la DPE du 1er janvier 2023, nous avons fait évoluer nos
+spécifications. Désormais vous pouvez mentionner dans le champ 334 la consommation annuelle au m²
+d’énergie finale. Pour la consommation d’énergie primaire rien ne change, le champ 176 est utilisé pour
+récupérer la valeur.
+
+
+
+                                              Géolocalisation
+
+      Pour géolocaliser un bien, vous devez nous transmettre :
+
+          ●    L’adresse exacte que nous géocoderons
+          ●    Les coordonnées GPS pour information qualité.
+
+      Si vous nous envoyez des données, elles seront exploitées. Nous vous demandons de nous envoyer
+uniquement des données exactes. Toute donnée retravaillée pour flouter ou masquer l’emplacement du bien
+ne doit pas être envoyée.
+
+      Le quartier est désormais calculé à partir des données adresses (ou coordonnées GPS) transmises. L’id
+quartier est une donnée qui n’est plus prise en compte.
+
+       Les clients ont la possibilité de paramétrer dans leur espace MySeLoger Pro le degré de précision de
+géolocalisation de leurs biens. Chaque client peut changer ce paramétrage pour une localisation exacte selon
+le type d’annonce. Les annonces concernées s’afficheront alors via un pin point sur la carte. L’internaute n’aura
+jamais accès à l’adresse.
+
+      Nous allons renforcer régulièrement les tests de cohérence entre les données de localisation transmises
+(adresse, coordonnées GPS, CP, Ville, Pays) pour garantir la qualité de l’expérience de nos utilisateurs.
+
+
+                                    Envoi sur le serveur FTP
+
+      Si l’agence dispose de plusieurs de nos supports, un seul envoi est nécessaire (les annonces seront
+automatiquement envoyées sur les différents supports par nos soins en tenant compte du champ 82-
+Publications)
+
+                Serveur FTP :                      transferts.seloger.com
+                Utilisateur :                      Nous contacter
+                Mot de passe :                     Nous contacter
+                Nom du fichier :                   <NomDuLogiciel>_<IdentifiantAgence>.zip
+
+
+
+
+ SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                              31
+ Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+Le <NomDuLogiciel> vous sera transmis lors de la validation des spécifications techniques,
+l'<IdentifiantAgence> vous sera transmis par notre support client lors de la demande d'activation de la
+passerelle.
+
+    Exemple : si le nom du logiciel est IMMO et si l’identifiant de l’agence (fourni par nos services) est
+MONAGENCE, le fichier transféré doit s’appeler immo_monagence.zip
+
+
+
+
+                                                                    SeLoger - 65, rue Ordener - 75018 Paris France
+  32
+                                                                      Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+                                              Envois groupés
+
+      Si vous souhaitez centraliser l'envoi des données pour le compte de plusieurs agences et nous envoyer
+un fichier unique contenant les annonces de toutes les agences disposant de la passerelle, vous devez
+impérativement remplir le champ 1 avec l'identifiant.
+
+      Veuillez prendre contact avec nos services pour la mise en place de ce type de passerelle.
+
+
+
+
+                      Tests et mise en production de votre passerelle
+
+        Avant la mise en production de votre passerelle, nous devons passer par une phase de test de votre
+fichier. Vous pouvez nous envoyer une extraction test par email sur hotline.passerelles@seloger.com vous
+recevrez en retour une validation ainsi que les accès FTP pour la mise en production.
+
+       Nous mettons à votre disposition un outil de test de votre fichier CSV qui vous permet de vérifier son
+format et les éléments principaux pour sa validité avant de nous l’envoyer. Cet outil est téléchargeable à
+l’adresse suivante : http://flux.seloger.com/TesteurImmo.4.08.zip
+
+Attention, cet outil vous permettra des tests jusqu’à la version de 4.08 février 2018. Les nouveautés des
+versions ultérieures ne sont pas disponibles sur le testeurimmo.
+
+
+                                           Formats spécifiques
+
+       Si vous n’avez pas la possibilité de nous fournir les spécificités décrites dans cette documentation,
+n'hésitez pas à nous contacter afin de nous fournir vos propres spécifications. Après étude de faisabilité nous
+ferons en sorte de nous adapter à votre format.
+
+      Cette documentation décrit notre procédure standard mais en aucun cas ne l’impose. N’hésitez donc
+pas à contacter notre service technique (dont les coordonnées figurent en tête de ce document) si vous êtes
+dans ce cas de figure.
+
+
+
+
+ SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                33
+ Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+                                    Notes et recommandations
+
+      Les présentes spécifications peuvent être amenées à évoluer avec le temps, cependant nous
+garantissons une compatibilité ascendante lors de chaque évolution afin de garder fonctionnelles les
+passerelles existantes.
+
+      Lorsqu’une agence désire envoyer pour la première fois ses annonces, il est impératif qu’elle prenne
+contact avec notre service hot line AVANT d’effectuer l’envoi.
+
+       Le délai de mise en ligne des annonces après chaque envoi peut s’étendre entre 1h et 6h suivant la
+charge au moment de la réception du fichier. Chaque agence peut envoyer son fichier au rythme souhaité, il
+est toutefois recommandé de faire un envoi au moins une fois par semaine (avec un maximum de 3 à 4 envois
+par jour) afin de garantir la fraîcheur des annonces sur les différents supports.
+
+       Afin de garantir une qualité de service sur nos supports, nous pouvons être amenés à désactiver (sur les
+sites seloger.com, immostreet.com et partenaires) certaines annonces ne respectant pas notre charte de
+qualité. Vous trouverez ci-dessous une liste non exhaustive des principaux critères de qualité nécessaires à la
+validation d’une annonce :
+
+
+          ✔ Unicité de la référence
+
+          ✔ Le code postal doit obligatoirement être fourni en entier.
+
+          ✔ La ville doit être renseignée et correspondre au code postal fourni.
+
+          ✔ Le prix / loyer doit être renseigné et contenir une valeur cohérente.
+
+          ✔ Les honoraires doivent être renseignés.
+
+          ✔ L’annonce doit comporter un minimum de descriptif pour les internautes.
+
+
+Aucun champ ne doit contenir de code HTML. (À l’exception de la balise <BR> pour les retours à la ligne)
+
+Les caractères accentués ne doivent pas être transmis en code HTML.
+
+Concernant les photos : Toute image autre qu’une photo du bien ou un plan pourra être rejetée (exemple logo
+de l’agence).
+
+
+
+
+                                                                    SeLoger - 65, rue Ordener - 75018 Paris France
+  34
+                                                                      Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+                                          Historique des Révisions
+VERSION PRECEDENTE       OBSERVATIONS
+
+4.08 - Révision 001      Modification champ
+                         Nom : Bilan consommation énergie
+                         Position : Colonne 177
+                            Type: Texte
+                            Description : Classification de la consommation d'énergie, la valeurs "VI" (vierge) et "NS" (non soumis)
+                         sont désormais autorisées
+                         Modification champ
+                         Nom : Bilan émission GES
+                         Position : Colonne 179
+                            Type: Texte
+                            Description : OUI : Classification des émissions GES, les valeurs "VI" (vierge) et "NS" (non soumis) sont
+                         désormais autorisées
+
+                         Nouveaux champs Photo : Photo21 à Photo30
+                         Position : Colonne 264 à 273
+
+                         Nouveaux champs Titre photo : Titre photo10 à Titre photo30
+                         Position : Colonne 274 à 294
+
+                         Mise à jour Annexe : Liste des sous types de bien
+
+                         Dispositif Loi Alur
+                         Nouveau champ
+                         Nom : Honoraires charge acquéreur
+                         Position : Colonne 256
+                            Type: OUI/NON
+                            Description : OUI : Les honoraires sont à la charge de l'acquéreur.
+                         Nouveau champ
+                         Nom : Pourcentage honoraires TCC
+                         Position : Colonne 257
+                            Type: Décimal
+                            Description : Honoraires TTC inclus à la charge de l'acquéreur en % du prix.
+                         Nouveau champ
+                         Nom : En copropriété
+                         Position : Colonne 258
+                            Type: OUI/NON
+                            Description : Le bien est-il dans une copropriété
+                         Nouveau champ
+                         Nom : Nombre de lots
+                         Position : Colonne 259
+                            Type: Entier
+                            Description : Nombre de lots de la copropriété
+                         Nouveau champ
+                         Nom : Charges annuelles
+                         Position : Colonne 260
+                            Type: Décimal
+                            Description : Montant moyen annuel de la quote-part du budget prévisionnel des dépenses courantes.
+
+
+
+
+  SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                                 35
+  Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+                      Nouveau champ
+                      Nom : Syndicat des copropriétaires en procédure
+                      Position : Colonne 261
+                        Type: OUI/NON
+                        Description : OUI : Le syndicat des copropriétaires fait l'objet d'une procédure.
+                      Nouveau champ
+                      Nom : Détail procédure du syndicat des copropriétaires
+                      Position : Colonne 262
+                        Type: Texte
+                        Description : Détail de la procédure en cours dont le syndicat des copropriétaires fait l'objet.
+                      Nouveau champ
+                      Nom : Champ personnalisé 26
+                      Position : Colonne 263
+                        Type: Texte
+                        Description : Laisser vide
+
+4.08 - Révision 002   Nouveau champ
+(octobre 2014)        Nom : Prix du terrain
+                      Position : Colonne 295
+                         Type: Décimal
+                         Description : Prix du terrain seul (Dans le cas d'une vente "maison + terrain" sur Construire)
+                      Nouveau champ
+                      Nom : Prix du modèle de maison
+                      Position : Colonne 296
+                         Type: Décimal
+                         Description : Prix de la maison seule (Dans le cas d'une vente "maison + terrain" sur Construire)
+                      Nouveau champ
+                      Nom : Nom de l'agence gérant le terrain
+                      Position : Colonne 297
+                         Type: Texte
+                         Description : Nom de l'agence gérant la vente du terrain (Dans le cas d'une vente "maison + terrain"
+                      sur Construire)
+
+4.08 Révision 003     Champ publication
+(juillet 2015)        IS (Immostreet) et SN (SNPI) ne sont plus gérés
+
+4.08 - Révision 004   Nouveau champ
+(novembre 2015)       Nom : Latitude
+                      Position : Colonne 298
+                        Type: Décimal
+                        Description : Latitude du bien
+                      Nouveau champ
+                      Nom : Longitude
+                      Position : Colonne 299
+                        Type: Décimal
+                        Description : Longitude du bien
+
+4.08 - Révision 005   Nouveau champ
+(Janvier 2016)        Nom : Précision GPS
+                      Position : Colonne 300
+                        Type: Entier
+                        Description : Degré de la précision GPS (Cf section Précision GPS)
+
+
+
+
+                                                                             SeLoger - 65, rue Ordener - 75018 Paris France
+    36
+                                                                               Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+4.08 - Révision 006      Nouveau champ obligatoire
+(Mars 2017)              Nom : Version + révision du format SeLoger utilisé
+                         Position : Colonne 301
+                           Type: Texte
+                           Description : Version du format SeLoger utilisé (pour la 4.08 révision 007, renseigné « 4.08-007 »)
+
+                         Champ obsolète
+                         Nom : Identifiant quartier
+                         Position : Colonne 180
+                         Champ obsolète
+                         Nom : Honoraires charge acquéreur
+                         Position : Colonne 256
+                         Champ obsolète
+                         Nom : Pourcentage honoraires TTC
+                         Position : Colonne 257
+
+                         Dispositif Loi Alur (Avril 2017)
+
+                         Modification champ
+                         Nom : Honoraires
+                         Position : Colonne 15
+                            Type: Décimal
+                            Description :
+                                Ventes : Honoraires TTC à la charge de l’acquéreur en pourcentage du prix du bien hors honoraires
+                                Locations : Montant des honoraires en TTC à la charge du locataire (en euros)
+                         Nouveau champ
+                         Nom : Honoraires à la charge de
+                         Position : Colonne 302
+                            Type: Entier
+                            Description : Spécifie la(les) personne(s) en charge du règlement des honoraires à l’issue de la
+                         transaction
+                         Nouveau champ
+                         Nom : Prix hors honoraires acquéreur
+                         Position : Colonne 303
+                            Type: Décimal
+                            Description : Prix du bien hors honoraires acquéreur
+                         Nouveau champ
+                         Nom : Modalités charges locataire
+                         Position : Colonne 304
+                            Type: Entier
+                            Description : Modalité de règlement des charges par le locataire.
+                         Nouveau champ
+                         Nom : Complément de Loyer
+                         Position : Colonne 305
+                            Type: Décimal
+                            Description : Complément éventuel de Loyer
+                         Nouveau champ
+                         Nom : Part honoraires état des lieux
+                         Position : Colonne 306
+                            Type: Décimal
+                            Description : Montant TTC de la part des honoraires pour la réalisation de l’état des lieux
+
+
+
+
+  SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                                 37
+  Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+4.08 - Révision 007   Modèles de maison
+(Février 2018)
+                      Nouveau champ obligatoire
+                      Nom : Prix minimum
+                      Position : Colonne 308
+                        Type: Décimal
+                        Description : prix minimum du modèle
+
+                      Nouveau champ
+                      Nom : Prix maximum
+                      Position : Colonne 309
+                        Type: Décimal
+                        Description : prix maximum du modèle
+
+
+
+
+                      Nouveau champ obligatoire
+                      Nom : surface minimale
+                      Position : Colonne 310
+                        Type: Décimal
+                        Description : surface minimale du modèle
+
+                      Nouveau champ
+                      Nom : surface maximale
+                      Position : Colonne 311
+                        Type: Décimal
+                        Description : surface maximale du modèle
+
+                      Nouveau champ obligatoire
+                      Nom : nombre de pièces minimum
+                      Position : Colonne 312
+                        Type: Entier
+                        Description : nombre de pièces minimum du modèle
+
+                      Nouveau champ
+                      Nom : nombre de pièces maximum
+                      Position : Colonne 313
+                        Type: Entier
+                        Description : nombre de pièces maximum du modèle
+
+                      Nouveau champ obligatoire
+                      Nom : nombre de chambres minimum
+                      Position : Colonne 314
+                        Type: Entier
+                        Description : nombre de chambres minimum du modèle
+
+                      Nouveau champ
+                      Nom : nombre de chambres maximum
+                      Position : Colonne 315
+                        Type: Entier
+                        Description : nombre de chambres maximum du modèle
+
+                      Nouveau champ
+
+
+
+
+                                                                     SeLoger - 65, rue Ordener - 75018 Paris France
+    38
+                                                                       Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+                         Nom : ID type étage
+                         Position : Colonne 316
+                           Type: Entier
+                           Description : type d’étage
+
+                         Nouveau champ
+                         Nom : Si combles aménageables
+                         Position : Colonne 317
+                           Type: OUI/NON
+                           Description : Le modèle de maison possède-t-il des combles aménageables
+
+                         Nouveau champ
+                         Nom : Si garage
+                         Position : Colonne 318
+                           Type: OUI/NON
+                           Description : Le modèle de maison possède-t-il un garage
+
+
+
+                         Nouveau champ
+                         Nom : ID type garage
+                         Position : Colonne 319
+                           Type: Entier
+                           Description : type de garage
+
+                         Nouveau champ
+                         Nom : Si possibilité mitoyenneté
+                         Position : Colonne 320
+                           Type: OUI/NON
+                           Description : Le modèle de maison peut-il être mitoyen
+
+                         Nouveau champ
+                         Nom : Surface terrain nécessaire
+                         Position : Colonne 321
+                           Type: Décimal
+                           Description : Surface de terrain nécessaire
+
+                         Nouveau champ obligatoire
+                         Nom : Localisation
+                         Position : Colonne 322
+                           Type: Texte
+                           Description : Liste de départements séparés par des virgules
+
+                         Nouveau champ
+                         Nom : Nom du modèle
+                         Position : Colonne 323
+                           Type: Texte
+                           Description : Nom du modèle de maison
+
+
+4.09                     Nouveau champ
+(Mai 2021)               Nom : Date réalisation DPE
+                         Position : Colonne 324
+                           Type: Date
+
+
+
+
+  SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                     39
+  Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+                    Description : Date de réalisation du DPE Format : JJ/MM/AAAA en association cohérente avec le champs
+                 325
+
+                 Nouveau champ
+                 Nom : Version DPE
+                 Position : Colonne 325
+                   Type: Texte(12)
+                   Description : Version permettant de distinguer les DPE d’avant juillet 2021 ou d’après ; doit être
+                 cohérent avec le champs 324
+
+
+
+                 Nouveau champ
+                 Nom : Dpe Prix Bas
+                 Position : Colonne 326
+                  Type: Décimal
+                  Description : Montant bas supposé et théorique des dépenses énergétiques.
+                 ! Pour usage en publication sur nos supports grands publics à partir du 1er janvier 2022
+
+                 Nouveau champ
+                 Nom : Dpe Prix Haut
+                 Position : Colonne 327
+                  Type: Décimal
+                  Description : Montant haut supposé et théorique des dépenses énergétiques
+                 ! Pour usage en publication sur nos supports grands publics à partir du 1er janvier 2022
+
+                 Nouveau champ
+                 Nom : Année de référence
+                 Position : Colonne 328
+                  Type: Décimal
+                  Description : En association avec les champs 326/327 (simulation coût DPE)
+                 ! Pour usage en publication sur nos supports grands publics à partir du 1er janvier 2022
+
+                 Nouveau champ
+                 Nom : Surface Terrasse
+                 Position : Colonne 329
+                 Type: Décimal
+                 Description : Surface de la terrasse (en association avec le champs 48)
+
+                 Modification champ
+                 Nom : Type de bien
+                 Position : Colonne 4
+                 Type: Texte
+                 Description : Ajout du type de bien “entreprises”
+
+                 Modification champ
+                 Nom : Type de bien
+                 Position : Colonne 202 à 215
+                 Description : Modification de l’éligibilité des champs (ajout “bâtiment”, “boutique”, “local”)
+
+4.10             Modification champ
+(Janvier 2022)   Nom : DPE année de référence conso devient DPE date référence conso
+                 Position : colonne 328
+                 Description : Année de référence devient Date au format JJ/MM/AAAA
+
+
+
+
+                                                                       SeLoger - 65, rue Ordener - 75018 Paris France
+    40
+                                                                         Tél: +33 (0)1 53 38 28 00 - www.seloger.com
+                         Nouveau champ
+                         Nom : DPE coût conso annuelle
+                         Position : Colonne 330
+                         Type: Décimal
+                         Description : Montant à utiliser pour les DPE réalisés avant le 1er juillet 2021. Montant abonnement inclus
+
+4.11                     Nouveaux champs
+(Mars 2022)              Nom : Loyer de base
+                         Position : Colonne 331
+                         Type: Décimal
+                         Description : Loyer hors charge. A transmettre même si le bien n’est pas soumis à l’encadrement des
+                         loyers. https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000045118966
+
+                         Nom : Loyer de référence majoré
+                         Position : Colonne 332
+                         Type: Décimal
+                         Description : Montant du loyer de référence majoré
+
+                         Nom : Encadrement des loyers
+                         Position : Colonne 333
+                         Type: Texte
+                         Valeur : OUI / NON
+                         Description : Oui si soumis à l’encadrement des loyers
+
+4.12                     Nouveau champ
+(Octobre 2023)           Nom : Conso énergie finale
+                         Position : Colonne 334
+                         Type: Entier
+                         Description : Consommation annuelle au m2 en énergie finale
+
+
+
+
+  SeLoger - 65, rue Ordener - 75018 Paris France
+                                                                                                                             41
+  Tél: +33 (0)1 53 38 28 00 – Fax: +33 (0)826 620 629 - www.seloger.com
+
