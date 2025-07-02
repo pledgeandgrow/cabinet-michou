@@ -11,53 +11,158 @@ import { useRouter } from "next/navigation"
 import { format } from "date-fns"
 
 interface FormData {
-  id?: string;
+  id: number;
+  transaction_id: number;
+  typebien_id: number;
+  sous_typebien_id: number;
   reference: string;
-  transaction_id: string;
-  typebien_id: string;
-  sous_typebien_id: string;
-  nom: string;
-  description: string;
   date_dispo: string;
-  prix_hors_honoraires: string;
-  prix_avec_honoraires: string;
-  prix_hors_charges: string;
-  charges: string;
-  charges_details: string;
-  prix_m2: string;
-  honoraires_id: string;
-  honoraires_acheteur: string;
-  honoraires_locataire: string;
-  etat_des_lieux: string;
-  depot_garantie: string;
+  nom: string;
+  surface: number;
+  surface_terrain: number;
+  terrain_agricole: boolean;
+  terrain_constructible: boolean;
+  terrain_rue: boolean;
+  terrain_viabilise: boolean;
+  pieces: number;
+  chambres: number;
+  sdb: number;
+  sde: number;
+  wc: number;
+  wc_separe: boolean;
+  cave: boolean;
+  surface_cave: number;
+  sam: boolean;
+  sejour: boolean;
+  surface_sejour: number;
+  salle_a_manger: boolean;
+  surface_salle_a_manger: number;
+  construction: string;
+  recent: boolean;
+  refait: boolean;
+  travaux: boolean;
+  box: number;
+  parking: number;
+  etage: number;
+  nb_etages: number;
+  ascenseur: boolean;
+  duplex: boolean;
+  nb_balcons: number;
+  surface_balcons: number;
+  terrasse: boolean;
+  nb_terrasses: number;
+  alarme: boolean;
+  chauffage_id: number;
+  cable: boolean;
+  piscine: boolean;
+  entretien: boolean;
+  cuisine: boolean;
+  securite: boolean;
+  historique: boolean;
+  parking_inclus: boolean;
+  lot_neuf: boolean;
+  cheminee: boolean;
+  vue: boolean;
+  entree: boolean;
+  parquet: boolean;
+  placard: boolean;
+  nb_couverts: number;
+  nb_lits_doubles: number;
+  nb_lits_simples: number;
+  vis_a_vis: boolean;
+  calme: boolean;
+  congelateur: boolean;
+  four: boolean;
+  lave_vaisselle: boolean;
+  micro_ondes: boolean;
+  lave_linge: boolean;
+  seche_linge: boolean;
+  internet: boolean;
+  equipement_bebe: boolean;
+  telephone: boolean;
+  proche_lac: boolean;
+  proche_tennis: boolean;
+  proche_pistes: boolean;
+  gardien: boolean;
+  climatisation: boolean;
+  handicapes: boolean;
+  animaux: boolean;
+  digicode: boolean;
+  video: boolean;
+  interphone: boolean;
+  cuisine_id: number;
+  situation_id: number;
+  orientation_sud: boolean;
+  orientation_est: boolean;
+  orientation_ouest: boolean;
+  orientation_nord: boolean;
+  bilan_conso_id: number;
+  consos: number;
+  version_dpe: string;
+  bilan_emission_id: number;
+  emissions: number;
+  exclusivite: boolean;
+  coup_de_coeur: boolean;
+  bail: string;
+  nature_bail: string;
+  duree_bail: number;
+  droit_au_bail: number;
+  loyer_murs: number;
+  is_loyer_cc: string;
+  is_loyer_ht: string;
+  loyer_hors_charges: number;
+  charges: number;
+  complement_loyer: number;
+  loyer_avec_charges: number;
+  loyer_m2: number;
+  loyer_base: number;
+  loyer_ref_majore: number;
+  encadrement_des_loyers: string;
+  charges_id: number;
+  honoraires_locataire: number;
+  etat_des_lieux: number;
+  depot_garantie: number;
+  droit_entree: number;
+  meuble: boolean;
+  prix_masque: boolean;
+  prix_ht: string;
+  prix_hors_honoraires: number;
+  prix_avec_honoraires: number;
+  prix_m2: number;
+  honoraires_id: number;
+  honoraires_acheteur: number;
   copro: boolean;
-  lots: string;
-  quote_part: string;
+  lots: number;
+  quote_part: number;
   procedure_syndic: boolean;
   detail_procedure: string;
-  pieces: string;
-  chambres: string;
-  sdb: string;
-  wc: string;
-  etage: string;
-  ascenseur: string;
-  balcon: string;
-  terrasse: string;
-  jardin: string;
-  cave: string;
-  parking: string;
-  meuble: string;
-  titre: string;
-  surface: string;
   adresse: string;
   quartier: string;
+  ligne: string;
+  station: string;
   cp: string;
   ville: string;
+  cp_reel: string;
+  ville_reel: string;
+  arrondissement: number;
   pays: string;
-  publie: string | boolean;
-  photos?: any[];
-  bilan_conso_id?: string;
-  bilan_emission_id?: string;
+  latitude: number;
+  longitude: number;
+  description: string;
+  panoramique: string;
+  visite_virtuelle: string;
+  valeur_achat: number;
+  montant_rapport: string;
+  activites_commerciales: string;
+  chiffre_affaire: number;
+  longueur_facade: number;
+  si_viager_vendu_libre: boolean;
+  immeuble_type_bureaux: boolean;
+  commentaires: string;
+  negociateur: string;
+  se_loger: string;
+  selection: boolean;
+  publie: boolean;
 }
 
 interface PageParams {
@@ -71,51 +176,158 @@ export default function EditListingPage({ params }: { params: PageParams }) {
   const [typesbiens, setTypesBien] = useState<{id: number, nom: string}[]>([])
   const [typestransactions, setTypesTransactions] = useState<{id: number, nom: string}[]>([])
   const [formData, setFormData] = useState<FormData>({
+    id: 0,
     reference: "",
-    publie: '',
-    transaction_id: "",
-    typebien_id: "",
-    surface: "",
-    sous_typebien_id: "",
+    publie: false,
+    transaction_id: 0,
+    typebien_id: 0,
+    surface: 0,
+    surface_terrain: 0,
+    terrain_agricole: false,
+    terrain_constructible: false,
+    terrain_rue: false,
+    terrain_viabilise: false,
+    sous_typebien_id: 0,
     date_dispo: format(new Date(), "yyyy-MM-dd"),
+    nom: "",
     adresse: "",
     quartier: "",
     ville: "",
     cp: "",
-    prix_hors_honoraires: "",
-    prix_avec_honoraires: "",
-    prix_hors_charges: "",
-    charges: "",
-    charges_details: "",
-    prix_m2: "",
-    honoraires_id: "1",
-    honoraires_acheteur: "",
-    honoraires_locataire: "",
-    etat_des_lieux: "",
-    depot_garantie: "",
+    prix_hors_honoraires: 0,
+    prix_avec_honoraires: 0,
+    loyer_hors_charges: 0,
+    charges: 0,
+    prix_m2: 0,
+    honoraires_id: 1,
+    honoraires_acheteur: 0,
+    honoraires_locataire: 0,
+    etat_des_lieux: 0,
+    depot_garantie: 0,
     copro: false,
-    lots: "",
-    quote_part: "",
+    lots: 0,
+    quote_part: 0,
     procedure_syndic: false,
     detail_procedure: "",
-    pieces: "",
-    chambres: "",
-    sdb: "",
-    wc: "",
-    etage: "",
-    ascenseur: "Non",
-    balcon: "Non",
-    terrasse: "Non",
-    jardin: "Non",
-    cave: "Non",
-    parking: "Non",
-    meuble: "Non",
-    titre: "",
-    description: "",
-    nom: "",
+    pieces: 0,
+    chambres: 0,
+    sdb: 0,
+    sde: 0,
+    wc: 0,
+    wc_separe: false,
+    etage: 0,
+    nb_etages: 0,
+    ascenseur: false,
+    duplex: false,
+    nb_balcons: 0,
+    surface_balcons: 0,
+    terrasse: false,
+    nb_terrasses: 0,
+    cave: false,
+    surface_cave: 0,
+    sam: false,
+    sejour: false,
+    surface_sejour: 0,
+    salle_a_manger: false,
+    surface_salle_a_manger: 0,
+    construction: "",
+    recent: false,
+    refait: false,
+    travaux: false,
+    box: 0,
+    parking: 0,
+    meuble: false,
+    alarme: false,
+    chauffage_id: 0,
+    cable: false,
+    piscine: false,
+    entretien: false,
+    cuisine: false,
+    securite: false,
+    historique: false,
+    parking_inclus: false,
+    lot_neuf: false,
+    cheminee: false,
+    vue: false,
+    entree: false,
+    parquet: false,
+    placard: false,
+    nb_couverts: 0,
+    nb_lits_doubles: 0,
+    nb_lits_simples: 0,
+    vis_a_vis: false,
+    calme: false,
+    congelateur: false,
+    four: false,
+    lave_vaisselle: false,
+    micro_ondes: false,
+    lave_linge: false,
+    seche_linge: false,
+    internet: false,
+    equipement_bebe: false,
+    telephone: false,
+    proche_lac: false,
+    proche_tennis: false,
+    proche_pistes: false,
+    gardien: false,
+    climatisation: false,
+    handicapes: false,
+    animaux: false,
+    digicode: false,
+    video: false,
+    interphone: false,
+    cuisine_id: 0,
+    situation_id: 0,
+    orientation_sud: false,
+    orientation_est: false,
+    orientation_ouest: false,
+    orientation_nord: false,
+    bilan_conso_id: 0,
+    consos: 0,
+    version_dpe: "",
+    bilan_emission_id: 0,
+    emissions: 0,
+    exclusivite: false,
+    coup_de_coeur: false,
+    bail: "",
+    nature_bail: "",
+    duree_bail: 0,
+    droit_au_bail: 0,
+    loyer_murs: 0,
+    is_loyer_cc: "",
+    is_loyer_ht: "",
+    complement_loyer: 0,
+    loyer_avec_charges: 0,
+    loyer_m2: 0,
+    loyer_base: 0,
+    loyer_ref_majore: 0,
+    encadrement_des_loyers: "",
+    charges_id: 0,
+    droit_entree: 0,
+    prix_masque: false,
+    prix_ht: "",
+    ligne: "",
+    station: "",
+    cp_reel: "",
+    ville_reel: "",
+    arrondissement: 0,
     pays: "France",
-    bilan_conso_id: "none",
-    bilan_emission_id: "none",
+    latitude: 0,
+    longitude: 0,
+    description: "",
+    panoramique: "",
+    visite_virtuelle: "",
+    valeur_achat: 0,
+    montant_rapport: "",
+    activites_commerciales: "",
+    chiffre_affaire: 0,
+    longueur_facade: 0,
+    si_viager_vendu_libre: false,
+    immeuble_type_bureaux: false,
+    commentaires: "",
+    negociateur: "",
+    se_loger: "",
+    selection: false,
   })
 
   const router = useRouter()
@@ -150,53 +362,158 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         setTypesBien(typesbiensData)
         setTypesTransactions(typestransactionsData)
         setFormData({
-          publie: annonceData.publie,
-          surface: annonceData.surface?.toString() || "",
+          id: Number(annonceData.id) || 0,
+          transaction_id: Number(annonceData.transaction_id) || 0,
+          typebien_id: Number(annonceData.typebien_id) || 0,
+          sous_typebien_id: Number(annonceData.sous_typebien_id) || 0,
           reference: annonceData.reference || "",
-          transaction_id: annonceData.transaction_id?.toString() || "",
-          typebien_id: annonceData.typebien_id?.toString() || "",
-          sous_typebien_id: annonceData.sous_typebien_id?.toString() || "",
           date_dispo: annonceData.date_dispo ? format(new Date(annonceData.date_dispo), "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"),
+          nom: annonceData.nom || "",
+          surface: Number(annonceData.surface) || 0,
+          surface_terrain: Number(annonceData.surface_terrain) || 0,
+          terrain_agricole: Boolean(annonceData.terrain_agricole) || false,
+          terrain_constructible: Boolean(annonceData.terrain_constructible) || false,
+          terrain_rue: Boolean(annonceData.terrain_rue) || false,
+          terrain_viabilise: Boolean(annonceData.terrain_viabilise) || false,
+          pieces: Number(annonceData.pieces) || 0,
+          chambres: Number(annonceData.chambres) || 0,
+          sdb: Number(annonceData.sdb) || 0,
+          sde: Number(annonceData.sde) || 0,
+          wc: Number(annonceData.wc) || 0,
+          wc_separe: Boolean(annonceData.wc_separe) || false,
+          cave: Boolean(annonceData.cave) || false,
+          surface_cave: Number(annonceData.surface_cave) || 0,
+          sam: Boolean(annonceData.sam) || false,
+          sejour: Boolean(annonceData.sejour) || false,
+          surface_sejour: Number(annonceData.surface_sejour) || 0,
+          salle_a_manger: Boolean(annonceData.salle_a_manger) || false,
+          surface_salle_a_manger: Number(annonceData.surface_salle_a_manger) || 0,
+          construction: annonceData.construction || "",
+          recent: Boolean(annonceData.recent) || false,
+          refait: Boolean(annonceData.refait) || false,
+          travaux: Boolean(annonceData.travaux) || false,
+          box: Number(annonceData.box) || 0,
+          parking: Number(annonceData.parking) || 0,
+          etage: Number(annonceData.etage) || 0,
+          nb_etages: Number(annonceData.nb_etages) || 0,
+          ascenseur: Boolean(annonceData.ascenseur) || false,
+          duplex: Boolean(annonceData.duplex) || false,
+          nb_balcons: Number(annonceData.nb_balcons) || 0,
+          surface_balcons: Number(annonceData.surface_balcons) || 0,
+          terrasse: Boolean(annonceData.terrasse) || false,
+          nb_terrasses: Number(annonceData.nb_terrasses) || 0,
+          alarme: Boolean(annonceData.alarme) || false,
+          chauffage_id: Number(annonceData.chauffage_id) || 0,
+          cable: Boolean(annonceData.cable) || false,
+          piscine: Boolean(annonceData.piscine) || false,
+          entretien: Boolean(annonceData.entretien) || false,
+          cuisine: Boolean(annonceData.cuisine) || false,
+          securite: Boolean(annonceData.securite) || false,
+          historique: Boolean(annonceData.historique) || false,
+          parking_inclus: Boolean(annonceData.parking_inclus) || false,
+          lot_neuf: Boolean(annonceData.lot_neuf) || false,
+          cheminee: Boolean(annonceData.cheminee) || false,
+          vue: Boolean(annonceData.vue) || false,
+          entree: Boolean(annonceData.entree) || false,
+          parquet: Boolean(annonceData.parquet) || false,
+          placard: Boolean(annonceData.placard) || false,
+          nb_couverts: Number(annonceData.nb_couverts) || 0,
+          nb_lits_doubles: Number(annonceData.nb_lits_doubles) || 0,
+          nb_lits_simples: Number(annonceData.nb_lits_simples) || 0,
+          vis_a_vis: Boolean(annonceData.vis_a_vis) || false,
+          calme: Boolean(annonceData.calme) || false,
+          congelateur: Boolean(annonceData.congelateur) || false,
+          four: Boolean(annonceData.four) || false,
+          lave_vaisselle: Boolean(annonceData.lave_vaisselle) || false,
+          micro_ondes: Boolean(annonceData.micro_ondes) || false,
+          lave_linge: Boolean(annonceData.lave_linge) || false,
+          seche_linge: Boolean(annonceData.seche_linge) || false,
+          internet: Boolean(annonceData.internet) || false,
+          equipement_bebe: Boolean(annonceData.equipement_bebe) || false,
+          telephone: Boolean(annonceData.telephone) || false,
+          proche_lac: Boolean(annonceData.proche_lac) || false,
+          proche_tennis: Boolean(annonceData.proche_tennis) || false,
+          proche_pistes: Boolean(annonceData.proche_pistes) || false,
+          gardien: Boolean(annonceData.gardien) || false,
+          climatisation: Boolean(annonceData.climatisation) || false,
+          handicapes: Boolean(annonceData.handicapes) || false,
+          animaux: Boolean(annonceData.animaux) || false,
+          digicode: Boolean(annonceData.digicode) || false,
+          video: Boolean(annonceData.video) || false,
+          interphone: Boolean(annonceData.interphone) || false,
+          cuisine_id: Number(annonceData.cuisine_id) || 0,
+          situation_id: Number(annonceData.situation_id) || 0,
+          orientation_sud: Boolean(annonceData.orientation_sud) || false,
+          orientation_est: Boolean(annonceData.orientation_est) || false,
+          orientation_ouest: Boolean(annonceData.orientation_ouest) || false,
+          orientation_nord: Boolean(annonceData.orientation_nord) || false,
+          bilan_conso_id: Number(annonceData.bilan_conso_id) || 0,
+          consos: Number(annonceData.consos) || 0,
+          version_dpe: annonceData.version_dpe || "",
+          bilan_emission_id: Number(annonceData.bilan_emission_id) || 0,
+          emissions: Number(annonceData.emissions) || 0,
+          exclusivite: Boolean(annonceData.exclusivite) || false,
+          coup_de_coeur: Boolean(annonceData.coup_de_coeur) || false,
+          bail: annonceData.bail || "",
+          nature_bail: annonceData.nature_bail || "",
+          duree_bail: Number(annonceData.duree_bail) || 0,
+          droit_au_bail: Number(annonceData.droit_au_bail) || 0,
+          loyer_murs: Number(annonceData.loyer_murs) || 0,
+          is_loyer_cc: annonceData.is_loyer_cc || "",
+          is_loyer_ht: annonceData.is_loyer_ht || "",
+          loyer_hors_charges: Number(annonceData.loyer_hors_charges) || 0,
+          charges: Number(annonceData.charges) || 0,
+          complement_loyer: Number(annonceData.complement_loyer) || 0,
+          loyer_avec_charges: Number(annonceData.loyer_avec_charges) || 0,
+          loyer_m2: Number(annonceData.loyer_m2) || 0,
+          loyer_base: Number(annonceData.loyer_base) || 0,
+          loyer_ref_majore: Number(annonceData.loyer_ref_majore) || 0,
+          encadrement_des_loyers: annonceData.encadrement_des_loyers || "",
+          charges_id: Number(annonceData.charges_id) || 0,
+          honoraires_locataire: Number(annonceData.honoraires_locataire) || 0,
+          etat_des_lieux: Number(annonceData.etat_des_lieux) || 0,
+          depot_garantie: Number(annonceData.depot_garantie) || 0,
+          droit_entree: Number(annonceData.droit_entree) || 0,
+          meuble: Boolean(annonceData.meuble) || false,
+          prix_masque: Boolean(annonceData.prix_masque) || false,
+          prix_ht: annonceData.prix_ht || "",
+          prix_hors_honoraires: Number(annonceData.prix_hors_honoraires) || 0,
+          prix_avec_honoraires: Number(annonceData.prix_avec_honoraires) || 0,
+          prix_m2: Number(annonceData.prix_m2) || 0,
+          honoraires_id: Number(annonceData.honoraires_id) || 0,
+          honoraires_acheteur: Number(annonceData.honoraires_acheteur) || 0,
+          copro: Boolean(annonceData.copro) || false,
+          lots: Number(annonceData.lots) || 0,
+          quote_part: Number(annonceData.quote_part) || 0,
+          procedure_syndic: Boolean(annonceData.procedure_syndic) || false,
+          detail_procedure: annonceData.detail_procedure || "",
           adresse: annonceData.adresse || "",
           quartier: annonceData.quartier || "",
-          ville: annonceData.ville || "",
+          ligne: annonceData.ligne || "",
+          station: annonceData.station || "",
           cp: annonceData.cp || "",
-          prix_hors_honoraires: annonceData.prix_hors_honoraires?.toString() || "",
-          prix_avec_honoraires: annonceData.prix_avec_honoraires?.toString() || "",
-          prix_hors_charges: annonceData.prix_hors_charges?.toString() || "",
-          charges: annonceData.charges?.toString() || "",
-          charges_details: annonceData.charges_details || "",
-          prix_m2: annonceData.prix_m2?.toString() || "",
-          honoraires_id: annonceData.honoraires_id?.toString() || "1",
-          honoraires_acheteur: annonceData.honoraires_acheteur?.toString() || "",
-          honoraires_locataire: annonceData.honoraires_locataire?.toString() || "",
-          etat_des_lieux: annonceData.etat_des_lieux || "",
-          depot_garantie: annonceData.depot_garantie?.toString() || "",
-          copro: annonceData.copro || false,
-          lots: annonceData.lots?.toString() || "",
-          quote_part: annonceData.quote_part?.toString() || "",
-          procedure_syndic: annonceData.procedure_syndic || false,
-          detail_procedure: annonceData.detail_procedure || "",
-          pieces: annonceData.pieces?.toString() || "",
-          chambres: annonceData.chambres?.toString() || "",
-          sdb: annonceData.sdb?.toString() || "",
-          wc: annonceData.wc?.toString() || "",
-          etage: annonceData.etage?.toString() || "",
-          ascenseur: annonceData.ascenseur?.toString() || "Non",
-          balcon: annonceData.balcon?.toString() || "Non",
-          terrasse: annonceData.terrasse?.toString() || "Non",
-          jardin: annonceData.jardin?.toString() || "Non",
-          cave: annonceData.cave?.toString() || "Non",
-          parking: annonceData.parking?.toString() || "Non",
-          meuble: annonceData.meuble?.toString() || "Non",
-          titre: annonceData.titre || "",
-          description: annonceData.description || "",
-          nom: annonceData.nom || "",
+          ville: annonceData.ville || "",
+          cp_reel: annonceData.cp_reel || "",
+          ville_reel: annonceData.ville_reel || "",
+          arrondissement: Number(annonceData.arrondissement) || 0,
           pays: annonceData.pays || "France",
-          id: annonceData.id?.toString(),
-          photos: annonceData.photos || [],
-          bilan_conso_id: annonceData.bilan_conso_id || "none",
-          bilan_emission_id: annonceData.bilan_emission_id || "none",
+          latitude: Number(annonceData.latitude) || 0,
+          longitude: Number(annonceData.longitude) || 0,
+          description: annonceData.description || "",
+          panoramique: annonceData.panoramique || "",
+          visite_virtuelle: annonceData.visite_virtuelle || "",
+          valeur_achat: Number(annonceData.valeur_achat) || 0,
+          montant_rapport: annonceData.montant_rapport || "",
+          activites_commerciales: annonceData.activites_commerciales || "",
+          chiffre_affaire: Number(annonceData.chiffre_affaire) || 0,
+          longueur_facade: Number(annonceData.longueur_facade) || 0,
+          si_viager_vendu_libre: Boolean(annonceData.si_viager_vendu_libre) || false,
+          immeuble_type_bureaux: Boolean(annonceData.immeuble_type_bureaux) || false,
+          commentaires: annonceData.commentaires || "",
+          negociateur: annonceData.negociateur || "",
+          se_loger: annonceData.se_loger || "",
+          selection: Boolean(annonceData.selection) || false,
+          publie: Boolean(annonceData.publie) || false,
         })
       } catch (err) {
         console.error("Error fetching data:", err)
@@ -224,49 +541,177 @@ export default function EditListingPage({ params }: { params: PageParams }) {
 
     try {
       const requestBody = {
+        // Identifiants et informations de base
+        id: formData.id,
         publie: formData.publie,
-        surface: formData.surface,
         reference: formData.reference,
         transaction_id: Number(formData.transaction_id),
         typebien_id: formData.typebien_id ? Number(formData.typebien_id) : null,
         sous_typebien_id: formData.sous_typebien_id ? Number(formData.sous_typebien_id) : null,
         date_dispo: formData.date_dispo,
+        nom: formData.nom,
+        description: formData.description,
+        
+        // Localisation
         adresse: formData.adresse,
         quartier: formData.quartier,
         ville: formData.ville,
         cp: formData.cp,
+        cp_reel: formData.cp_reel,
+        ville_reel: formData.ville_reel,
+        arrondissement: formData.arrondissement ? Number(formData.arrondissement) : null,
+        pays: formData.pays,
+        latitude: formData.latitude ? Number(formData.latitude) : null,
+        longitude: formData.longitude ? Number(formData.longitude) : null,
+        ligne: formData.ligne,
+        station: formData.station,
+        
+        // Informations financières
         prix_hors_honoraires: formData.prix_hors_honoraires ? Number(formData.prix_hors_honoraires) : null,
         prix_avec_honoraires: formData.prix_avec_honoraires ? Number(formData.prix_avec_honoraires) : null,
-        prix_hors_charges: formData.prix_hors_charges ? Number(formData.prix_hors_charges) : null,
-        charges: formData.charges ? Number(formData.charges) : null,
-        charges_details: formData.charges_details,
         prix_m2: formData.prix_m2 ? Number(formData.prix_m2) : null,
-        honoraires_id: Number(formData.honoraires_id),
+        prix_masque: formData.prix_masque,
+        prix_ht: formData.prix_ht,
+        loyer_hors_charges: formData.loyer_hors_charges ? Number(formData.loyer_hors_charges) : null,
+        charges: formData.charges ? Number(formData.charges) : null,
+        complement_loyer: formData.complement_loyer ? Number(formData.complement_loyer) : null,
+        loyer_avec_charges: formData.loyer_avec_charges ? Number(formData.loyer_avec_charges) : null,
+        loyer_m2: formData.loyer_m2 ? Number(formData.loyer_m2) : null,
+        loyer_base: formData.loyer_base ? Number(formData.loyer_base) : null,
+        loyer_ref_majore: formData.loyer_ref_majore ? Number(formData.loyer_ref_majore) : null,
+        encadrement_des_loyers: formData.encadrement_des_loyers,
+        is_loyer_cc: formData.is_loyer_cc,
+        is_loyer_ht: formData.is_loyer_ht,
+        commentaires: formData.commentaires,
+        
+        // Honoraires et frais
+        honoraires_id: formData.honoraires_id ? Number(formData.honoraires_id) : null,
         honoraires_acheteur: formData.honoraires_acheteur ? Number(formData.honoraires_acheteur) : null,
-        honoraires_locataire: formData.honoraires_locataire,
-        etat_des_lieux: formData.etat_des_lieux,
-        depot_garantie: formData.depot_garantie,
+        honoraires_locataire: formData.honoraires_locataire ? Number(formData.honoraires_locataire) : null,
+        etat_des_lieux: formData.etat_des_lieux ? Number(formData.etat_des_lieux) : null,
+        depot_garantie: formData.depot_garantie ? Number(formData.depot_garantie) : null,
+        droit_entree: formData.droit_entree ? Number(formData.droit_entree) : null,
+        charges_id: formData.charges_id ? Number(formData.charges_id) : null,
+        
+        // Informations copropriété
         copro: formData.copro,
         lots: formData.lots ? Number(formData.lots) : null,
         quote_part: formData.quote_part ? Number(formData.quote_part) : null,
         procedure_syndic: formData.procedure_syndic,
         detail_procedure: formData.detail_procedure,
+        
+        // Caractéristiques du bien
+        surface: formData.surface ? Number(formData.surface) : null,
+        surface_terrain: formData.surface_terrain ? Number(formData.surface_terrain) : null,
+        terrain_agricole: formData.terrain_agricole,
+        terrain_constructible: formData.terrain_constructible,
+        terrain_rue: formData.terrain_rue,
+        terrain_viabilise: formData.terrain_viabilise,
         pieces: formData.pieces ? Number(formData.pieces) : null,
         chambres: formData.chambres ? Number(formData.chambres) : null,
         sdb: formData.sdb ? Number(formData.sdb) : null,
+        sde: formData.sde ? Number(formData.sde) : null,
         wc: formData.wc ? Number(formData.wc) : null,
-        etage: formData.etage ? Number(formData.etage) : null,
-        ascenseur: formData.ascenseur,
-        balcon: formData.balcon,
-        terrasse: formData.terrasse,
-        jardin: formData.jardin,
+        wc_separe: formData.wc_separe,
         cave: formData.cave,
-        parking: formData.parking,
+        surface_cave: formData.surface_cave ? Number(formData.surface_cave) : null,
+        sam: formData.sam,
+        sejour: formData.sejour,
+        surface_sejour: formData.surface_sejour ? Number(formData.surface_sejour) : null,
+        salle_a_manger: formData.salle_a_manger,
+        surface_salle_a_manger: formData.surface_salle_a_manger ? Number(formData.surface_salle_a_manger) : null,
+        construction: formData.construction,
+        recent: formData.recent,
+        refait: formData.refait,
+        travaux: formData.travaux,
+        box: formData.box ? Number(formData.box) : null,
+        parking: formData.parking ? Number(formData.parking) : null,
+        etage: formData.etage ? Number(formData.etage) : null,
+        nb_etages: formData.nb_etages ? Number(formData.nb_etages) : null,
+        ascenseur: formData.ascenseur,
+        duplex: formData.duplex,
+        nb_balcons: formData.nb_balcons ? Number(formData.nb_balcons) : null,
+        surface_balcons: formData.surface_balcons ? Number(formData.surface_balcons) : null,
+        terrasse: formData.terrasse,
+        nb_terrasses: formData.nb_terrasses ? Number(formData.nb_terrasses) : null,
+        
+        // Équipements et confort
+        alarme: formData.alarme,
+        chauffage_id: formData.chauffage_id ? Number(formData.chauffage_id) : null,
+        cable: formData.cable,
+        piscine: formData.piscine,
+        entretien: formData.entretien,
+        cuisine: formData.cuisine,
+        securite: formData.securite,
+        historique: formData.historique,
+        parking_inclus: formData.parking_inclus,
+        lot_neuf: formData.lot_neuf,
+        cheminee: formData.cheminee,
+        vue: formData.vue,
+        entree: formData.entree,
+        parquet: formData.parquet,
+        placard: formData.placard,
+        nb_couverts: formData.nb_couverts ? Number(formData.nb_couverts) : null,
+        nb_lits_doubles: formData.nb_lits_doubles ? Number(formData.nb_lits_doubles) : null,
+        nb_lits_simples: formData.nb_lits_simples ? Number(formData.nb_lits_simples) : null,
+        vis_a_vis: formData.vis_a_vis,
+        calme: formData.calme,
+        congelateur: formData.congelateur,
+        four: formData.four,
+        lave_vaisselle: formData.lave_vaisselle,
+        micro_ondes: formData.micro_ondes,
+        lave_linge: formData.lave_linge,
+        seche_linge: formData.seche_linge,
+        internet: formData.internet,
+        equipement_bebe: formData.equipement_bebe,
+        telephone: formData.telephone,
+        proche_lac: formData.proche_lac,
+        proche_tennis: formData.proche_tennis,
+        proche_pistes: formData.proche_pistes,
+        gardien: formData.gardien,
+        climatisation: formData.climatisation,
+        handicapes: formData.handicapes,
+        animaux: formData.animaux,
+        digicode: formData.digicode,
+        video: formData.video,
+        interphone: formData.interphone,
+        cuisine_id: formData.cuisine_id ? Number(formData.cuisine_id) : null,
+        situation_id: formData.situation_id ? Number(formData.situation_id) : null,
+        
+        // Orientation
+        orientation_sud: formData.orientation_sud,
+        orientation_est: formData.orientation_est,
+        orientation_ouest: formData.orientation_ouest,
+        orientation_nord: formData.orientation_nord,
+        
+        // Diagnostics énergétiques
+        bilan_conso_id: formData.bilan_conso_id ? Number(formData.bilan_conso_id) : null,
+        consos: formData.consos ? Number(formData.consos) : null,
+        version_dpe: formData.version_dpe,
+        bilan_emission_id: formData.bilan_emission_id ? Number(formData.bilan_emission_id) : null,
+        emissions: formData.emissions ? Number(formData.emissions) : null,
+        
+        // Autres informations
+        exclusivite: formData.exclusivite,
+        coup_de_coeur: formData.coup_de_coeur,
+        bail: formData.bail,
+        nature_bail: formData.nature_bail,
+        duree_bail: formData.duree_bail ? Number(formData.duree_bail) : null,
+        droit_au_bail: formData.droit_au_bail ? Number(formData.droit_au_bail) : null,
+        loyer_murs: formData.loyer_murs ? Number(formData.loyer_murs) : null,
         meuble: formData.meuble,
-        titre: formData.titre,
-        description: formData.description,
-        bilan_conso_id: formData.bilan_conso_id || null,
-        bilan_emission_id: formData.bilan_emission_id || null,
+        panoramique: formData.panoramique,
+        visite_virtuelle: formData.visite_virtuelle,
+        valeur_achat: formData.valeur_achat ? Number(formData.valeur_achat) : null,
+        montant_rapport: formData.montant_rapport,
+        activites_commerciales: formData.activites_commerciales,
+        chiffre_affaire: formData.chiffre_affaire ? Number(formData.chiffre_affaire) : null,
+        longueur_facade: formData.longueur_facade ? Number(formData.longueur_facade) : null,
+        si_viager_vendu_libre: formData.si_viager_vendu_libre,
+        immeuble_type_bureaux: formData.immeuble_type_bureaux,
+        negociateur: formData.negociateur,
+        se_loger: formData.se_loger,
+        selection: formData.selection,
       }
 
       // Validate required fields
@@ -366,8 +811,8 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 Type de transaction <span className="text-red-500">*</span>
               </Label>
               <Select
-                value={formData.transaction_id}
-                onValueChange={(value) => setFormData({ ...formData, transaction_id: value })}
+                value={formData.transaction_id?.toString()}
+                onValueChange={(value) => setFormData({ ...formData, transaction_id: Number(value) })}
                 disabled
               >
                 <SelectTrigger>
@@ -388,8 +833,8 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 Type de bien <span className="text-red-500">*</span>
               </Label>
               <Select
-                value={formData.typebien_id}
-                onValueChange={(value) => setFormData({ ...formData, typebien_id: value })}
+                value={formData.typebien_id?.toString()}
+                onValueChange={(value) => setFormData({ ...formData, typebien_id: Number(value) })}
                 disabled
               >
                 <SelectTrigger>
@@ -447,6 +892,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
               <Input
                 id="cp"
                 value={formData.cp}
+                maxLength={5}
                 onChange={(e) => setFormData({ ...formData, cp: e.target.value })}
               />
             </div>
@@ -473,7 +919,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 id="prix_hors_honoraires"
                 type="number"
                 value={formData.prix_hors_honoraires}
-                onChange={(e) => setFormData({ ...formData, prix_hors_honoraires: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, prix_hors_honoraires: Number(e.target.value) })}
               />
             </div>
 
@@ -485,7 +931,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 id="prix_avec_honoraires"
                 type="number"
                 value={formData.prix_avec_honoraires}
-                onChange={(e) => setFormData({ ...formData, prix_avec_honoraires: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, prix_avec_honoraires: Number(e.target.value) })}
               />
             </div>
 
@@ -495,17 +941,17 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 id="prix_m2"
                 type="number"
                 value={formData.prix_m2}
-                onChange={(e) => setFormData({ ...formData, prix_m2: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, prix_m2: Number(e.target.value) })}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="prix_hors_charges">Prix hors charges</Label>
+              <Label htmlFor="loyer_hors_charges">Prix hors charges</Label>
               <Input
-                id="prix_hors_charges"
+                id="loyer_hors_charges"
                 type="number"
-                value={formData.prix_hors_charges}
-                onChange={(e) => setFormData({ ...formData, prix_hors_charges: e.target.value })}
+                value={formData.loyer_hors_charges}
+                onChange={(e) => setFormData({ ...formData, loyer_hors_charges: Number(e.target.value) })}
               />
             </div>
 
@@ -515,16 +961,16 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 id="charges"
                 type="number"
                 value={formData.charges}
-                onChange={(e) => setFormData({ ...formData, charges: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, charges: Number(e.target.value) })}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="charges_details">Détails des charges</Label>
+              <Label htmlFor="commentaires">Détails des charges / Commentaires</Label>
               <Textarea
-                id="charges_details"
-                value={formData.charges_details}
-                onChange={(e) => setFormData({ ...formData, charges_details: e.target.value })}
+                id="commentaires"
+                value={formData.commentaires}
+                onChange={(e) => setFormData({ ...formData, commentaires: e.target.value })}
               />
             </div>
 
@@ -534,7 +980,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 id="honoraires_acheteur"
                 type="number"
                 value={formData.honoraires_acheteur}
-                onChange={(e) => setFormData({ ...formData, honoraires_acheteur: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, honoraires_acheteur: Number(e.target.value) })}
               />
             </div>
           </div>
@@ -549,7 +995,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 id="pieces"
                 type="number"
                 value={formData.pieces}
-                onChange={(e) => setFormData({ ...formData, pieces: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, pieces: Number(e.target.value) })}
               />
             </div>
 
@@ -559,7 +1005,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 id="chambres"
                 type="number"
                 value={formData.chambres}
-                onChange={(e) => setFormData({ ...formData, chambres: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, chambres: Number(e.target.value) })}
               />
             </div>
 
@@ -569,7 +1015,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 id="sdb"
                 type="number"
                 value={formData.sdb}
-                onChange={(e) => setFormData({ ...formData, sdb: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, sdb: Number(e.target.value) })}
               />
             </div>
 
@@ -579,7 +1025,28 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 id="wc"
                 type="number"
                 value={formData.wc}
-                onChange={(e) => setFormData({ ...formData, wc: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, wc: Number(e.target.value) })}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="wc_separe"
+                  checked={formData.wc_separe}
+                  onCheckedChange={(checked) => setFormData({ ...formData, wc_separe: checked as boolean })}
+                />
+                <Label htmlFor="wc_separe">WC séparé</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="sde">Nombre de salles d'eau</Label>
+              <Input
+                id="sde"
+                type="number"
+                value={formData.sde}
+                onChange={(e) => setFormData({ ...formData, sde: Number(e.target.value) })}
               />
             </div>
 
@@ -589,8 +1056,29 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 id="etage"
                 type="number"
                 value={formData.etage}
-                onChange={(e) => setFormData({ ...formData, etage: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, etage: Number(e.target.value) })}
               />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="nb_etages">Nombre d'étages</Label>
+              <Input
+                id="nb_etages"
+                type="number"
+                value={formData.nb_etages}
+                onChange={(e) => setFormData({ ...formData, nb_etages: Number(e.target.value) })}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="duplex"
+                  checked={formData.duplex}
+                  onCheckedChange={(checked) => setFormData({ ...formData, duplex: checked as boolean })}
+                />
+                <Label htmlFor="duplex">Duplex</Label>
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -599,120 +1087,463 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 id="surface"
                 type="number"
                 value={formData.surface}
-                onChange={(e) => setFormData({ ...formData, surface: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, surface: Number(e.target.value) })}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="ascenseur">Ascenseur</Label>
-              <Select
-                value={formData.ascenseur}
-                onValueChange={(value) => setFormData({ ...formData, ascenseur: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Oui">Oui</SelectItem>
-                  <SelectItem value="Non">Non</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="ascenseur"
+                  checked={formData.ascenseur}
+                  onCheckedChange={(checked) => setFormData({ ...formData, ascenseur: checked as boolean })}
+                />
+                <Label htmlFor="ascenseur">Ascenseur</Label>
+              </div>
+            </div>
+
+            {/* Le champ balcon a été supprimé car il n'existe plus dans la base de données Supabase */}
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="nb_balcons"
+                  checked={formData.nb_balcons > 0}
+                  onCheckedChange={(checked) => setFormData({ ...formData, nb_balcons: checked ? 1 : 0 })}
+                />
+                <Label htmlFor="nb_balcons">Balcon</Label>
+              </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="balcon">Balcon</Label>
-              <Select
-                value={formData.balcon}
-                onValueChange={(value) => setFormData({ ...formData, balcon: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Oui">Oui</SelectItem>
-                  <SelectItem value="Non">Non</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="terrasse"
+                  checked={formData.terrasse}
+                  onCheckedChange={(checked) => setFormData({ ...formData, terrasse: checked as boolean })}
+                />
+                <Label htmlFor="terrasse">Terrasse</Label>
+              </div>
+            </div>
+
+            {/* Le champ jardin a été supprimé car il n'existe plus dans la base de données Supabase */}
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="cave"
+                  checked={formData.cave}
+                  onCheckedChange={(checked) => setFormData({ ...formData, cave: checked as boolean })}
+                />
+                <Label htmlFor="cave">Cave</Label>
+              </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="terrasse">Terrasse</Label>
-              <Select
-                value={formData.terrasse}
-                onValueChange={(value) => setFormData({ ...formData, terrasse: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Oui">Oui</SelectItem>
-                  <SelectItem value="Non">Non</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="surface_cave">Surface cave (m²)</Label>
+              <Input
+                id="surface_cave"
+                type="number"
+                value={formData.surface_cave}
+                onChange={(e) => setFormData({ ...formData, surface_cave: Number(e.target.value) })}
+              />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="jardin">Jardin</Label>
-              <Select
-                value={formData.jardin}
-                onValueChange={(value) => setFormData({ ...formData, jardin: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Oui">Oui</SelectItem>
-                  <SelectItem value="Non">Non</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="piscine"
+                  checked={formData.piscine}
+                  onCheckedChange={(checked) => setFormData({ ...formData, piscine: checked as boolean })}
+                />
+                <Label htmlFor="piscine">Piscine</Label>
+              </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="cave">Cave</Label>
-              <Select
-                value={formData.cave}
-                onValueChange={(value) => setFormData({ ...formData, cave: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Oui">Oui</SelectItem>
-                  <SelectItem value="Non">Non</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="parking">Parking</Label>
-              <Select
+              <Label htmlFor="parking">Nombre de parkings</Label>
+              <Input
+                id="parking"
+                type="number"
                 value={formData.parking}
-                onValueChange={(value) => setFormData({ ...formData, parking: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Oui">Oui</SelectItem>
-                  <SelectItem value="Non">Non</SelectItem>
-                </SelectContent>
-              </Select>
+                onChange={(e) => setFormData({ ...formData, parking: Number(e.target.value) })}
+              />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="meuble">Meublé</Label>
-              <Select
-                value={formData.meuble}
-                onValueChange={(value) => setFormData({ ...formData, meuble: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Oui">Oui</SelectItem>
-                  <SelectItem value="Non">Non</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="meuble"
+                  checked={formData.meuble}
+                  onCheckedChange={(checked) => setFormData({ ...formData, meuble: checked as boolean })}
+                />
+                <Label htmlFor="meuble">Meublé</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="surface_terrain">Surface terrain (m²)</Label>
+              <Input
+                id="surface_terrain"
+                type="number"
+                value={formData.surface_terrain}
+                onChange={(e) => setFormData({ ...formData, surface_terrain: Number(e.target.value) })}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="terrain_agricole"
+                  checked={formData.terrain_agricole}
+                  onCheckedChange={(checked) => setFormData({ ...formData, terrain_agricole: checked as boolean })}
+                />
+                <Label htmlFor="terrain_agricole">Terrain agricole</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="terrain_constructible"
+                  checked={formData.terrain_constructible}
+                  onCheckedChange={(checked) => setFormData({ ...formData, terrain_constructible: checked as boolean })}
+                />
+                <Label htmlFor="terrain_constructible">Terrain constructible</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="terrain_rue"
+                  checked={formData.terrain_rue}
+                  onCheckedChange={(checked) => setFormData({ ...formData, terrain_rue: checked as boolean })}
+                />
+                <Label htmlFor="terrain_rue">Terrain donnant sur rue</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="terrain_viabilise"
+                  checked={formData.terrain_viabilise}
+                  onCheckedChange={(checked) => setFormData({ ...formData, terrain_viabilise: checked as boolean })}
+                />
+                <Label htmlFor="terrain_viabilise">Terrain viabilisé</Label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Équipements et confort</h2>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="cheminee"
+                  checked={formData.cheminee}
+                  onCheckedChange={(checked) => setFormData({ ...formData, cheminee: checked as boolean })}
+                />
+                <Label htmlFor="cheminee">Cheminée</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="climatisation"
+                  checked={formData.climatisation}
+                  onCheckedChange={(checked) => setFormData({ ...formData, climatisation: checked as boolean })}
+                />
+                <Label htmlFor="climatisation">Climatisation</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="alarme"
+                  checked={formData.alarme}
+                  onCheckedChange={(checked) => setFormData({ ...formData, alarme: checked as boolean })}
+                />
+                <Label htmlFor="alarme">Alarme</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="interphone"
+                  checked={formData.interphone}
+                  onCheckedChange={(checked) => setFormData({ ...formData, interphone: checked as boolean })}
+                />
+                <Label htmlFor="interphone">Interphone</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="digicode"
+                  checked={formData.digicode}
+                  onCheckedChange={(checked) => setFormData({ ...formData, digicode: checked as boolean })}
+                />
+                <Label htmlFor="digicode">Digicode</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="gardien"
+                  checked={formData.gardien}
+                  onCheckedChange={(checked) => setFormData({ ...formData, gardien: checked as boolean })}
+                />
+                <Label htmlFor="gardien">Gardien</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="handicapes"
+                  checked={formData.handicapes}
+                  onCheckedChange={(checked) => setFormData({ ...formData, handicapes: checked as boolean })}
+                />
+                <Label htmlFor="handicapes">Accès handicapés</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="parquet"
+                  checked={formData.parquet}
+                  onCheckedChange={(checked) => setFormData({ ...formData, parquet: checked as boolean })}
+                />
+                <Label htmlFor="parquet">Parquet</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="placard"
+                  checked={formData.placard}
+                  onCheckedChange={(checked) => setFormData({ ...formData, placard: checked as boolean })}
+                />
+                <Label htmlFor="placard">Placards</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="calme"
+                  checked={formData.calme}
+                  onCheckedChange={(checked) => setFormData({ ...formData, calme: checked as boolean })}
+                />
+                <Label htmlFor="calme">Environnement calme</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="vue"
+                  checked={formData.vue}
+                  onCheckedChange={(checked) => setFormData({ ...formData, vue: checked as boolean })}
+                />
+                <Label htmlFor="vue">Belle vue</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="vis_a_vis"
+                  checked={formData.vis_a_vis}
+                  onCheckedChange={(checked) => setFormData({ ...formData, vis_a_vis: checked as boolean })}
+                />
+                <Label htmlFor="vis_a_vis">Vis-à-vis</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="animaux"
+                  checked={formData.animaux}
+                  onCheckedChange={(checked) => setFormData({ ...formData, animaux: checked as boolean })}
+                />
+                <Label htmlFor="animaux">Animaux acceptés</Label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Orientation</h2>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="orientation_nord"
+                  checked={formData.orientation_nord}
+                  onCheckedChange={(checked) => setFormData({ ...formData, orientation_nord: checked as boolean })}
+                />
+                <Label htmlFor="orientation_nord">Nord</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="orientation_sud"
+                  checked={formData.orientation_sud}
+                  onCheckedChange={(checked) => setFormData({ ...formData, orientation_sud: checked as boolean })}
+                />
+                <Label htmlFor="orientation_sud">Sud</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="orientation_est"
+                  checked={formData.orientation_est}
+                  onCheckedChange={(checked) => setFormData({ ...formData, orientation_est: checked as boolean })}
+                />
+                <Label htmlFor="orientation_est">Est</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="orientation_ouest"
+                  checked={formData.orientation_ouest}
+                  onCheckedChange={(checked) => setFormData({ ...formData, orientation_ouest: checked as boolean })}
+                />
+                <Label htmlFor="orientation_ouest">Ouest</Label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Équipements électroménagers</h2>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="four"
+                  checked={formData.four}
+                  onCheckedChange={(checked) => setFormData({ ...formData, four: checked as boolean })}
+                />
+                <Label htmlFor="four">Four</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="micro_ondes"
+                  checked={formData.micro_ondes}
+                  onCheckedChange={(checked) => setFormData({ ...formData, micro_ondes: checked as boolean })}
+                />
+                <Label htmlFor="micro_ondes">Micro-ondes</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="lave_vaisselle"
+                  checked={formData.lave_vaisselle}
+                  onCheckedChange={(checked) => setFormData({ ...formData, lave_vaisselle: checked as boolean })}
+                />
+                <Label htmlFor="lave_vaisselle">Lave-vaisselle</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="lave_linge"
+                  checked={formData.lave_linge}
+                  onCheckedChange={(checked) => setFormData({ ...formData, lave_linge: checked as boolean })}
+                />
+                <Label htmlFor="lave_linge">Lave-linge</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="seche_linge"
+                  checked={formData.seche_linge}
+                  onCheckedChange={(checked) => setFormData({ ...formData, seche_linge: checked as boolean })}
+                />
+                <Label htmlFor="seche_linge">Sèche-linge</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="congelateur"
+                  checked={formData.congelateur}
+                  onCheckedChange={(checked) => setFormData({ ...formData, congelateur: checked as boolean })}
+                />
+                <Label htmlFor="congelateur">Congélateur</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="internet"
+                  checked={formData.internet}
+                  onCheckedChange={(checked) => setFormData({ ...formData, internet: checked as boolean })}
+                />
+                <Label htmlFor="internet">Internet</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="telephone"
+                  checked={formData.telephone}
+                  onCheckedChange={(checked) => setFormData({ ...formData, telephone: checked as boolean })}
+                />
+                <Label htmlFor="telephone">Téléphone</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="cable"
+                  checked={formData.cable}
+                  onCheckedChange={(checked) => setFormData({ ...formData, cable: checked as boolean })}
+                />
+                <Label htmlFor="cable">Câble/Satellite</Label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="equipement_bebe"
+                  checked={formData.equipement_bebe}
+                  onCheckedChange={(checked) => setFormData({ ...formData, equipement_bebe: checked as boolean })}
+                />
+                <Label htmlFor="equipement_bebe">Équipement bébé</Label>
+              </div>
             </div>
           </div>
         </div>
@@ -721,11 +1552,11 @@ export default function EditListingPage({ params }: { params: PageParams }) {
           <h2 className="text-2xl font-bold text-[#00458E] mb-6">Informations supplémentaires</h2>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="titre">Titre de l'annonce</Label>
+              <Label htmlFor="nom">Titre de l'annonce</Label>
               <Input
-                id="titre"
-                value={formData.titre}
-                onChange={(e) => setFormData({ ...formData, titre: e.target.value })}
+                id="nom"
+                value={formData.nom}
+                onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
               />
             </div>
 
@@ -744,7 +1575,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
               <Input
                 id="honoraires_locataire"
                 value={formData.honoraires_locataire}
-                onChange={(e) => setFormData({ ...formData, honoraires_locataire: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, honoraires_locataire: Number(e.target.value) })}
               />
             </div>
 
@@ -753,7 +1584,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
               <Input
                 id="etat_des_lieux"
                 value={formData.etat_des_lieux}
-                onChange={(e) => setFormData({ ...formData, etat_des_lieux: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, etat_des_lieux: Number(e.target.value) })}
               />
             </div>
 
@@ -762,26 +1593,19 @@ export default function EditListingPage({ params }: { params: PageParams }) {
               <Input
                 id="depot_garantie"
                 value={formData.depot_garantie}
-                onChange={(e) => setFormData({ ...formData, depot_garantie: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, depot_garantie: Number(e.target.value) })}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="publie">Publié</Label>
-              <Select
-                value={typeof formData.publie === 'boolean' ? (formData.publie ? "1" : "0") : formData.publie} // Convert boolean/number to string
-                onValueChange={(value) =>
-                  setFormData({ ...formData, publie: value === "1" ? "1" : "0" }) // Keep as string
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={formData.publie ? "oui" : "non"} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">oui</SelectItem>
-                  <SelectItem value="0">non</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="publie"
+                  checked={formData.publie}
+                  onCheckedChange={(checked) => setFormData({ ...formData, publie: checked as boolean })}
+                />
+                <Label htmlFor="publie">Publié</Label>
+              </div>
             </div>
           </div>
         </div>
@@ -792,21 +1616,27 @@ export default function EditListingPage({ params }: { params: PageParams }) {
             <div className="space-y-2">
               <Label htmlFor="bilan_conso_id">DPE - Consommation énergétique</Label>
               <Select
-                value={formData.bilan_conso_id || "none"}
-                onValueChange={(value) => setFormData({ ...formData, bilan_conso_id: value })}
+                value={(formData.bilan_conso_id ? formData.bilan_conso_id.toString() : "none")}
+                onValueChange={(value) => {
+                  // Convertir en nombre si possible, sinon 0
+                  const numValue = value === "none" ? 0 : isNaN(Number(value)) ? 0 : Number(value);
+                  setFormData({ ...formData, bilan_conso_id: numValue });
+                }}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Sélectionner..." />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">Non renseigné</SelectItem>
-                  <SelectItem value="A">A</SelectItem>
-                  <SelectItem value="B">B</SelectItem>
-                  <SelectItem value="C">C</SelectItem>
-                  <SelectItem value="D">D</SelectItem>
-                  <SelectItem value="E">E</SelectItem>
-                  <SelectItem value="F">F</SelectItem>
-                  <SelectItem value="G">G</SelectItem>
+                  <SelectItem value="1">A</SelectItem>
+                  <SelectItem value="2">B</SelectItem>
+                  <SelectItem value="3">C</SelectItem>
+                  <SelectItem value="4">D</SelectItem>
+                  <SelectItem value="5">E</SelectItem>
+                  <SelectItem value="6">F</SelectItem>
+                  <SelectItem value="7">G</SelectItem>
+                  <SelectItem value="8">VI (vierge)</SelectItem>
+                  <SelectItem value="9">NS (Non soumis)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -814,21 +1644,27 @@ export default function EditListingPage({ params }: { params: PageParams }) {
             <div className="space-y-2">
               <Label htmlFor="bilan_emission_id">GES - Émission de gaz à effet de serre</Label>
               <Select
-                value={formData.bilan_emission_id || "none"}
-                onValueChange={(value) => setFormData({ ...formData, bilan_emission_id: value })}
+                value={(formData.bilan_emission_id ? formData.bilan_emission_id.toString() : "none")}
+                onValueChange={(value) => {
+                  // Convertir en nombre si possible, sinon 0
+                  const numValue = value === "none" ? 0 : isNaN(Number(value)) ? 0 : Number(value);
+                  setFormData({ ...formData, bilan_emission_id: numValue });
+                }}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Sélectionner..." />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">Non renseigné</SelectItem>
-                  <SelectItem value="A">A</SelectItem>
-                  <SelectItem value="B">B</SelectItem>
-                  <SelectItem value="C">C</SelectItem>
-                  <SelectItem value="D">D</SelectItem>
-                  <SelectItem value="E">E</SelectItem>
-                  <SelectItem value="F">F</SelectItem>
-                  <SelectItem value="G">G</SelectItem>
+                  <SelectItem value="1">A</SelectItem>
+                  <SelectItem value="2">B</SelectItem>
+                  <SelectItem value="3">C</SelectItem>
+                  <SelectItem value="4">D</SelectItem>
+                  <SelectItem value="5">E</SelectItem>
+                  <SelectItem value="6">F</SelectItem>
+                  <SelectItem value="7">G</SelectItem>
+                  <SelectItem value="8">VI (vierge)</SelectItem>
+                  <SelectItem value="9">NS (Non soumis)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -856,7 +1692,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                     id="lots"
                     type="number"
                     value={formData.lots}
-                    onChange={(e) => setFormData({ ...formData, lots: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, lots: Number(e.target.value) })}
                   />
                 </div>
 
@@ -866,7 +1702,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                     id="quote_part"
                     type="number"
                     value={formData.quote_part}
-                    onChange={(e) => setFormData({ ...formData, quote_part: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, quote_part: Number(e.target.value) })}
                   />
                 </div>
 
