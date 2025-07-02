@@ -152,16 +152,8 @@ interface FormData {
   panoramique: string;
   visite_virtuelle: string;
   valeur_achat: number;
-  montant_rapport: string;
-  activites_commerciales: string;
-  chiffre_affaire: number;
-  longueur_facade: number;
-  si_viager_vendu_libre: boolean;
-  immeuble_type_bureaux: boolean;
   commentaires: string;
-  negociateur: string;
   se_loger: string;
-  selection: boolean;
   publie: boolean;
 }
 
@@ -173,8 +165,8 @@ export default function EditListingPage({ params }: { params: PageParams }) {
   const [currentStep, setCurrentStep] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [typesbiens, setTypesBien] = useState<{id: number, nom: string}[]>([])
-  const [typestransactions, setTypesTransactions] = useState<{id: number, nom: string}[]>([])
+  const [typesbiens, setTypesBien] = useState<{ id: number, nom: string }[]>([])
+  const [typestransactions, setTypesTransactions] = useState<{ id: number, nom: string }[]>([])
   const [formData, setFormData] = useState<FormData>({
     id: 0,
     reference: "",
@@ -318,16 +310,8 @@ export default function EditListingPage({ params }: { params: PageParams }) {
     panoramique: "",
     visite_virtuelle: "",
     valeur_achat: 0,
-    montant_rapport: "",
-    activites_commerciales: "",
-    chiffre_affaire: 0,
-    longueur_facade: 0,
-    si_viager_vendu_libre: false,
-    immeuble_type_bureaux: false,
     commentaires: "",
-    negociateur: "",
     se_loger: "",
-    selection: false,
   })
 
   const router = useRouter()
@@ -503,16 +487,8 @@ export default function EditListingPage({ params }: { params: PageParams }) {
           panoramique: annonceData.panoramique || "",
           visite_virtuelle: annonceData.visite_virtuelle || "",
           valeur_achat: Number(annonceData.valeur_achat) || 0,
-          montant_rapport: annonceData.montant_rapport || "",
-          activites_commerciales: annonceData.activites_commerciales || "",
-          chiffre_affaire: Number(annonceData.chiffre_affaire) || 0,
-          longueur_facade: Number(annonceData.longueur_facade) || 0,
-          si_viager_vendu_libre: Boolean(annonceData.si_viager_vendu_libre) || false,
-          immeuble_type_bureaux: Boolean(annonceData.immeuble_type_bureaux) || false,
           commentaires: annonceData.commentaires || "",
-          negociateur: annonceData.negociateur || "",
           se_loger: annonceData.se_loger || "",
-          selection: Boolean(annonceData.selection) || false,
           publie: Boolean(annonceData.publie) || false,
         })
       } catch (err) {
@@ -551,7 +527,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         date_dispo: formData.date_dispo,
         nom: formData.nom,
         description: formData.description,
-        
+
         // Localisation
         adresse: formData.adresse,
         quartier: formData.quartier,
@@ -565,7 +541,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         longitude: formData.longitude ? Number(formData.longitude) : null,
         ligne: formData.ligne,
         station: formData.station,
-        
+
         // Informations financières
         prix_hors_honoraires: formData.prix_hors_honoraires ? Number(formData.prix_hors_honoraires) : null,
         prix_avec_honoraires: formData.prix_avec_honoraires ? Number(formData.prix_avec_honoraires) : null,
@@ -583,7 +559,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         is_loyer_cc: formData.is_loyer_cc,
         is_loyer_ht: formData.is_loyer_ht,
         commentaires: formData.commentaires,
-        
+
         // Honoraires et frais
         honoraires_id: formData.honoraires_id ? Number(formData.honoraires_id) : null,
         honoraires_acheteur: formData.honoraires_acheteur ? Number(formData.honoraires_acheteur) : null,
@@ -592,14 +568,14 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         depot_garantie: formData.depot_garantie ? Number(formData.depot_garantie) : null,
         droit_entree: formData.droit_entree ? Number(formData.droit_entree) : null,
         charges_id: formData.charges_id ? Number(formData.charges_id) : null,
-        
+
         // Informations copropriété
         copro: formData.copro,
         lots: formData.lots ? Number(formData.lots) : null,
         quote_part: formData.quote_part ? Number(formData.quote_part) : null,
         procedure_syndic: formData.procedure_syndic,
         detail_procedure: formData.detail_procedure,
-        
+
         // Caractéristiques du bien
         surface: formData.surface ? Number(formData.surface) : null,
         surface_terrain: formData.surface_terrain ? Number(formData.surface_terrain) : null,
@@ -634,7 +610,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         surface_balcons: formData.surface_balcons ? Number(formData.surface_balcons) : null,
         terrasse: formData.terrasse,
         nb_terrasses: formData.nb_terrasses ? Number(formData.nb_terrasses) : null,
-        
+
         // Équipements et confort
         alarme: formData.alarme,
         chauffage_id: formData.chauffage_id ? Number(formData.chauffage_id) : null,
@@ -677,20 +653,20 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         interphone: formData.interphone,
         cuisine_id: formData.cuisine_id ? Number(formData.cuisine_id) : null,
         situation_id: formData.situation_id ? Number(formData.situation_id) : null,
-        
+
         // Orientation
         orientation_sud: formData.orientation_sud,
         orientation_est: formData.orientation_est,
         orientation_ouest: formData.orientation_ouest,
         orientation_nord: formData.orientation_nord,
-        
+
         // Diagnostics énergétiques
         bilan_conso_id: formData.bilan_conso_id ? Number(formData.bilan_conso_id) : null,
         consos: formData.consos ? Number(formData.consos) : null,
         version_dpe: formData.version_dpe,
         bilan_emission_id: formData.bilan_emission_id ? Number(formData.bilan_emission_id) : null,
         emissions: formData.emissions ? Number(formData.emissions) : null,
-        
+
         // Autres informations
         exclusivite: formData.exclusivite,
         coup_de_coeur: formData.coup_de_coeur,
@@ -703,15 +679,8 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         panoramique: formData.panoramique,
         visite_virtuelle: formData.visite_virtuelle,
         valeur_achat: formData.valeur_achat ? Number(formData.valeur_achat) : null,
-        montant_rapport: formData.montant_rapport,
-        activites_commerciales: formData.activites_commerciales,
-        chiffre_affaire: formData.chiffre_affaire ? Number(formData.chiffre_affaire) : null,
-        longueur_facade: formData.longueur_facade ? Number(formData.longueur_facade) : null,
-        si_viager_vendu_libre: formData.si_viager_vendu_libre,
-        immeuble_type_bureaux: formData.immeuble_type_bureaux,
-        negociateur: formData.negociateur,
+
         se_loger: formData.se_loger,
-        selection: formData.selection,
       }
 
       // Validate required fields
@@ -745,13 +714,13 @@ export default function EditListingPage({ params }: { params: PageParams }) {
 
       const result = await response.json()
       console.log("Update successful:", result)
-      
+
       // Afficher un message de confirmation
       const successMessage = document.createElement("div")
       successMessage.className = "fixed top-16 right-4 bg-green-500 text-white px-6 py-3 rounded shadow-lg z-50"
       successMessage.textContent = "Annonce enregistrée avec succès !"
       document.body.appendChild(successMessage)
-      
+
       setTimeout(() => {
         successMessage.remove()
       }, 5000)
@@ -819,7 +788,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                   <SelectValue placeholder="Sélectionner..." />
                 </SelectTrigger>
                 <SelectContent>
-                  {typestransactions && typestransactions.length > 0 && typestransactions.map((type: {id: number, nom: string}) => (
+                  {typestransactions && typestransactions.length > 0 && typestransactions.map((type: { id: number, nom: string }) => (
                     <SelectItem key={type.id} value={type.id.toString()}>
                       {type.nom}
                     </SelectItem>
@@ -841,7 +810,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                   <SelectValue placeholder="Sélectionner..." />
                 </SelectTrigger>
                 <SelectContent>
-                  {typesbiens && typesbiens.length > 0 && typesbiens.map((type: {id: number, nom: string}) => (
+                  {typesbiens && typesbiens.length > 0 && typesbiens.map((type: { id: number, nom: string }) => (
                     <SelectItem key={type.id} value={type.id.toString()}>
                       {type.nom}
                     </SelectItem>
@@ -911,61 +880,291 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         <div>
           <h2 className="text-2xl font-bold text-[#00458E] mb-6">Informations financières</h2>
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="prix_hors_honoraires">
-                Prix hors honoraires <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="prix_hors_honoraires"
-                type="number"
-                value={formData.prix_hors_honoraires}
-                onChange={(e) => setFormData({ ...formData, prix_hors_honoraires: Number(e.target.value) })}
-              />
-            </div>
+            {/* Champs pour la vente (transaction_id != 1) */}
+            {formData.transaction_id !== 1 && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="prix_hors_honoraires">
+                    Prix hors honoraires <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="prix_hors_honoraires"
+                    type="number"
+                    value={formData.prix_hors_honoraires}
+                    onChange={(e) => setFormData({ ...formData, prix_hors_honoraires: Number(e.target.value) })}
+                  />
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="prix_avec_honoraires">
-                Prix avec honoraires <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                id="prix_avec_honoraires"
-                type="number"
-                value={formData.prix_avec_honoraires}
-                onChange={(e) => setFormData({ ...formData, prix_avec_honoraires: Number(e.target.value) })}
-              />
-            </div>
+                <div className="space-y-2">
+                  <Label htmlFor="prix_avec_honoraires">
+                    Prix avec honoraires <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="prix_avec_honoraires"
+                    type="number"
+                    value={formData.prix_avec_honoraires}
+                    onChange={(e) => setFormData({ ...formData, prix_avec_honoraires: Number(e.target.value) })}
+                  />
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="prix_m2">Prix au m²</Label>
-              <Input
-                id="prix_m2"
-                type="number"
-                value={formData.prix_m2}
-                onChange={(e) => setFormData({ ...formData, prix_m2: Number(e.target.value) })}
-              />
-            </div>
+                <div className="space-y-2">
+                  <Label htmlFor="prix_m2">Prix au m²</Label>
+                  <Input
+                    id="prix_m2"
+                    type="number"
+                    value={formData.prix_m2}
+                    onChange={(e) => setFormData({ ...formData, prix_m2: Number(e.target.value) })}
+                  />
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="loyer_hors_charges">Prix hors charges</Label>
-              <Input
-                id="loyer_hors_charges"
-                type="number"
-                value={formData.loyer_hors_charges}
-                onChange={(e) => setFormData({ ...formData, loyer_hors_charges: Number(e.target.value) })}
-              />
-            </div>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="prix_masque"
+                      checked={formData.prix_masque}
+                      onCheckedChange={(checked) => setFormData({ ...formData, prix_masque: checked as boolean })}
+                    />
+                    <Label htmlFor="prix_masque">Masquer le prix</Label>
+                  </div>
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="charges">Charges</Label>
-              <Input
-                id="charges"
-                type="number"
-                value={formData.charges}
-                onChange={(e) => setFormData({ ...formData, charges: Number(e.target.value) })}
-              />
-            </div>
+                <div className="space-y-2">
+                  <Label htmlFor="prix_ht">Prix HT</Label>
+                  <Select
+                    value={formData.prix_ht || ""}
+                    onValueChange={(value) => setFormData({ ...formData, prix_ht: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionner..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="oui">Oui</SelectItem>
+                      <SelectItem value="non">Non</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-            <div className="space-y-2">
+                <div className="space-y-2">
+                  <Label htmlFor="honoraires_acheteur">Honoraires acheteur</Label>
+                  <Input
+                    id="honoraires_acheteur"
+                    type="number"
+                    value={formData.honoraires_acheteur}
+                    onChange={(e) => setFormData({ ...formData, honoraires_acheteur: Number(e.target.value) })}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Champs pour la location (transaction_id = 1) */}
+            {formData.transaction_id === 1 && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="loyer_hors_charges">Loyer hors charges</Label>
+                  <Input
+                    id="loyer_hors_charges"
+                    type="number"
+                    value={formData.loyer_hors_charges}
+                    onChange={(e) => setFormData({ ...formData, loyer_hors_charges: Number(e.target.value) })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="charges">Charges</Label>
+                  <Input
+                    id="charges"
+                    type="number"
+                    value={formData.charges}
+                    onChange={(e) => setFormData({ ...formData, charges: Number(e.target.value) })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="complement_loyer">Complément de loyer</Label>
+                  <Input
+                    id="complement_loyer"
+                    type="number"
+                    value={formData.complement_loyer}
+                    onChange={(e) => setFormData({ ...formData, complement_loyer: Number(e.target.value) })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="loyer_avec_charges">Loyer avec charges</Label>
+                  <Input
+                    id="loyer_avec_charges"
+                    type="number"
+                    value={formData.loyer_avec_charges}
+                    onChange={(e) => setFormData({ ...formData, loyer_avec_charges: Number(e.target.value) })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="loyer_m2">Loyer au m²</Label>
+                  <Input
+                    id="loyer_m2"
+                    type="number"
+                    value={formData.loyer_m2}
+                    onChange={(e) => setFormData({ ...formData, loyer_m2: Number(e.target.value) })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="loyer_base">Loyer de base</Label>
+                  <Input
+                    id="loyer_base"
+                    type="number"
+                    value={formData.loyer_base}
+                    onChange={(e) => setFormData({ ...formData, loyer_base: Number(e.target.value) })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="loyer_ref_majore">Loyer de référence majoré</Label>
+                  <Input
+                    id="loyer_ref_majore"
+                    type="number"
+                    value={formData.loyer_ref_majore}
+                    onChange={(e) => setFormData({ ...formData, loyer_ref_majore: Number(e.target.value) })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="encadrement_des_loyers">Encadrement des loyers</Label>
+                  <Input
+                    id="encadrement_des_loyers"
+                    value={formData.encadrement_des_loyers}
+                    onChange={(e) => setFormData({ ...formData, encadrement_des_loyers: e.target.value })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="is_loyer_cc">Loyer charges comprises</Label>
+                  <Select
+                    value={formData.is_loyer_cc || ""}
+                    onValueChange={(value) => setFormData({ ...formData, is_loyer_cc: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionner..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="oui">Oui</SelectItem>
+                      <SelectItem value="non">Non</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="is_loyer_ht">Loyer HT</Label>
+                  <Select
+                    value={formData.is_loyer_ht || ""}
+                    onValueChange={(value) => setFormData({ ...formData, is_loyer_ht: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionner..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="oui">Oui</SelectItem>
+                      <SelectItem value="non">Non</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="loyer_murs">Loyer murs</Label>
+                      <Input
+                        id="loyer_murs"
+                        type="number"
+                        value={formData.loyer_murs}
+                        onChange={(e) => setFormData({ ...formData, loyer_murs: Number(e.target.value) })}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="droit_au_bail">Droit au bail</Label>
+                      <Input
+                        id="droit_au_bail"
+                        type="number"
+                        value={formData.droit_au_bail}
+                        onChange={(e) => setFormData({ ...formData, droit_au_bail: Number(e.target.value) })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="duree_bail">Durée du bail (mois)</Label>
+                      <Input
+                        id="duree_bail"
+                        type="number"
+                        value={formData.duree_bail}
+                        onChange={(e) => setFormData({ ...formData, duree_bail: Number(e.target.value) })}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="nature_bail">Nature du bail</Label>
+                      <Input
+                        id="nature_bail"
+                        value={formData.nature_bail}
+                        onChange={(e) => setFormData({ ...formData, nature_bail: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="bail">Bail</Label>
+                    <Input
+                      id="bail"
+                      value={formData.bail}
+                      onChange={(e) => setFormData({ ...formData, bail: e.target.value })}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="honoraires_locataire">Honoraires locataire</Label>
+                  <Input
+                    id="honoraires_locataire"
+                    type="number"
+                    value={formData.honoraires_locataire}
+                    onChange={(e) => setFormData({ ...formData, honoraires_locataire: Number(e.target.value) })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="etat_des_lieux">Frais d'état des lieux</Label>
+                  <Input
+                    id="etat_des_lieux"
+                    type="number"
+                    value={formData.etat_des_lieux}
+                    onChange={(e) => setFormData({ ...formData, etat_des_lieux: Number(e.target.value) })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="depot_garantie">Dépôt de garantie</Label>
+                  <Input
+                    id="depot_garantie"
+                    type="number"
+                    value={formData.depot_garantie}
+                    onChange={(e) => setFormData({ ...formData, depot_garantie: Number(e.target.value) })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="droit_entree">Droit d'entrée</Label>
+                  <Input
+                    id="droit_entree"
+                    type="number"
+                    value={formData.droit_entree}
+                    onChange={(e) => setFormData({ ...formData, droit_entree: Number(e.target.value) })}
+                  />
+                </div>
+              </>
+            )}
+
+            <div className="space-y-2 col-span-2">
               <Label htmlFor="commentaires">Détails des charges / Commentaires</Label>
               <Textarea
                 id="commentaires"
@@ -973,21 +1172,98 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 onChange={(e) => setFormData({ ...formData, commentaires: e.target.value })}
               />
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="honoraires_acheteur">Honoraires acheteur</Label>
-              <Input
-                id="honoraires_acheteur"
-                type="number"
-                value={formData.honoraires_acheteur}
-                onChange={(e) => setFormData({ ...formData, honoraires_acheteur: Number(e.target.value) })}
-              />
-            </div>
           </div>
         </div>
 
         <div>
           <h2 className="text-2xl font-bold text-[#00458E] mb-6">Caractéristiques du bien</h2>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="surface">Surface (m²)</Label>
+                <Input
+                  id="surface"
+                  type="number"
+                  value={formData.surface}
+                  onChange={(e) => setFormData({ ...formData, surface: Number(e.target.value) })}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="arrondissement">Arrondissement</Label>
+                <Input
+                  id="arrondissement"
+                  type="number"
+                  value={formData.arrondissement}
+                  onChange={(e) => setFormData({ ...formData, arrondissement: Number(e.target.value) })}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="ligne">Ligne de transport</Label>
+                <Input
+                  id="ligne"
+                  value={formData.ligne}
+                  onChange={(e) => setFormData({ ...formData, ligne: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="station">Station</Label>
+                <Input
+                  id="station"
+                  value={formData.station}
+                  onChange={(e) => setFormData({ ...formData, station: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="latitude">Latitude (coordonnée pour Google Maps)</Label>
+                <Input
+                  id="latitude"
+                  type="number"
+                  step="0.000001"
+                  value={formData.latitude}
+                  onChange={(e) => setFormData({ ...formData, latitude: Number(e.target.value) })}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="longitude">Longitude (coordonnée pour Google Maps)</Label>
+                <Input
+                  id="longitude"
+                  type="number"
+                  step="0.000001"
+                  value={formData.longitude}
+                  onChange={(e) => setFormData({ ...formData, longitude: Number(e.target.value) })}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="visite_virtuelle">Lien visite virtuelle</Label>
+                <Input
+                  id="visite_virtuelle"
+                  value={formData.visite_virtuelle}
+                  onChange={(e) => setFormData({ ...formData, visite_virtuelle: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="panoramique">Lien photo panoramique</Label>
+                <Input
+                  id="panoramique"
+                  value={formData.panoramique}
+                  onChange={(e) => setFormData({ ...formData, panoramique: e.target.value })}
+                />
+              </div>
+            </div>
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="pieces">Nombre de pièces</Label>
@@ -1020,27 +1296,6 @@ export default function EditListingPage({ params }: { params: PageParams }) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="wc">Nombre de WC</Label>
-              <Input
-                id="wc"
-                type="number"
-                value={formData.wc}
-                onChange={(e) => setFormData({ ...formData, wc: Number(e.target.value) })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="wc_separe"
-                  checked={formData.wc_separe}
-                  onCheckedChange={(checked) => setFormData({ ...formData, wc_separe: checked as boolean })}
-                />
-                <Label htmlFor="wc_separe">WC séparé</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
               <Label htmlFor="sde">Nombre de salles d'eau</Label>
               <Input
                 id="sde"
@@ -1049,14 +1304,36 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 onChange={(e) => setFormData({ ...formData, sde: Number(e.target.value) })}
               />
             </div>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="nb_lits_doubles">Nombre de lits doubles</Label>
+                  <Input
+                    id="nb_lits_doubles"
+                    type="number"
+                    value={formData.nb_lits_doubles}
+                    onChange={(e) => setFormData({ ...formData, nb_lits_doubles: Number(e.target.value) })}
+                  />
+                </div>
 
+                <div className="space-y-2">
+                  <Label htmlFor="nb_lits_simples">Nombre de lits simples</Label>
+                  <Input
+                    id="nb_lits_simples"
+                    type="number"
+                    value={formData.nb_lits_simples}
+                    onChange={(e) => setFormData({ ...formData, nb_lits_simples: Number(e.target.value) })}
+                  />
+                </div>
+              </div>
+            </div>
             <div className="space-y-2">
-              <Label htmlFor="etage">Étage</Label>
+              <Label htmlFor="wc">Nombre de WC</Label>
               <Input
-                id="etage"
+                id="wc"
                 type="number"
-                value={formData.etage}
-                onChange={(e) => setFormData({ ...formData, etage: Number(e.target.value) })}
+                value={formData.wc}
+                onChange={(e) => setFormData({ ...formData, wc: Number(e.target.value) })}
               />
             </div>
 
@@ -1071,6 +1348,35 @@ export default function EditListingPage({ params }: { params: PageParams }) {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="etage">Etage</Label>
+              <Input
+                id="etage"
+                type="number"
+                value={formData.etage}
+                onChange={(e) => setFormData({ ...formData, etage: Number(e.target.value) })}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="construction">Année de construction</Label>
+              <Input
+                id="construction"
+                value={formData.construction}
+                onChange={(e) => setFormData({ ...formData, construction: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="nb_terrasses">Nombre de terrasses</Label>
+              <Input
+                id="nb_terrasses"
+                type="number"
+                value={formData.nb_terrasses}
+                onChange={(e) => setFormData({ ...formData, nb_terrasses: Number(e.target.value) })}
+              />
+            </div>
+            <div className="space-y-2">
+            </div>
+            <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="duplex"
@@ -1079,94 +1385,6 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 />
                 <Label htmlFor="duplex">Duplex</Label>
               </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="surface">Surface (m²)</Label>
-              <Input
-                id="surface"
-                type="number"
-                value={formData.surface}
-                onChange={(e) => setFormData({ ...formData, surface: Number(e.target.value) })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="ascenseur"
-                  checked={formData.ascenseur}
-                  onCheckedChange={(checked) => setFormData({ ...formData, ascenseur: checked as boolean })}
-                />
-                <Label htmlFor="ascenseur">Ascenseur</Label>
-              </div>
-            </div>
-
-            {/* Le champ balcon a été supprimé car il n'existe plus dans la base de données Supabase */}
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="nb_balcons"
-                  checked={formData.nb_balcons > 0}
-                  onCheckedChange={(checked) => setFormData({ ...formData, nb_balcons: checked ? 1 : 0 })}
-                />
-                <Label htmlFor="nb_balcons">Balcon</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="terrasse"
-                  checked={formData.terrasse}
-                  onCheckedChange={(checked) => setFormData({ ...formData, terrasse: checked as boolean })}
-                />
-                <Label htmlFor="terrasse">Terrasse</Label>
-              </div>
-            </div>
-
-            {/* Le champ jardin a été supprimé car il n'existe plus dans la base de données Supabase */}
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="cave"
-                  checked={formData.cave}
-                  onCheckedChange={(checked) => setFormData({ ...formData, cave: checked as boolean })}
-                />
-                <Label htmlFor="cave">Cave</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="surface_cave">Surface cave (m²)</Label>
-              <Input
-                id="surface_cave"
-                type="number"
-                value={formData.surface_cave}
-                onChange={(e) => setFormData({ ...formData, surface_cave: Number(e.target.value) })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="piscine"
-                  checked={formData.piscine}
-                  onCheckedChange={(checked) => setFormData({ ...formData, piscine: checked as boolean })}
-                />
-                <Label htmlFor="piscine">Piscine</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="parking">Nombre de parkings</Label>
-              <Input
-                id="parking"
-                type="number"
-                value={formData.parking}
-                onChange={(e) => setFormData({ ...formData, parking: Number(e.target.value) })}
-              />
             </div>
 
             <div className="space-y-2">
@@ -1180,568 +1398,906 @@ export default function EditListingPage({ params }: { params: PageParams }) {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="surface_terrain">Surface terrain (m²)</Label>
-              <Input
-                id="surface_terrain"
-                type="number"
-                value={formData.surface_terrain}
-                onChange={(e) => setFormData({ ...formData, surface_terrain: Number(e.target.value) })}
-              />
-            </div>
+
+
+
 
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <Checkbox
-                  id="terrain_agricole"
-                  checked={formData.terrain_agricole}
-                  onCheckedChange={(checked) => setFormData({ ...formData, terrain_agricole: checked as boolean })}
+                  id="refait"
+                  checked={formData.refait}
+                  onCheckedChange={(checked) => setFormData({ ...formData, refait: checked as boolean })}
                 />
-                <Label htmlFor="terrain_agricole">Terrain agricole</Label>
+                <Label htmlFor="refait">Récemment rénové</Label>
               </div>
             </div>
-
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <Checkbox
-                  id="terrain_constructible"
-                  checked={formData.terrain_constructible}
-                  onCheckedChange={(checked) => setFormData({ ...formData, terrain_constructible: checked as boolean })}
+                  id="recent"
+                  checked={formData.recent}
+                  onCheckedChange={(checked) => setFormData({ ...formData, recent: checked as boolean })}
                 />
-                <Label htmlFor="terrain_constructible">Terrain constructible</Label>
+                <Label htmlFor="recent">Construction récente</Label>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="terrain_rue"
-                  checked={formData.terrain_rue}
-                  onCheckedChange={(checked) => setFormData({ ...formData, terrain_rue: checked as boolean })}
-                />
-                <Label htmlFor="terrain_rue">Terrain donnant sur rue</Label>
-              </div>
-            </div>
 
             <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="terrain_viabilise"
-                  checked={formData.terrain_viabilise}
-                  onCheckedChange={(checked) => setFormData({ ...formData, terrain_viabilise: checked as boolean })}
-                />
-                <Label htmlFor="terrain_viabilise">Terrain viabilisé</Label>
-              </div>
+
             </div>
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Équipements et confort</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="cheminee"
-                  checked={formData.cheminee}
-                  onCheckedChange={(checked) => setFormData({ ...formData, cheminee: checked as boolean })}
-                />
-                <Label htmlFor="cheminee">Cheminée</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="climatisation"
-                  checked={formData.climatisation}
-                  onCheckedChange={(checked) => setFormData({ ...formData, climatisation: checked as boolean })}
-                />
-                <Label htmlFor="climatisation">Climatisation</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="alarme"
-                  checked={formData.alarme}
-                  onCheckedChange={(checked) => setFormData({ ...formData, alarme: checked as boolean })}
-                />
-                <Label htmlFor="alarme">Alarme</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="interphone"
-                  checked={formData.interphone}
-                  onCheckedChange={(checked) => setFormData({ ...formData, interphone: checked as boolean })}
-                />
-                <Label htmlFor="interphone">Interphone</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="digicode"
-                  checked={formData.digicode}
-                  onCheckedChange={(checked) => setFormData({ ...formData, digicode: checked as boolean })}
-                />
-                <Label htmlFor="digicode">Digicode</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="gardien"
-                  checked={formData.gardien}
-                  onCheckedChange={(checked) => setFormData({ ...formData, gardien: checked as boolean })}
-                />
-                <Label htmlFor="gardien">Gardien</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="handicapes"
-                  checked={formData.handicapes}
-                  onCheckedChange={(checked) => setFormData({ ...formData, handicapes: checked as boolean })}
-                />
-                <Label htmlFor="handicapes">Accès handicapés</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="parquet"
-                  checked={formData.parquet}
-                  onCheckedChange={(checked) => setFormData({ ...formData, parquet: checked as boolean })}
-                />
-                <Label htmlFor="parquet">Parquet</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="placard"
-                  checked={formData.placard}
-                  onCheckedChange={(checked) => setFormData({ ...formData, placard: checked as boolean })}
-                />
-                <Label htmlFor="placard">Placards</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="calme"
-                  checked={formData.calme}
-                  onCheckedChange={(checked) => setFormData({ ...formData, calme: checked as boolean })}
-                />
-                <Label htmlFor="calme">Environnement calme</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="vue"
-                  checked={formData.vue}
-                  onCheckedChange={(checked) => setFormData({ ...formData, vue: checked as boolean })}
-                />
-                <Label htmlFor="vue">Belle vue</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="vis_a_vis"
-                  checked={formData.vis_a_vis}
-                  onCheckedChange={(checked) => setFormData({ ...formData, vis_a_vis: checked as boolean })}
-                />
-                <Label htmlFor="vis_a_vis">Vis-à-vis</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="animaux"
-                  checked={formData.animaux}
-                  onCheckedChange={(checked) => setFormData({ ...formData, animaux: checked as boolean })}
-                />
-                <Label htmlFor="animaux">Animaux acceptés</Label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Orientation</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="orientation_nord"
-                  checked={formData.orientation_nord}
-                  onCheckedChange={(checked) => setFormData({ ...formData, orientation_nord: checked as boolean })}
-                />
-                <Label htmlFor="orientation_nord">Nord</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="orientation_sud"
-                  checked={formData.orientation_sud}
-                  onCheckedChange={(checked) => setFormData({ ...formData, orientation_sud: checked as boolean })}
-                />
-                <Label htmlFor="orientation_sud">Sud</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="orientation_est"
-                  checked={formData.orientation_est}
-                  onCheckedChange={(checked) => setFormData({ ...formData, orientation_est: checked as boolean })}
-                />
-                <Label htmlFor="orientation_est">Est</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="orientation_ouest"
-                  checked={formData.orientation_ouest}
-                  onCheckedChange={(checked) => setFormData({ ...formData, orientation_ouest: checked as boolean })}
-                />
-                <Label htmlFor="orientation_ouest">Ouest</Label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Équipements électroménagers</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="four"
-                  checked={formData.four}
-                  onCheckedChange={(checked) => setFormData({ ...formData, four: checked as boolean })}
-                />
-                <Label htmlFor="four">Four</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="micro_ondes"
-                  checked={formData.micro_ondes}
-                  onCheckedChange={(checked) => setFormData({ ...formData, micro_ondes: checked as boolean })}
-                />
-                <Label htmlFor="micro_ondes">Micro-ondes</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="lave_vaisselle"
-                  checked={formData.lave_vaisselle}
-                  onCheckedChange={(checked) => setFormData({ ...formData, lave_vaisselle: checked as boolean })}
-                />
-                <Label htmlFor="lave_vaisselle">Lave-vaisselle</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="lave_linge"
-                  checked={formData.lave_linge}
-                  onCheckedChange={(checked) => setFormData({ ...formData, lave_linge: checked as boolean })}
-                />
-                <Label htmlFor="lave_linge">Lave-linge</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="seche_linge"
-                  checked={formData.seche_linge}
-                  onCheckedChange={(checked) => setFormData({ ...formData, seche_linge: checked as boolean })}
-                />
-                <Label htmlFor="seche_linge">Sèche-linge</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="congelateur"
-                  checked={formData.congelateur}
-                  onCheckedChange={(checked) => setFormData({ ...formData, congelateur: checked as boolean })}
-                />
-                <Label htmlFor="congelateur">Congélateur</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="internet"
-                  checked={formData.internet}
-                  onCheckedChange={(checked) => setFormData({ ...formData, internet: checked as boolean })}
-                />
-                <Label htmlFor="internet">Internet</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="telephone"
-                  checked={formData.telephone}
-                  onCheckedChange={(checked) => setFormData({ ...formData, telephone: checked as boolean })}
-                />
-                <Label htmlFor="telephone">Téléphone</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="cable"
-                  checked={formData.cable}
-                  onCheckedChange={(checked) => setFormData({ ...formData, cable: checked as boolean })}
-                />
-                <Label htmlFor="cable">Câble/Satellite</Label>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="equipement_bebe"
-                  checked={formData.equipement_bebe}
-                  onCheckedChange={(checked) => setFormData({ ...formData, equipement_bebe: checked as boolean })}
-                />
-                <Label htmlFor="equipement_bebe">Équipement bébé</Label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Informations supplémentaires</h2>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="nom">Titre de l'annonce</Label>
-              <Input
-                id="nom"
-                value={formData.nom}
-                onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                className="min-h-[150px]"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="honoraires_locataire">Honoraires locataire</Label>
-              <Input
-                id="honoraires_locataire"
-                value={formData.honoraires_locataire}
-                onChange={(e) => setFormData({ ...formData, honoraires_locataire: Number(e.target.value) })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="etat_des_lieux">État des lieux</Label>
-              <Input
-                id="etat_des_lieux"
-                value={formData.etat_des_lieux}
-                onChange={(e) => setFormData({ ...formData, etat_des_lieux: Number(e.target.value) })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="depot_garantie">Dépôt de garantie</Label>
-              <Input
-                id="depot_garantie"
-                value={formData.depot_garantie}
-                onChange={(e) => setFormData({ ...formData, depot_garantie: Number(e.target.value) })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="publie"
-                  checked={formData.publie}
-                  onCheckedChange={(checked) => setFormData({ ...formData, publie: checked as boolean })}
-                />
-                <Label htmlFor="publie">Publié</Label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Diagnostics énergétiques</h2>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="bilan_conso_id">DPE - Consommation énergétique</Label>
-              <Select
-                value={(formData.bilan_conso_id ? formData.bilan_conso_id.toString() : "none")}
-                onValueChange={(value) => {
-                  // Convertir en nombre si possible, sinon 0
-                  const numValue = value === "none" ? 0 : isNaN(Number(value)) ? 0 : Number(value);
-                  setFormData({ ...formData, bilan_conso_id: numValue });
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">Non renseigné</SelectItem>
-                  <SelectItem value="1">A</SelectItem>
-                  <SelectItem value="2">B</SelectItem>
-                  <SelectItem value="3">C</SelectItem>
-                  <SelectItem value="4">D</SelectItem>
-                  <SelectItem value="5">E</SelectItem>
-                  <SelectItem value="6">F</SelectItem>
-                  <SelectItem value="7">G</SelectItem>
-                  <SelectItem value="8">VI (vierge)</SelectItem>
-                  <SelectItem value="9">NS (Non soumis)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="bilan_emission_id">GES - Émission de gaz à effet de serre</Label>
-              <Select
-                value={(formData.bilan_emission_id ? formData.bilan_emission_id.toString() : "none")}
-                onValueChange={(value) => {
-                  // Convertir en nombre si possible, sinon 0
-                  const numValue = value === "none" ? 0 : isNaN(Number(value)) ? 0 : Number(value);
-                  setFormData({ ...formData, bilan_emission_id: numValue });
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">Non renseigné</SelectItem>
-                  <SelectItem value="1">A</SelectItem>
-                  <SelectItem value="2">B</SelectItem>
-                  <SelectItem value="3">C</SelectItem>
-                  <SelectItem value="4">D</SelectItem>
-                  <SelectItem value="5">E</SelectItem>
-                  <SelectItem value="6">F</SelectItem>
-                  <SelectItem value="7">G</SelectItem>
-                  <SelectItem value="8">VI (vierge)</SelectItem>
-                  <SelectItem value="9">NS (Non soumis)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Informations copropriété</h2>
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="copro"
-                checked={formData.copro}
-                onCheckedChange={(checked) => setFormData({ ...formData, copro: checked as boolean })}
-              />
-              <Label htmlFor="copro">Copropriété</Label>
-            </div>
-
-
-            {formData.copro && (
-              <>
+            <div>
+              <h3 className="text-xl font-bold text-[#00458E] mb-4 mt-6">Équipements et confort</h3>
+              <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="lots">Nombre de lots</Label>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="alarme"
+                      checked={formData.alarme}
+                      onCheckedChange={(checked) => setFormData({ ...formData, alarme: checked as boolean })}
+                    />
+                    <Label htmlFor="alarme">Alarme</Label>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="video"
+                    checked={formData.video}
+                    onCheckedChange={(checked) => setFormData({ ...formData, video: checked as boolean })}
+                  />
+                  <Label htmlFor="video">Caméra de surveillance</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="securite"
+                    checked={formData.securite}
+                    onCheckedChange={(checked) => setFormData({ ...formData, securite: checked as boolean })}
+                  />
+                  <Label htmlFor="securite">Sécurité</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="gardien"
+                    checked={formData.gardien}
+                    onCheckedChange={(checked) => setFormData({ ...formData, gardien: checked as boolean })}
+                  />
+                  <Label htmlFor="gardien">Gardien</Label>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="ascenseur"
+                      checked={formData.ascenseur}
+                      onCheckedChange={(checked) => setFormData({ ...formData, ascenseur: checked as boolean })}
+                    />
+                    <Label htmlFor="ascenseur">Ascenseur</Label>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="cable"
+                      checked={formData.cable}
+                      onCheckedChange={(checked) => setFormData({ ...formData, cable: checked as boolean })}
+                    />
+                    <Label htmlFor="cable">Câble</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="cuisine"
+                      checked={formData.cuisine}
+                      onCheckedChange={(checked) => setFormData({ ...formData, cuisine: checked as boolean })}
+                    />
+                    <Label htmlFor="cuisine">Cuisine équipée</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="cheminee"
+                      checked={formData.cheminee}
+                      onCheckedChange={(checked) => setFormData({ ...formData, cheminee: checked as boolean })}
+                    />
+                    <Label htmlFor="cheminee">Cheminée</Label>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="salle_a_manger"
+                      checked={formData.salle_a_manger}
+                      onCheckedChange={(checked) => setFormData({ ...formData, salle_a_manger: checked as boolean })}
+                    />
+                    <Label htmlFor="salle_a_manger">Salle à manger</Label>
+                  </div>
+                </div>
+
+                {formData.salle_a_manger && (
+                  <div className="space-y-2">
+                    <Label htmlFor="surface_salle_a_manger">Surface salle à manger (m²)</Label>
+                    <Input
+                      id="surface_salle_a_manger"
+                      type="number"
+                      value={formData.surface_salle_a_manger}
+                      onChange={(e) => setFormData({ ...formData, surface_salle_a_manger: Number(e.target.value) })}
+                    />
+                  </div>
+                )}
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="sejour"
+                      checked={formData.sejour}
+                      onCheckedChange={(checked) => setFormData({ ...formData, sejour: checked as boolean })}
+                    />
+                    <Label htmlFor="sejour">Séjour</Label>
+                  </div>
+                </div>
+
+                {formData.sejour && (
+                  <div className="space-y-2">
+                    <Label htmlFor="surface_sejour">Surface séjour (m²)</Label>
+                    <Input
+                      id="surface_sejour"
+                      type="number"
+                      value={formData.surface_sejour}
+                      onChange={(e) => setFormData({ ...formData, surface_sejour: Number(e.target.value) })}
+                    />
+                  </div>
+                )}
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="climatisation"
+                      checked={formData.climatisation}
+                      onCheckedChange={(checked) => setFormData({ ...formData, climatisation: checked as boolean })}
+                    />
+                    <Label htmlFor="climatisation">Climatisation</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="internet"
+                      checked={formData.internet}
+                      onCheckedChange={(checked) => setFormData({ ...formData, internet: checked as boolean })}
+                    />
+                    <Label htmlFor="internet">Internet</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="interphone"
+                      checked={formData.interphone}
+                      onCheckedChange={(checked) => setFormData({ ...formData, interphone: checked as boolean })}
+                    />
+                    <Label htmlFor="interphone">Interphone</Label>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="wc_separe"
+                      checked={formData.wc_separe}
+                      onCheckedChange={(checked) => setFormData({ ...formData, wc_separe: checked as boolean })}
+                    />
+                    <Label htmlFor="wc_separe">WC séparé</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="digicode"
+                      checked={formData.digicode}
+                      onCheckedChange={(checked) => setFormData({ ...formData, digicode: checked as boolean })}
+                    />
+                    <Label htmlFor="digicode">Digicode</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="congelateur"
+                      checked={formData.congelateur}
+                      onCheckedChange={(checked) => setFormData({ ...formData, congelateur: checked as boolean })}
+                    />
+                    <Label htmlFor="congelateur">Congélateur</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="four"
+                      checked={formData.four}
+                      onCheckedChange={(checked) => setFormData({ ...formData, four: checked as boolean })}
+                    />
+                    <Label htmlFor="four">Four</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="equipement_bebe"
+                      checked={formData.equipement_bebe}
+                      onCheckedChange={(checked) => setFormData({ ...formData, equipement_bebe: checked as boolean })}
+                    />
+                    <Label htmlFor="equipement_bebe">Équipement bébé</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="telephone"
+                      checked={formData.telephone}
+                      onCheckedChange={(checked) => setFormData({ ...formData, telephone: checked as boolean })}
+                    />
+                    <Label htmlFor="telephone">Téléphone</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="lave_vaisselle"
+                      checked={formData.lave_vaisselle}
+                      onCheckedChange={(checked) => setFormData({ ...formData, lave_vaisselle: checked as boolean })}
+                    />
+                    <Label htmlFor="lave_vaisselle">Lave-vaisselle</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="micro_ondes"
+                      checked={formData.micro_ondes}
+                      onCheckedChange={(checked) => setFormData({ ...formData, micro_ondes: checked as boolean })}
+                    />
+                    <Label htmlFor="micro_ondes">Micro-ondes</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="lave_linge"
+                      checked={formData.lave_linge}
+                      onCheckedChange={(checked) => setFormData({ ...formData, lave_linge: checked as boolean })}
+                    />
+                    <Label htmlFor="lave_linge">Lave-linge</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="seche_linge"
+                      checked={formData.seche_linge}
+                      onCheckedChange={(checked) => setFormData({ ...formData, seche_linge: checked as boolean })}
+                    />
+                    <Label htmlFor="seche_linge">Sèche-linge</Label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-bold text-[#00458E] mb-4 mt-6">Caractéristiques supplémentaires</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="calme"
+                      checked={formData.calme}
+                      onCheckedChange={(checked) => setFormData({ ...formData, calme: checked as boolean })}
+                    />
+                    <Label htmlFor="calme">Calme</Label>
+                  </div>
+                </div>
+
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="entree"
+                      checked={formData.entree}
+                      onCheckedChange={(checked) => setFormData({ ...formData, entree: checked as boolean })}
+                    />
+                    <Label htmlFor="entree">Entrée</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="parquet"
+                      checked={formData.parquet}
+                      onCheckedChange={(checked) => setFormData({ ...formData, parquet: checked as boolean })}
+                    />
+                    <Label htmlFor="parquet">Parquet</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="placard"
+                      checked={formData.placard}
+                      onCheckedChange={(checked) => setFormData({ ...formData, placard: checked as boolean })}
+                    />
+                    <Label htmlFor="placard">Placard</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="vis_a_vis"
+                      checked={formData.vis_a_vis}
+                      onCheckedChange={(checked) => setFormData({ ...formData, vis_a_vis: checked as boolean })}
+                    />
+                    <Label htmlFor="vis_a_vis">Vis-à-vis</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="handicapes"
+                      checked={formData.handicapes}
+                      onCheckedChange={(checked) => setFormData({ ...formData, handicapes: checked as boolean })}
+                    />
+                    <Label htmlFor="handicapes">Accès handicapés</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="animaux"
+                      checked={formData.animaux}
+                      onCheckedChange={(checked) => setFormData({ ...formData, animaux: checked as boolean })}
+                    />
+                    <Label htmlFor="animaux">Animaux acceptés</Label>
+                  </div>
+                </div>
+
+
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="proche_lac"
+                      checked={formData.proche_lac}
+                      onCheckedChange={(checked) => setFormData({ ...formData, proche_lac: checked as boolean })}
+                    />
+                    <Label htmlFor="proche_lac">Proche d'un lac</Label>
+                  </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="proche_tennis"
+                        checked={formData.proche_tennis}
+                        onCheckedChange={(checked) => setFormData({ ...formData, proche_tennis: checked as boolean })}
+                      />
+                      <Label htmlFor="proche_tennis">Proche d'un tennis</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="proche_pistes"
+                        checked={formData.proche_pistes}
+                        onCheckedChange={(checked) => setFormData({ ...formData, proche_pistes: checked as boolean })}
+                      />
+                      <Label htmlFor="proche_pistes">Proche des pistes</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="historique"
+                        checked={formData.historique}
+                        onCheckedChange={(checked) => setFormData({ ...formData, historique: checked as boolean })}
+                      />
+                      <Label htmlFor="historique">Lieu historique</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="entretien"
+                        checked={formData.entretien}
+                        onCheckedChange={(checked) => setFormData({ ...formData, entretien: checked as boolean })}
+                      />
+                      <Label htmlFor="entretien">Entretien mis à disposition</Label>
+                    </div>
+
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="travaux"
+                        checked={formData.travaux}
+                        onCheckedChange={(checked) => setFormData({ ...formData, travaux: checked as boolean })}
+                      />
+                      <Label htmlFor="travaux">Travaux</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="lot_neuf"
+                        checked={formData.lot_neuf}
+                        onCheckedChange={(checked) => setFormData({ ...formData, lot_neuf: checked as boolean })}
+                      />
+                      <Label htmlFor="lot_neuf">Lot neuf</Label>
+                    </div>
+                
+              </div>
+            </div>
+
+
+            <div>
+              <h3 className="text-xl font-bold text-[#00458E] mb-4 mt-6">Orientation</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="orientation_nord"
+                      checked={formData.orientation_nord}
+                      onCheckedChange={(checked) => setFormData({ ...formData, orientation_nord: checked as boolean })}
+                    />
+                    <Label htmlFor="orientation_nord">Nord</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="orientation_est"
+                      checked={formData.orientation_est}
+                      onCheckedChange={(checked) => setFormData({ ...formData, orientation_est: checked as boolean })}
+                    />
+                    <Label htmlFor="orientation_est">Est</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="orientation_sud"
+                      checked={formData.orientation_sud}
+                      onCheckedChange={(checked) => setFormData({ ...formData, orientation_sud: checked as boolean })}
+                    />
+                    <Label htmlFor="orientation_sud">Sud</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="orientation_ouest"
+                      checked={formData.orientation_ouest}
+                      onCheckedChange={(checked) => setFormData({ ...formData, orientation_ouest: checked as boolean })}
+                    />
+                    <Label htmlFor="orientation_ouest">Ouest</Label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-bold text-[#00458E] mb-4 mt-6">Diagnostics énergétiques</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="dpe">DPE</Label>
+                  <Select
+                    value={formData.bilan_conso_id ? String(formData.bilan_conso_id) : ""}
+                    onValueChange={(value) => setFormData({ ...formData, bilan_conso_id: value === "none" ? 0 : Number(value) })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionner..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">Non renseigné</SelectItem>
+                      <SelectItem value="1">A</SelectItem>
+                      <SelectItem value="2">B</SelectItem>
+                      <SelectItem value="3">C</SelectItem>
+                      <SelectItem value="4">D</SelectItem>
+                      <SelectItem value="5">E</SelectItem>
+                      <SelectItem value="6">F</SelectItem>
+                      <SelectItem value="7">G</SelectItem>
+                      <SelectItem value="8">VI (vierge)</SelectItem>
+                      <SelectItem value="9">NS (Non soumis)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="ges">GES</Label>
+                  <Select
+                    value={formData.bilan_emission_id ? String(formData.bilan_emission_id) : ""}
+                    onValueChange={(value) => setFormData({ ...formData, bilan_emission_id: value === "none" ? 0 : Number(value) })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionner..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">Non renseigné</SelectItem>
+                      <SelectItem value="1">A</SelectItem>
+                      <SelectItem value="2">B</SelectItem>
+                      <SelectItem value="3">C</SelectItem>
+                      <SelectItem value="4">D</SelectItem>
+                      <SelectItem value="5">E</SelectItem>
+                      <SelectItem value="6">F</SelectItem>
+                      <SelectItem value="7">G</SelectItem>
+                      <SelectItem value="8">VI (vierge)</SelectItem>
+                      <SelectItem value="9">NS (Non soumis)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="consommation_energie">Consommation énergétique (kWh/m²/an)</Label>
                   <Input
-                    id="lots"
+                    id="consommation_energie"
                     type="number"
-                    value={formData.lots}
-                    onChange={(e) => setFormData({ ...formData, lots: Number(e.target.value) })}
+                    value={formData.consos}
+                    onChange={(e) => setFormData({ ...formData, consos: Number(e.target.value) })}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="quote_part">Quote-part</Label>
+                  <Label htmlFor="emission_ges">Emission GES (kg CO2/m²/an)</Label>
                   <Input
-                    id="quote_part"
+                    id="emission_ges"
                     type="number"
-                    value={formData.quote_part}
-                    onChange={(e) => setFormData({ ...formData, quote_part: Number(e.target.value) })}
+                    value={formData.emissions}
+                    onChange={(e) => setFormData({ ...formData, emissions: Number(e.target.value) })}
                   />
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-[#00458E] mb-4 mt-6">Équipements extérieurs</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="piscine"
+                      checked={formData.piscine}
+                      onCheckedChange={(checked) => setFormData({ ...formData, piscine: checked as boolean })}
+                    />
+                    <Label htmlFor="piscine">Piscine</Label>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="parking"
+                      checked={formData.parking_inclus}
+                      onCheckedChange={(checked) => setFormData({ ...formData, parking_inclus: checked as boolean })}
+                    />
+                    <Label htmlFor="parking">Parking</Label>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="terrasse"
+                      checked={formData.terrasse}
+                      onCheckedChange={(checked) => setFormData({ ...formData, terrasse: checked as boolean })}
+                    />
+                    <Label htmlFor="terrasse">Terrasse</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="cave"
+                      checked={formData.cave}
+                      onCheckedChange={(checked) => setFormData({ ...formData, cave: checked as boolean })}
+                    />
+                    <Label htmlFor="cave">Cave</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="vue"
+                      checked={formData.vue}
+                      onCheckedChange={(checked) => setFormData({ ...formData, vue: checked as boolean })}
+                    />
+                    <Label htmlFor="vue">Belle vue</Label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="parking">Nombre de parkings</Label>
+                  <Input
+                    id="parking"
+                    type="number"
+                    value={formData.parking}
+                    onChange={(e) => setFormData({ ...formData, parking: Number(e.target.value) })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="box">Nombre de box</Label>
+                  <Input
+                    id="box"
+                    type="number"
+                    value={formData.box}
+                    onChange={(e) => setFormData({ ...formData, box: Number(e.target.value) })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="nb_balcons"
+                      checked={formData.nb_balcons > 0}
+                      onCheckedChange={(checked) => setFormData({ ...formData, nb_balcons: checked ? 1 : 0 })}
+                    />
+                    <Label htmlFor="nb_balcons">Balcon</Label>
+                  </div>
+                  <Label htmlFor="nb_balcons">Nombre de balcons</Label>
+                  <Input
+                    id="nb_balcons"
+                    type="number"
+                    value={formData.nb_balcons}
+                    onChange={(e) => setFormData({ ...formData, nb_balcons: Number(e.target.value) })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="surface_balcons">Surface des balcons (m²)</Label>
+                  <Input
+                    id="surface_balcons"
+                    type="number"
+                    value={formData.surface_balcons}
+                    onChange={(e) => setFormData({ ...formData, surface_balcons: Number(e.target.value) })}
+                  />
+                </div>
+
+                {formData.cave && (
+                  <div className="space-y-2">
+                    <Label htmlFor="surface_cave">Surface de la cave (m²)</Label>
+                    <Input
+                      id="surface_cave"
+                      type="number"
+                      value={formData.surface_cave}
+                      onChange={(e) => setFormData({ ...formData, surface_cave: Number(e.target.value) })}
+                    />
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  <Label htmlFor="surface_terrain">Surface du terrain (m²)</Label>
+                  <Input
+                    id="surface_terrain"
+                    type="number"
+                    value={formData.surface_terrain}
+                    onChange={(e) => setFormData({ ...formData, surface_terrain: Number(e.target.value) })}
+                  />
+                </div>
+              </div>
+            </div>
+
+
+
+
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-[#00458E] mb-6">Caractéristiques du terrain</h2>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="surface_terrain">Surface du terrain (m²)</Label>
+                  <Input
+                    id="surface_terrain"
+                    type="number"
+                    value={formData.surface_terrain}
+                    onChange={(e) => setFormData({ ...formData, surface_terrain: Number(e.target.value) })}
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="terrain_agricole"
+                    checked={formData.terrain_agricole}
+                    onCheckedChange={(checked) => setFormData({ ...formData, terrain_agricole: checked as boolean })}
+                  />
+                  <Label htmlFor="terrain_agricole">Terrain agricole</Label>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="terrain_agricole"
+                    checked={formData.terrain_agricole}
+                    onCheckedChange={(checked) => setFormData({ ...formData, terrain_agricole: checked as boolean })}
+                  />
+                  <Label htmlFor="terrain_agricole">Terrain agricole</Label>
                 </div>
 
                 <div className="flex items-center space-x-2">
                   <Checkbox
-                    id="procedure_syndic"
-                    checked={formData.procedure_syndic}
-                    onCheckedChange={(checked) => setFormData({ ...formData, procedure_syndic: checked as boolean })}
+                    id="terrain_constructible"
+                    checked={formData.terrain_constructible}
+                    onCheckedChange={(checked) => setFormData({ ...formData, terrain_constructible: checked as boolean })}
                   />
-                  <Label htmlFor="procedure_syndic">Procédure syndic en cours</Label>
+                  <Label htmlFor="terrain_constructible">Terrain constructible</Label>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="terrain_rue"
+                    checked={formData.terrain_rue}
+                    onCheckedChange={(checked) => setFormData({ ...formData, terrain_rue: checked as boolean })}
+                  />
+                  <Label htmlFor="terrain_rue">Terrain donnant sur rue</Label>
                 </div>
 
-                {formData.procedure_syndic && (
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="terrain_viabilise"
+                    checked={formData.terrain_viabilise}
+                    onCheckedChange={(checked) => setFormData({ ...formData, terrain_viabilise: checked as boolean })}
+                  />
+                  <Label htmlFor="terrain_viabilise">Terrain viabilisé</Label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-[#00458E] mb-6">Informations supplémentaires</h2>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="nom">Titre de l'annonce</Label>
+                <Input
+                  id="nom"
+                  value={formData.nom}
+                  onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  className="min-h-[150px]"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="publie"
+                    checked={formData.publie}
+                    onCheckedChange={(checked) => setFormData({ ...formData, publie: checked as boolean })}
+                  />
+                  <Label htmlFor="publie">Publié</Label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold text-[#00458E] mb-6">Options spéciales</h2>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="coup_de_coeur"
+                    checked={formData.coup_de_coeur}
+                    onCheckedChange={(checked) => setFormData({ ...formData, coup_de_coeur: checked as boolean })}
+                  />
+                  <Label htmlFor="coup_de_coeur">Coup de cœur</Label>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="exclusivite"
+                    checked={formData.exclusivite}
+                    onCheckedChange={(checked) => setFormData({ ...formData, exclusivite: checked as boolean })}
+                  />
+                  <Label htmlFor="exclusivite">Exclusivité</Label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold text-[#00458E] mb-6">Informations copropriété</h2>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="copro"
+                  checked={formData.copro}
+                  onCheckedChange={(checked) => setFormData({ ...formData, copro: checked as boolean })}
+                />
+                <Label htmlFor="copro">Copropriété</Label>
+              </div>
+
+
+              {formData.copro && (
+                <>
                   <div className="space-y-2">
-                    <Label htmlFor="detail_procedure">Détail de la procédure</Label>
-                    <Textarea
-                      id="detail_procedure"
-                      value={formData.detail_procedure}
-                      onChange={(e) => setFormData({ ...formData, detail_procedure: e.target.value })}
+                    <Label htmlFor="lots">Nombre de lots</Label>
+                    <Input
+                      id="lots"
+                      type="number"
+                      value={formData.lots}
+                      onChange={(e) => setFormData({ ...formData, lots: Number(e.target.value) })}
                     />
                   </div>
-                )}
-              </>
-            )}
+
+                  <div className="space-y-2">
+                    <Label htmlFor="quote_part">Quote-part</Label>
+                    <Input
+                      id="quote_part"
+                      type="number"
+                      value={formData.quote_part}
+                      onChange={(e) => setFormData({ ...formData, quote_part: Number(e.target.value) })}
+                    />
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="procedure_syndic"
+                      checked={formData.procedure_syndic}
+                      onCheckedChange={(checked) => setFormData({ ...formData, procedure_syndic: checked as boolean })}
+                    />
+                    <Label htmlFor="procedure_syndic">Procédure syndic en cours</Label>
+                  </div>
+
+                  {formData.procedure_syndic && (
+                    <div className="space-y-2">
+                      <Label htmlFor="detail_procedure">Détail de la procédure</Label>
+                      <Textarea
+                        id="detail_procedure"
+                        value={formData.detail_procedure}
+                        onChange={(e) => setFormData({ ...formData, detail_procedure: e.target.value })}
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="flex justify-end space-x-4">
+            <Button variant="outline" onClick={() => router.push("/annonces")}>
+              Annuler
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              className="bg-[#00458E] hover:bg-[#003366]"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Enregistrement..." : "Enregistrer"}
+            </Button>
           </div>
         </div>
 
-        <div className="flex justify-end space-x-4">
-          <Button variant="outline" onClick={() => router.push("/annonces")}>
-            Annuler
-          </Button>
-          <Button onClick={handleSubmit} className="bg-[#00458E] hover:bg-[#003366]" disabled={isSubmitting}>
-            {isSubmitting ? "Enregistrement..." : "Enregistrer"}
-          </Button>
-        </div>
+        <div className="mt-4 text-right text-sm text-gray-500">* champs obligatoires</div>
       </div>
-
-      <div className="mt-4 text-right text-sm text-gray-500">* champs obligatoires</div>
     </div>
-  )
-}
 
+  );
+}
