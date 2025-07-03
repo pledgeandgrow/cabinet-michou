@@ -327,6 +327,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         }
         const annonceData = await annonceRes.json()
         console.log(annonceData)
+        
 
         // Fetch types biens
         const typesbiensRes = await fetch("/api/typesbiens")
@@ -345,6 +346,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         // Set all the data
         setTypesBien(typesbiensData)
         setTypesTransactions(typestransactionsData)
+        
         setFormData({
           id: Number(annonceData.id) || 0,
           transaction_id: Number(annonceData.transaction_id) || 0,
