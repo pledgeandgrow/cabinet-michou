@@ -160,7 +160,6 @@ export async function getAnnonceById(id: string) {
       dpe_conso: bilanConsoNom,
       dpe_emission: bilanEmissionNom,
       honoraires: honorairesNom,
-      nom_charges: chargesNom,
       sous_type: sousTypebienNom,
       // S'assurer que nom est une chaîne et non un objet
       nom: typeof annonceClean.nom === 'string' ? annonceClean.nom : String(annonceClean.nom || '')

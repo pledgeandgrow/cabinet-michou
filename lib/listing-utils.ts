@@ -164,7 +164,9 @@ export async function updateListingFixed(id: number, data: any) {
       // Note: bilan_conso_id et bilan_emission_id sont des lettres (A-G), pas des nombres
       'depot_garantie', 'loyer_base', 'loyer_m2', 'loyer_hors_charges', 'loyer_avec_charges',
       // Autres champs potentiellement numériques
-      'latitude', 'longitude', 'valeur_achat', 'montant_rapport', 'chiffre_affaire', 'longueur_facade'
+      'latitude', 'longitude', 'valeur_achat', 'montant_rapport', 'chiffre_affaire', 'longueur_facade',
+      // Champs qui étaient incorrectement traités comme booléens
+      'box', 'parking'
     ];
     
     // Log pour déboguer
@@ -223,7 +225,7 @@ export async function updateListingFixed(id: number, data: any) {
     const booleanFields = [
       'publie', 'copro', 'procedure_syndic', 'meuble', 'exclusivite', 'coup_de_coeur',
       'terrain_agricole', 'terrain_constructible', 'terrain_rue', 'terrain_viabilise',
-      'wc_separe', 'cave', 'recent', 'refait', 'travaux', 'box', 'parking', 'ascenseur',
+      'wc_separe', 'cave', 'recent', 'refait', 'travaux', 'ascenseur',
       'duplex', 'alarme', 'cable', 'piscine', 'entretien', 'securite', 'historique',
       'parking_inclus', 'lot_neuf', 'cheminee', 'vue', 'entree', 'parquet', 'placard',
       'vis_a_vis', 'calme', 'congelateur', 'four', 'lave_vaisselle', 'micro_ondes',
@@ -242,7 +244,7 @@ export async function updateListingFixed(id: number, data: any) {
     const smallintBooleanFields = [
       'publie', 'copro', 'procedure_syndic', 'meuble', 'exclusivite', 'coup_de_coeur',
       'terrain_agricole', 'terrain_constructible', 'terrain_rue', 'terrain_viabilise',
-      'wc_separe', 'cave', 'recent', 'refait', 'travaux', 'box', 'parking', 'ascenseur',
+      'wc_separe', 'cave', 'recent', 'refait', 'travaux', 'ascenseur',
       'duplex', 'alarme', 'cable', 'piscine', 'entretien', 'securite', 'historique',
       'parking_inclus', 'lot_neuf', 'cheminee', 'vue', 'entree', 'parquet', 'placard',
       'vis_a_vis', 'calme', 'congelateur', 'four', 'lave_vaisselle', 'micro_ondes',

@@ -60,7 +60,6 @@ export async function GET() {
           honoraires_locataire: annonce.honoraires_locataire || 'N/C',
           etat_des_lieux: annonce.etat_des_lieux || 'N/C',
           depot_garantie: annonce.depot_garantie || 'N/C',
-          charges_details: annonce.nom_charges || 'N/C',
           date_disponibilite: annonce.date_dispo ? new Date(annonce.date_dispo).toLocaleDateString('fr-FR') : 'N/C'
         }),
         // Informations spécifiques à la vente

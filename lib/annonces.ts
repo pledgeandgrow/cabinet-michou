@@ -22,7 +22,6 @@ export interface Annonce {
   dpe_conso: string | null;
   dpe_emission: string | null;
   honoraires: string | null;
-  nom_charges: string | null;
   photos: Photo[];
 }
 
@@ -131,7 +130,6 @@ export async function getAnnonceById(id: string | number) {
       dpe_conso: annonce.bilan_conso?.nom || 'N/C',
       dpe_emission: annonce.bilan_emission?.nom || 'N/C',
       honoraires: annonce.honoraires?.nom || 'N/C',
-      nom_charges: annonce.charges?.nom || 'N/C',
       sous_type: annonce.sous_typebien?.nom || 'N/C',
       date_creation_fr: new Date(annonce.date_creation).toLocaleDateString('fr-FR')
     };
@@ -276,7 +274,6 @@ export async function getAnnonces({
           dpe_conso: annonce.bilan_conso?.nom || 'N/C',
           dpe_emission: annonce.bilan_emission?.nom || 'N/C',
           honoraires: annonce.honoraires?.nom || 'N/C',
-          nom_charges: annonce.charges?.nom || 'N/C',
           sous_type: annonce.sous_typebien?.nom || 'N/C',
           date_creation_fr: new Date(annonce.date_creation).toLocaleDateString('fr-FR')
         };

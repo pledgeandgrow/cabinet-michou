@@ -176,15 +176,35 @@ export async function getListing(id: number) {
     if (!error && data && data.length > 0) {
       // Formater le résultat pour l'affichage
       const listing = data[0];
+      
+      // Logs détaillés pour déboguer le champ cuisine
+      console.log('DEBUG CUISINE - Valeur brute:', listing.cuisine);
+      console.log('DEBUG CUISINE - Type:', typeof listing.cuisine);
+      console.log('DEBUG CUISINE - Valeur JSON stringifiée:', JSON.stringify(listing.cuisine));
+      console.log('DEBUG CUISINE - Conversion Boolean():', Boolean(listing.cuisine));
+      console.log('DEBUG CUISINE - Test === true:', listing.cuisine === true);
+      console.log('DEBUG CUISINE - Test === 1:', listing.cuisine === 1);
+      console.log('DEBUG CUISINE - Test === "true":', listing.cuisine === "true");
+      console.log('DEBUG CUISINE - Test === "1":', listing.cuisine === "1");
+      console.log('DEBUG CUISINE - Résultat de la conversion:', listing.cuisine === true || listing.cuisine === 1 || listing.cuisine === 'true' || listing.cuisine === '1');
+      
       return {
         ...listing,
         // Convertir publie en booléen si nécessaire
         publie: typeof listing.publie === 'boolean' ? listing.publie : listing.publie === 1,
+        // Convertir cuisine en booléen explicitement
+        cuisine: listing.cuisine === true || listing.cuisine === 1 || listing.cuisine === 'true' || listing.cuisine === '1',
         // Formater les prix pour l'affichage
         prix_hors_honoraires: listing.prix_hors_honoraires ? Number(listing.prix_hors_honoraires) : null,
         prix_avec_honoraires: listing.prix_avec_honoraires ? Number(listing.prix_avec_honoraires) : null,
         prix_m2: listing.prix_m2 ? Number(listing.prix_m2) : null,
-        honoraires_acheteur: listing.honoraires_acheteur ? Number(listing.honoraires_acheteur) : null
+        honoraires_acheteur: listing.honoraires_acheteur ? Number(listing.honoraires_acheteur) : null,
+        // Formater les charges pour l'affichage
+
+        charges: listing.charges ? Number(listing.charges) : null,
+        loyer_hors_charges: listing.loyer_hors_charges ? Number(listing.loyer_hors_charges) : null,
+        complement_loyer: listing.complement_loyer ? Number(listing.complement_loyer) : null,
+        loyer_avec_charges: listing.loyer_avec_charges ? Number(listing.loyer_avec_charges) : null
       };
     }
     
@@ -198,11 +218,11 @@ export async function getListing(id: number) {
         typebien (id, nom),
         transaction (id, nom),
         chauffage (id, nom),
-        cuisine (id, nom),
+        cuisine_relation:cuisine (id, nom),
         bilan_conso (id, nom),
         bilan_emission (id, nom),
         honoraires (id, nom),
-        charges (id, nom),
+        charges_relation:charges (id, nom),
         sous_typebien (id, nom)
       `)
       .eq('id', id)
@@ -217,18 +237,40 @@ export async function getListing(id: number) {
       return null;
     }
     
+    
+    // Logs détaillés pour déboguer le champ cuisine dans le fallback
+    console.log('DEBUG FALLBACK CUISINE - Valeur brute:', annonce.cuisine);
+    console.log('DEBUG FALLBACK CUISINE - Type:', typeof annonce.cuisine);
+    console.log('DEBUG FALLBACK CUISINE - Valeur JSON stringifiée:', JSON.stringify(annonce.cuisine));
+    console.log('DEBUG FALLBACK CUISINE - Conversion Boolean():', Boolean(annonce.cuisine));
+    console.log('DEBUG FALLBACK CUISINE - Test === true:', annonce.cuisine === true);
+    console.log('DEBUG FALLBACK CUISINE - Test === 1:', annonce.cuisine === 1);
+    console.log('DEBUG FALLBACK CUISINE - Test === "true":', annonce.cuisine === "true");
+    console.log('DEBUG FALLBACK CUISINE - Test === "1":', annonce.cuisine === "1");
+    console.log('DEBUG FALLBACK CUISINE - Résultat de la conversion:', annonce.cuisine === true || annonce.cuisine === 1 || annonce.cuisine === 'true' || annonce.cuisine === '1');
+    console.log('DEBUG FALLBACK CUISINE - Valeur de cuisine.nom:', annonce.cuisine?.nom);
+    console.log('DEBUG FALLBACK CUISINE - Type de cuisine.nom:', typeof annonce.cuisine?.nom);
+    
     // Formater le résultat pour correspondre au format attendu
     return {
       ...annonce,
       typeLogement: annonce.typebien?.nom || '',
       transaction: annonce.transaction?.nom || '',
       chauffage: annonce.chauffage?.nom || '',
-      cuisine: annonce.cuisine?.nom || '',
+      cuisine_type: annonce.cuisine_relation?.nom || '', // Utilisation de cuisine_relation au lieu de cuisine
       dpe_conso: annonce.bilan_conso?.nom || '',
       dpe_emission: annonce.bilan_emission?.nom || '',
       honoraires: annonce.honoraires?.nom || '',
-      nom_charges: annonce.charges?.nom || '',
-      sous_typebien: annonce.sous_typebien?.nom || ''
+      nom_charges: annonce.charges_relation?.nom || '',
+      sous_typebien: annonce.sous_typebien?.nom || '',
+      // Convertir cuisine en booléen explicitement
+      cuisine: annonce.cuisine === true || annonce.cuisine === 1 || annonce.cuisine === 'true' || annonce.cuisine === '1',
+      // S'assurer que les champs numériques sont correctement formatés
+      // Utiliser le champ charges directement de la table annonces
+      charges: annonce.charges !== null && annonce.charges !== undefined ? Number(annonce.charges) : null,
+      loyer_hors_charges: annonce.loyer_hors_charges ? Number(annonce.loyer_hors_charges) : null,
+      complement_loyer: annonce.complement_loyer ? Number(annonce.complement_loyer) : null,
+      loyer_avec_charges: annonce.loyer_avec_charges ? Number(annonce.loyer_avec_charges) : null
     };
   } catch (error) {
     console.error(`Error fetching listing ${id}:`, error);
@@ -488,7 +530,16 @@ export async function updateListing(id: number, data: any) {
     });
     
     // Convertir les booléens
-    const booleanFields = ['publie', 'copro', 'procedure_syndic'];
+    const booleanFields = [
+      'publie', 'copro', 'procedure_syndic', 'cuisine', 'cave', 'sam', 'sejour', 
+      'recent', 'refait', 'travaux', 'wc_separe', 'ascenseur', 'duplex', 'terrasse', 
+      'alarme', 'cable', 'piscine', 'entretien', 'securite', 'historique', 
+      'parking_inclus', 'lot_neuf', 'cheminee', 'vue', 'entree', 'parquet', 'placard', 
+      'vis_a_vis', 'calme', 'congelateur', 'four', 'lave_vaisselle', 'micro_ondes', 
+      'lave_linge', 'seche_linge', 'internet', 'equipement_bebe', 'telephone', 
+      'proche_lac', 'proche_tennis', 'terrain_agricole', 'terrain_constructible', 
+      'terrain_rue', 'terrain_viabilise'
+    ];
     booleanFields.forEach(field => {
       if (filteredData.hasOwnProperty(field)) {
         if (filteredData[field] === '1' || filteredData[field] === 'true' || filteredData[field] === true) {
@@ -596,3 +647,9 @@ export async function toggleListingPublication(id: number) {
 
 // Fonction pour générer un fichier CSV pour une annonce - supprimée car non utilisée
 // La fonctionnalité FTP a été supprimée pour améliorer les performances
+
+// Fonction pour mettre à jour une annonce existante - version utilisée par l'API
+export async function updateListingFixed(id: number, data: any) {
+  // Utiliser la fonction updateListing existante
+  return updateListing(id, data);
+}

@@ -448,7 +448,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
           is_loyer_cc: annonceData.is_loyer_cc || "",
           is_loyer_ht: annonceData.is_loyer_ht || "",
           loyer_hors_charges: Number(annonceData.loyer_hors_charges) || 0,
-          charges: Number(annonceData.charges) || 0,
+          charges: Number(annonceData.charges) || 2,
           complement_loyer: Number(annonceData.complement_loyer) || 0,
           loyer_avec_charges: Number(annonceData.loyer_avec_charges) || 0,
           loyer_m2: Number(annonceData.loyer_m2) || 0,
@@ -551,7 +551,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         prix_masque: formData.prix_masque,
         prix_ht: formData.prix_ht,
         loyer_hors_charges: formData.loyer_hors_charges ? Number(formData.loyer_hors_charges) : null,
-        charges: formData.charges ? Number(formData.charges) : null,
+        charges: formData.charges !== undefined ? Number(formData.charges) : null,
         complement_loyer: formData.complement_loyer ? Number(formData.complement_loyer) : null,
         loyer_avec_charges: formData.loyer_avec_charges ? Number(formData.loyer_avec_charges) : null,
         loyer_m2: formData.loyer_m2 ? Number(formData.loyer_m2) : null,
@@ -1040,7 +1040,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                   />
                 </div>
 
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <Label htmlFor="is_loyer_cc">Loyer charges comprises</Label>
                   <Select
                     value={formData.is_loyer_cc || ""}
@@ -1054,9 +1054,9 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                       <SelectItem value="non">Non</SelectItem>
                     </SelectContent>
                   </Select>
-                </div>
+                </div> */}
 
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <Label htmlFor="is_loyer_ht">Loyer HT</Label>
                   <Select
                     value={formData.is_loyer_ht || ""}
@@ -1070,7 +1070,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                       <SelectItem value="non">Non</SelectItem>
                     </SelectContent>
                   </Select>
-                </div>
+                </div> */}
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
