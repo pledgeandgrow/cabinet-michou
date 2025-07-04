@@ -1,7 +1,8 @@
 "use client"
 
 import Image from "next/image";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, CarouselApi } from "@/components/ui/carousel";
+import { useEffect, useState } from "react";
 
 interface Photo {
   id: number;
@@ -14,10 +15,35 @@ interface AnnonceCarouselProps {
 }
 
 export default function AnnonceCarousel({ photos, annonceName }: AnnonceCarouselProps) {
+  // État pour suivre l'index de l'image active
+  const [currentIndex, setCurrentIndex] = useState(0);
+  // État pour stocker l'API du carrousel
+  const [api, setApi] = useState<CarouselApi>();
+
+  // Mettre à jour l'index actuel lorsque le carrousel change
+  useEffect(() => {
+    if (!api) return;
+    
+    const onChange = () => {
+      setCurrentIndex(api.selectedScrollSnap());
+    };
+    
+    api.on("select", onChange);
+    return () => {
+      api.off("select", onChange);
+    };
+  }, [api]);
+
+  // Fonction pour naviguer vers une image spécifique
+  const goToImage = (index: number) => {
+    if (api) {
+      api.scrollTo(index);
+    }
+  };
 
   return (
     <div className="space-y-2 md:space-y-4 mb-11">
-      <Carousel className="w-full">
+      <Carousel className="w-full" setApi={setApi}>
         <CarouselContent>
           {photos.map((photo: Photo, index: number) => (
             <CarouselItem key={photo.id}>
@@ -46,7 +72,8 @@ export default function AnnonceCarousel({ photos, annonceName }: AnnonceCarousel
           {photos.map((photo: Photo, index: number) => (
             <div
               key={photo.id}
-              className="relative aspect-[4/3] w-14 md:w-20 flex-shrink-0 overflow-hidden rounded-md cursor-pointer hover:opacity-80 transition-opacity snap-start"
+              onClick={() => goToImage(index)}
+              className={`relative aspect-[4/3] w-14 md:w-20 flex-shrink-0 overflow-hidden rounded-md cursor-pointer hover:opacity-80 transition-all snap-start ${currentIndex === index ? 'ring-2 ring-[#00408A] ring-offset-1' : 'opacity-80'}`}
             >
               <Image
                 src={photo.url}

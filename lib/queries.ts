@@ -17,6 +17,8 @@ interface AnnonceRow {
   ville: string;
   cp: string;
   photo: string;
+  latitude?: number | null;
+  longitude?: number | null;
   [key: string]: any;
 }
 

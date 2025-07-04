@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 type Annonce = {
   id: number;
   titre: string;
+  nom: string;  // Ajout de la propriété nom
   reference: string;
   prix: number;
   surface: number;
@@ -364,8 +365,9 @@ export default function AnnoncesPage() {
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <CardTitle className="text-lg mb-1">{annonce.reference || "Réf. non disponible"}</CardTitle>
+                      <CardTitle className="text-lg mb-1">{annonce.titre || "Titre non disponible"}</CardTitle>
                       <CardDescription className="flex items-center gap-1">
+                        <span className="text-xs text-muted-foreground">Réf: {annonce.reference || "Non disponible"}</span>
                         <MapPin className="h-4 w-4" />
                         {annonce.ville} ({annonce.code_postal})
                       </CardDescription>

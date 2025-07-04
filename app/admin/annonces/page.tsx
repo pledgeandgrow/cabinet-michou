@@ -32,6 +32,7 @@ interface Annonce {
   prix_hors_charges: number | "N/C"
   prix_avec_honoraires?: number | "N/C"
   prix_hors_honoraires?: number | "N/C"
+  loyer_avec_charges?: number | "N/C"
   charges: number | "N/C"
   surface: number | "N/C"
   // Champs avec les deux formats possibles (ancien et nouveau)
@@ -64,10 +65,34 @@ interface Annonce {
   prix_m2?: string
   copropriete?: "Oui" | "Non" | boolean | number
   nb_lots?: number | "N/C"
-  code_postal?: string
+  cp?: string
   ville?: string
+  transaction_id?: number
   transaction_nom?: string
+  typebien_id?: number
   typebien_nom?: string
+}
+
+// Fonction pour obtenir le label du type de bien en fonction de son ID
+function getTypeBienLabel(typebienId?: number): string | null {
+  if (!typebienId) return null;
+  
+  // Mapping des IDs vers les labels
+  const typeBienMapping: Record<number, string> = {
+    1: "Appartement",
+    2: "Maison",
+    3: "Terrain",
+    4: "Local commercial",
+    5: "Immeuble",
+    6: "Parking",
+    7: "Bureau",
+    8: "Loft",
+    9: "Château",
+    10: "Hôtel particulier"
+    // Ajoutez d'autres mappings si nécessaire
+  };
+  
+  return typeBienMapping[typebienId] || null;
 }
 
 export default function RealEstateTable({ items }: { items?: Annonce[] }) {
@@ -334,17 +359,32 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
                       <X className="h-4 w-4" />
                     </button>
                   </TableCell>
-                  <TableCell>{annonce.transaction_nom || "N/A"}</TableCell>
-                  <TableCell>{annonce.typebien_nom || "N/A"}</TableCell>
+                  <TableCell>
+                    {annonce.transaction_nom || 
+                     (annonce.transaction_id === 1 ? "Location" : 
+                      annonce.transaction_id === 2 ? "Vente" : "N/A")}
+                  </TableCell>
+                  <TableCell>
+                    {annonce.typebien_nom || getTypeBienLabel(annonce.typebien_id) || "N/A"}
+                  </TableCell>
                   <TableCell>{annonce.reference || "N/A"}</TableCell>
                   <TableCell>{annonce.surface ? `${annonce.surface} m²` : "N/A"}</TableCell>
                   <TableCell className="whitespace-nowrap">
-                    {annonce.prix_avec_honoraires ? `${annonce.prix_avec_honoraires} €` : "N/C"}
-                    {annonce.charges && annonce.charges !== "N/C" && (
-                      <span className="text-sm text-gray-500 block">{`(+${annonce.charges}€ charges)`}</span>
+                    {annonce.transaction_id === 2 || annonce.transaction_nom === "Vente" ? (
+                      // Affichage pour les ventes
+                      annonce.prix_avec_honoraires ? `${annonce.prix_avec_honoraires} €` : "N/C"
+                    ) : (
+                      // Affichage pour les locations
+                      <>
+                        {annonce.loyer_avec_charges ? `${annonce.loyer_avec_charges} €` : 
+                         annonce.prix_avec_honoraires ? `${annonce.prix_avec_honoraires} €` : "N/C"}
+                        {annonce.charges && annonce.charges !== "N/C" && (
+                          <span className="text-sm text-gray-500 block">{`(+${annonce.charges}€ charges)`}</span>
+                        )}
+                      </>
                     )}
                   </TableCell>
-                  <TableCell>{annonce.code_postal || "N/A"}</TableCell>
+                  <TableCell>{annonce.cp || "N/A"}</TableCell>
                   <TableCell>{annonce.ville || "N/A"}</TableCell>
                   <TableCell>
                     <div 

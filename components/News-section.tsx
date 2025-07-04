@@ -91,7 +91,7 @@ export default function NewsSections() {
           <div className="order-1 md:order-2">
             {/* Title is now shown for all screen sizes in the centered section above */}
             
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden relative">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-visible relative">
               <Carousel className="w-full" setApi={setApi}>
                 <CarouselContent className="px-0">
                   {isLoading ? (
@@ -115,7 +115,7 @@ export default function NewsSections() {
                   ) : (
                     actualites.map((item, index) => (
                       <CarouselItem key={item.id} className="px-0">
-                        <div className="flex flex-col p-4 md:p-8 rounded-lg text-center md:text-left">
+                        <div className="flex flex-col py-4 md:py-8 px-10 md:px-12 rounded-lg text-center md:text-left">
                           <div className="flex items-center justify-center md:justify-start gap-1 md:gap-2 text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-2 md:mb-3">
                             <Calendar className="h-3 w-3 md:h-4 md:w-4" />
                             <span>{item.date_creation ? new Date(item.date_creation).toLocaleDateString('fr-FR') : ''}</span>
@@ -135,12 +135,12 @@ export default function NewsSections() {
                   )}
                 </CarouselContent>
                 
-                {/* Custom navigation arrows that are more visible */}
-                <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 flex justify-between px-1 md:px-4 pointer-events-none z-10">
+                {/* Custom navigation arrows that are more visible and positioned on the sides */}
+                <div className="absolute left-[-20px] right-[-20px] top-1/2 -translate-y-1/2 flex justify-between pointer-events-none z-50 overflow-visible">
                   <Button 
                     onClick={() => api?.scrollPrev()} 
                     size="icon" 
-                    className="rounded-full bg-white/90 hover:bg-white text-[#00408A] border-0 shadow-md pointer-events-auto h-8 w-8 md:h-10 md:w-10 dark:bg-gray-800/90 dark:hover:bg-gray-800 dark:text-white"
+                    className="rounded-full bg-white hover:bg-white text-[#00408A] border border-gray-200 shadow-lg pointer-events-auto h-8 w-8 md:h-10 md:w-10 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white"
                     aria-label="Previous slide"
                   >
                     <ChevronLeft className="h-4 w-4 md:h-6 md:w-6" />
@@ -148,7 +148,7 @@ export default function NewsSections() {
                   <Button 
                     onClick={() => api?.scrollNext()} 
                     size="icon" 
-                    className="rounded-full bg-white/90 hover:bg-white text-[#00408A] border-0 shadow-md pointer-events-auto h-8 w-8 md:h-10 md:w-10 dark:bg-gray-800/90 dark:hover:bg-gray-800 dark:text-white"
+                    className="rounded-full bg-white hover:bg-white text-[#00408A] border border-gray-200 shadow-lg pointer-events-auto h-8 w-8 md:h-10 md:w-10 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white"
                     aria-label="Next slide"
                   >
                     <ChevronRight className="h-4 w-4 md:h-6 md:w-6" />

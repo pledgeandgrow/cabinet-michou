@@ -334,27 +334,40 @@ export async function addAnnoncePhoto(annonceId: number, filename: string, princ
   const supabase = getSupabaseClient();
   
   try {
-    console.log(`Adding photo to annonce ${annonceId}:`, { filename, principale });
+    // Vérifier et convertir les types de données
+    const annonce_id = Number(annonceId);
+    if (isNaN(annonce_id) || annonce_id <= 0) {
+      throw new Error(`Invalid annonceId: ${annonceId}. Must be a positive number.`);
+    }
+    
+    if (!filename || typeof filename !== 'string') {
+      throw new Error(`Invalid filename: ${filename}. Must be a non-empty string.`);
+    }
+    
+    // Convertir principale en booléen
+    const isPrincipal = Boolean(principale);
+    
+    console.log(`Adding photo to annonce ${annonce_id}:`, { filename, isPrincipal });
     
     // Si la photo est principale, mettre à jour les autres photos pour qu'elles ne soient plus principales
-    if (principale) {
-      console.log(`Setting photo as principal for annonce ${annonceId}`);
+    if (isPrincipal) {
+      console.log(`Setting photo as principal for annonce ${annonce_id}`);
       const { error: updateError } = await supabase
         .from('annonces_photos')
         .update({ principale: false })
-        .eq('annonce_id', annonceId);
+        .eq('annonce_id', annonce_id);
       
       if (updateError) {
-        console.error(`Error updating photos for annonce ${annonceId}:`, updateError);
+        console.error(`Error updating photos for annonce ${annonce_id}:`, updateError);
         throw updateError;
       }
     }
     
     // Préparer les données à insérer
     const photoData = {
-      annonce_id: annonceId,
+      annonce_id: annonce_id,
       nom: filename,
-      principale: principale
+      principale: isPrincipal ? true : false
     };
     
     console.log(`Inserting photo data:`, photoData);
@@ -366,7 +379,7 @@ export async function addAnnoncePhoto(annonceId: number, filename: string, princ
       .select();
     
     if (error) {
-      console.error(`Error adding photo for annonce ${annonceId}:`, error);
+      console.error(`Error adding photo for annonce ${annonce_id}:`, error);
       throw error;
     }
     
@@ -374,7 +387,7 @@ export async function addAnnoncePhoto(annonceId: number, filename: string, princ
     
     // Vérifier que data est un tableau et qu'il contient au moins un élément
     if (!data || data.length === 0) {
-      console.error(`No data returned after inserting photo for annonce ${annonceId}`);
+      console.error(`No data returned after inserting photo for annonce ${annonce_id}`);
       throw new Error('No data returned after inserting photo');
     }
     

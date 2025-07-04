@@ -518,6 +518,9 @@ export default function EditListingPage({ params }: { params: PageParams }) {
     setIsSubmitting(true)
 
     try {
+      // Déterminer si c'est une location (transaction_id === 1) ou une vente (transaction_id === 2)
+      const isLocation = Number(formData.transaction_id) === 1;
+      
       const requestBody = {
         // Identifiants et informations de base
         id: formData.id,
@@ -545,8 +548,8 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         station: formData.station,
 
         // Informations financières
-        prix_hors_honoraires: formData.prix_hors_honoraires ? Number(formData.prix_hors_honoraires) : null,
-        prix_avec_honoraires: formData.prix_avec_honoraires ? Number(formData.prix_avec_honoraires) : null,
+        prix_hors_honoraires: isLocation ? 0 : (formData.prix_hors_honoraires ? Number(formData.prix_hors_honoraires) : null),
+        prix_avec_honoraires: isLocation ? 0 : (formData.prix_avec_honoraires ? Number(formData.prix_avec_honoraires) : null),
         prix_m2: formData.prix_m2 ? Number(formData.prix_m2) : null,
         prix_masque: formData.prix_masque,
         prix_ht: formData.prix_ht,
@@ -686,16 +689,34 @@ export default function EditListingPage({ params }: { params: PageParams }) {
       }
 
       // Validate required fields
-      const requiredFields = [
+      let requiredFields = [
         "reference",
         "transaction_id",
         "typebien_id",
         "date_dispo",
         "adresse",
-        "prix_hors_honoraires",
-        "prix_avec_honoraires",
       ]
-      const missingFields = requiredFields.filter((field) => !requestBody[field as keyof typeof requestBody])
+      
+      // Ajouter les champs de prix uniquement pour les ventes
+      if (!isLocation) {
+        requiredFields = [
+          ...requiredFields,
+          "prix_hors_honoraires",
+          "prix_avec_honoraires",
+        ]
+      } else {
+        // Pour les locations, vérifier les champs de loyer
+        requiredFields = [
+          ...requiredFields,
+          "loyer_hors_charges",
+          "loyer_avec_charges",
+        ]
+      }
+      
+      const missingFields = requiredFields.filter((field) => {
+        const value = requestBody[field as keyof typeof requestBody];
+        return value === null || value === undefined || value === "";
+      })
 
       if (missingFields.length > 0) {
         throw new Error(`Missing required fields: ${missingFields.join(", ")}`)
