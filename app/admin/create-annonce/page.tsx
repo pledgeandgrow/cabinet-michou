@@ -823,8 +823,9 @@ export default function CreateListingPage() {
                     <Input
                       id="reference"
                       value={formData.reference}
-                      onChange={(e) => setFormData({ ...formData, reference: e.target.value })}
-                      placeholder="REF-001"
+                      onChange={(e) => setFormData({ ...formData, reference: e.target.value.slice(0, 20) })}
+                      maxLength={20}
+                      placeholder="REF-001 (20 caractères max)"
                     />
                   </div>
 
@@ -835,8 +836,9 @@ export default function CreateListingPage() {
                     <Input
                       id="nom"
                       value={formData.nom}
-                      onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
-                      placeholder="Appartement lumineux, Maison de charme..."
+                      onChange={(e) => setFormData({ ...formData, nom: e.target.value.slice(0, 64) })}
+                      maxLength={64}
+                      placeholder="Appartement lumineux, Maison de charme... (64 caractères max)"
                     />
                   </div>
 
@@ -916,7 +918,9 @@ export default function CreateListingPage() {
                     <Input
                       id="adresse"
                       value={formData.adresse}
-                      onChange={(e) => setFormData({ ...formData, adresse: e.target.value })}
+                      onChange={(e) => setFormData({ ...formData, adresse: e.target.value.slice(0, 128) })}
+                      maxLength={128}
+                      placeholder="Adresse complète (128 caractères max)"
                     />
                   </div>
 
@@ -925,7 +929,9 @@ export default function CreateListingPage() {
                     <Input
                       id="quartier"
                       value={formData.quartier}
-                      onChange={(e) => setFormData({ ...formData, quartier: e.target.value })}
+                      onChange={(e) => setFormData({ ...formData, quartier: e.target.value.slice(0, 64) })}
+                      maxLength={64}
+                      placeholder="Quartier (64 caractères max)"
                     />
                   </div>
 
@@ -945,7 +951,9 @@ export default function CreateListingPage() {
                     <Input
                       id="ville"
                       value={formData.ville}
-                      onChange={(e) => setFormData({ ...formData, ville: e.target.value })}
+                      onChange={(e) => setFormData({ ...formData, ville: e.target.value.slice(0, 50) })}
+                      maxLength={50}
+                      placeholder="Ville (50 caractères max)"
                     />
                   </div>
 
@@ -954,7 +962,9 @@ export default function CreateListingPage() {
                     <Input
                       id="cp_reel"
                       value={formData.cp_reel}
-                      onChange={(e) => setFormData({ ...formData, cp_reel: e.target.value })}
+                      onChange={(e) => setFormData({ ...formData, cp_reel: e.target.value.slice(0, 5) })}
+                      maxLength={5}
+                      placeholder="Code postal réel (5 caractères max)"
                     />
                   </div>
 
@@ -963,7 +973,9 @@ export default function CreateListingPage() {
                     <Input
                       id="ville_reel"
                       value={formData.ville_reel}
-                      onChange={(e) => setFormData({ ...formData, ville_reel: e.target.value })}
+                      onChange={(e) => setFormData({ ...formData, ville_reel: e.target.value.slice(0, 50) })}
+                      maxLength={50}
+                      placeholder="Ville réelle (50 caractères max)"
                     />
                   </div>
 
@@ -982,7 +994,9 @@ export default function CreateListingPage() {
                     <Input
                       id="pays"
                       value={formData.pays}
-                      onChange={(e) => setFormData({ ...formData, pays: e.target.value })}
+                      onChange={(e) => setFormData({ ...formData, pays: e.target.value.slice(0, 150) })}
+                      maxLength={150}
+                      placeholder="Pays (150 caractères max)"
                     />
                   </div>
 
@@ -1011,7 +1025,9 @@ export default function CreateListingPage() {
                     <Input
                       id="ligne"
                       value={formData.ligne}
-                      onChange={(e) => setFormData({ ...formData, ligne: e.target.value })}
+                      onChange={(e) => setFormData({ ...formData, ligne: e.target.value.slice(0, 50) })}
+                      maxLength={50}
+                      placeholder="Ligne de transport (50 caractères max)"
                     />
                   </div>
 
@@ -1020,7 +1036,9 @@ export default function CreateListingPage() {
                     <Input
                       id="station"
                       value={formData.station}
-                      onChange={(e) => setFormData({ ...formData, station: e.target.value })}
+                      onChange={(e) => setFormData({ ...formData, station: e.target.value.slice(0, 50) })}
+                      maxLength={50}
+                      placeholder="Station (50 caractères max)"
                     />
                   </div>
 
