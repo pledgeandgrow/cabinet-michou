@@ -413,10 +413,10 @@ export default function CreateListingPage() {
 
     try {
       console.log(`Uploading ${selectedFiles.length} files to Cloudinary...`);
-      
+
       const uploadPromises = Array.from(selectedFiles).map(async (file, index) => {
         console.log(`Processing file ${index + 1}/${selectedFiles.length}: ${file.name}`);
-        
+
         // Upload to Cloudinary first
         const formData = new FormData();
         formData.append("file", file);
@@ -453,7 +453,7 @@ export default function CreateListingPage() {
 
       const newPhotos = await Promise.all(uploadPromises);
       console.log(`All ${newPhotos.length} photos uploaded successfully:`, newPhotos);
-      
+
       setPhotos([...photos, ...newPhotos]);
 
       // Reset file input
@@ -692,19 +692,19 @@ export default function CreateListingPage() {
         try {
           console.log("Annonce créée avec succès, ID:", data.result[0].id);
           console.log("Photos à associer:", photos.length);
-          
+
           // Pour chaque photo, associer l'ID de l'annonce et sauvegarder
           const photoPromises = photos.map(async (photo, index) => {
             console.log(`Traitement de la photo ${index + 1}/${photos.length}:`, photo);
-            
+
             const photoData = {
               annonceId: data.result[0].id,
               cloudinary_url: photo.nom,
               principale: photo.principale
             };
-            
+
             console.log(`Envoi des données pour la photo ${index + 1}:`, photoData);
-            
+
             const response = await fetch("/api/save-cloudinary-photo", {
               method: "POST",
               headers: {
@@ -712,21 +712,21 @@ export default function CreateListingPage() {
               },
               body: JSON.stringify(photoData),
             });
-            
+
             if (!response.ok) {
               const errorText = await response.text();
               console.error(`Erreur lors de l'enregistrement de la photo ${index + 1}:`, errorText);
               throw new Error(`Failed to save photo: ${photo.nom}. Status: ${response.status}. ${errorText}`);
             }
-            
+
             const result = await response.json();
             console.log(`Photo ${index + 1} enregistrée avec succès:`, result);
             return result;
           });
-          
+
           const photoResults = await Promise.all(photoPromises);
           console.log("Toutes les photos ont été enregistrées:", photoResults);
-          
+
           toast({
             title: "Photos sauvegardées",
             description: `${photos.length} photo(s) associée(s) à l'annonce avec succès`,
@@ -1338,7 +1338,7 @@ export default function CreateListingPage() {
                     </div>
                   )}
 
-                  
+
                 </div>
               </div>
 
@@ -2017,12 +2017,12 @@ export default function CreateListingPage() {
               </div>
             </div>
           )}
-          
+
           {currentStep === 5 && (
             <div className="space-y-8">
               <div>
                 <h2 className="text-2xl font-bold text-[#00458E] mb-6">Photos de l'annonce</h2>
-                
+
                 {photos.length > 0 && (
                   <div className="mb-8">
                     <h3 className="text-lg font-medium mb-4">Photos sélectionnées</h3>
