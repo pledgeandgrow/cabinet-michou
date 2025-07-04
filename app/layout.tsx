@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { MainNav } from "@/components/main-nav";
 import Footer from "@/components/footer";
 import CookieConsent from "@/components/cookie-consent";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -46,6 +47,7 @@ export default function RootLayout({
             </div>
             <Footer />
             <CookieConsent />
+            <Toaster />
           </div>
         </ThemeProvider>
       </body>

@@ -393,6 +393,77 @@ export default function CreateListingPage() {
   }, [])
 
   const handleNext = () => {
+    // Vérification des champs obligatoires pour l'étape 1
+    if (currentStep === 1) {
+      const missingFields = [];
+      
+      if (!formData.reference) missingFields.push("Référence");
+      if (!formData.nom) missingFields.push("Nom du bien");
+      if (!formData.transaction_id) missingFields.push("Type de transaction");
+      if (!formData.typebien_id) missingFields.push("Type de bien");
+      if (!formData.date_dispo) missingFields.push("Date de disponibilité");
+      
+      if (missingFields.length > 0) {
+        // Utiliser une alerte JavaScript standard
+        // alert(`Champs obligatoires manquants : ${missingFields.join(', ')}.`);
+        
+        // Essayer également le toast
+        toast({
+          title: "Champs obligatoires manquants",
+          description: `Veuillez remplir les champs suivants : ${missingFields.join(', ')}.`,
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+    
+    // Vérification des champs obligatoires pour l'étape 2
+    if (currentStep === 2) {
+      const missingFields = [];
+      
+      if (!formData.adresse) missingFields.push("Adresse");
+      if (!formData.cp) missingFields.push("Code postal");
+      if (!formData.ville) missingFields.push("Ville");
+      if (!formData.pays) missingFields.push("Pays");
+      
+      if (missingFields.length > 0) {
+        // Utiliser une alerte JavaScript standard
+        // alert(`Champs obligatoires manquants : ${missingFields.join(', ')}.`);
+        
+        // Essayer également le toast
+        toast({
+          title: "Champs obligatoires manquants",
+          description: `Veuillez remplir les champs suivants : ${missingFields.join(', ')}.`,
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Si cp_reel est vide, copier la valeur de cp
+      // Si ville_reel est vide, copier la valeur de ville
+      const updatedFormData = { ...formData };
+      let dataUpdated = false;
+      
+      if (!formData.cp_reel && formData.cp) {
+        updatedFormData.cp_reel = formData.cp;
+        dataUpdated = true;
+      }
+      
+      if (!formData.ville_reel && formData.ville) {
+        updatedFormData.ville_reel = formData.ville;
+        dataUpdated = true;
+      }
+      
+      if (dataUpdated) {
+        setFormData(updatedFormData);
+        toast({
+          title: "Champs auto-complétés",
+          description: "Les champs 'Code postal réel' et/ou 'Ville réelle' ont été automatiquement remplis avec les valeurs de 'Code postal' et 'Ville'.",
+        });
+      }
+    }
+    
+    // Si tout est valide ou si ce n'est pas l'étape 1 ou 2, passer à l'étape suivante
     setCurrentStep((prev) => Math.min(prev + 1, 5))
   }
 
@@ -826,12 +897,13 @@ export default function CreateListingPage() {
                       onChange={(e) => setFormData({ ...formData, reference: e.target.value.slice(0, 20) })}
                       maxLength={20}
                       placeholder="REF-001 (20 caractères max)"
+                      required
                     />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="nom">
-                      Nom du bien
+                      Nom du bien <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="nom"
@@ -839,6 +911,7 @@ export default function CreateListingPage() {
                       onChange={(e) => setFormData({ ...formData, nom: e.target.value.slice(0, 64) })}
                       maxLength={64}
                       placeholder="Appartement lumineux, Maison de charme... (64 caractères max)"
+                      required
                     />
                   </div>
 
@@ -893,6 +966,7 @@ export default function CreateListingPage() {
                       type="date"
                       value={formData.date_dispo}
                       onChange={(e) => setFormData({ ...formData, date_dispo: e.target.value })}
+                      required
                     />
                   </div>
                 </div>
@@ -921,6 +995,7 @@ export default function CreateListingPage() {
                       onChange={(e) => setFormData({ ...formData, adresse: e.target.value.slice(0, 128) })}
                       maxLength={128}
                       placeholder="Adresse complète (128 caractères max)"
+                      required
                     />
                   </div>
 
@@ -936,24 +1011,26 @@ export default function CreateListingPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="cp">Code postal</Label>
+                    <Label htmlFor="cp">Code postal <span className="text-red-500">*</span></Label>
                     <Input
                       id="cp"
                       value={formData.cp}
                       onChange={(e) => setFormData({ ...formData, cp: e.target.value.slice(0, 5) })}
                       maxLength={5}
                       placeholder="Code postal (5 caractères max)"
+                      required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="ville">Ville</Label>
+                    <Label htmlFor="ville">Ville <span className="text-red-500">*</span></Label>
                     <Input
                       id="ville"
                       value={formData.ville}
                       onChange={(e) => setFormData({ ...formData, ville: e.target.value.slice(0, 50) })}
                       maxLength={50}
                       placeholder="Ville (50 caractères max)"
+                      required
                     />
                   </div>
 
@@ -990,13 +1067,14 @@ export default function CreateListingPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="pays">Pays</Label>
+                    <Label htmlFor="pays">Pays <span className="text-red-500">*</span></Label>
                     <Input
                       id="pays"
                       value={formData.pays}
                       onChange={(e) => setFormData({ ...formData, pays: e.target.value.slice(0, 150) })}
                       maxLength={150}
                       placeholder="Pays (150 caractères max)"
+                      required
                     />
                   </div>
 
