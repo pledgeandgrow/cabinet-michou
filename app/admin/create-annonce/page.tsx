@@ -578,6 +578,17 @@ export default function CreateListingPage() {
     setIsSubmitting(true)
 
     try {
+      // Vérifier qu'au moins une photo a été ajoutée
+      if (photos.length === 0) {
+        toast({
+          title: "Photo obligatoire",
+          description: "Veuillez ajouter au moins une photo avant de soumettre l'annonce.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+      
       // Validate required fields
 
       // Convert form data to API format

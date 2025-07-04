@@ -518,6 +518,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
     setIsSubmitting(true)
 
     try {
+      
       // Déterminer si c'est une location (transaction_id === 1) ou une vente (transaction_id === 2)
       const isLocation = Number(formData.transaction_id) === 1;
       
@@ -713,6 +714,32 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         ]
       }
       
+      // Vérification des champs obligatoires spécifiques
+      if (!formData.reference || !formData.transaction_id || !formData.typebien_id || !formData.date_dispo || !formData.adresse || !formData.cp || !formData.ville) {
+        // Créer une liste des champs manquants
+        const specificMissingFields = [];
+        if (!formData.reference) specificMissingFields.push("Référence");
+        if (!formData.transaction_id) specificMissingFields.push("Type de transaction");
+        if (!formData.typebien_id) specificMissingFields.push("Type de bien");
+        if (!formData.date_dispo) specificMissingFields.push("Date de disponibilité");
+        if (!formData.adresse) specificMissingFields.push("Adresse");
+        if (!formData.cp) specificMissingFields.push("Code postal");
+        if (!formData.ville) specificMissingFields.push("Ville");
+        
+        // Afficher un message d'erreur
+        const errorMessage = document.createElement("div");
+        errorMessage.className = "fixed top-16 right-4 bg-red-500 text-white px-6 py-3 rounded shadow-lg";
+        errorMessage.textContent = `Champs obligatoires manquants : ${specificMissingFields.join(', ')}.`;
+        document.body.appendChild(errorMessage);
+        
+        setTimeout(() => {
+          errorMessage.remove();
+        }, 5000);
+        
+        setIsSubmitting(false);
+        return;
+      }
+      
       const missingFields = requiredFields.filter((field) => {
         const value = requestBody[field as keyof typeof requestBody];
         return value === null || value === undefined || value === "";
@@ -880,21 +907,27 @@ export default function EditListingPage({ params }: { params: PageParams }) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="cp">Code postal</Label>
+              <Label htmlFor="cp">
+                Code postal <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="cp"
                 value={formData.cp}
                 maxLength={5}
                 onChange={(e) => setFormData({ ...formData, cp: e.target.value })}
+                required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="ville">Ville</Label>
+              <Label htmlFor="ville">
+                Ville <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="ville"
                 value={formData.ville}
                 onChange={(e) => setFormData({ ...formData, ville: e.target.value })}
+                required
               />
             </div>
           </div>

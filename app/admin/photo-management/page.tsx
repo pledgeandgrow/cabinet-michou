@@ -272,6 +272,16 @@ const PhotoManagementContent = () => {
   const handleSaveChanges = async () => {
     if (!annonceId) return
 
+    // Vérifier qu'il y a au moins une photo
+    if (photos.length === 0) {
+      toast({
+        title: "Photo obligatoire",
+        description: "Veuillez ajouter au moins une photo avant de sauvegarder.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSaving(true)
     try {
       // Create FormData to handle file uploads (keeping your exact same logic)
