@@ -1889,6 +1889,38 @@ export default function CreateListingPage() {
                 </div>
 
                 <div className="mt-6">
+                  <Label className="text-lg font-semibold mb-2 block">Environnement et localisation</Label>
+                  <div className="grid grid-cols-2 gap-4 mt-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="proche_pistes"
+                        checked={formData.proche_pistes}
+                        onCheckedChange={(checked) => setFormData({ ...formData, proche_pistes: checked as boolean })}
+                      />
+                      <Label htmlFor="proche_pistes">Proche des pistes</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="proche_lac"
+                        checked={formData.proche_lac}
+                        onCheckedChange={(checked) => setFormData({ ...formData, proche_lac: checked as boolean })}
+                      />
+                      <Label htmlFor="proche_lac">Proche d'un lac</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="proche_tennis"
+                        checked={formData.proche_tennis}
+                        onCheckedChange={(checked) => setFormData({ ...formData, proche_tennis: checked as boolean })}
+                      />
+                      <Label htmlFor="proche_tennis">Proche d'un tennis</Label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6">
                   <Label className="text-lg font-semibold">Équipements</Label>
                   <div className="mt-4 grid grid-cols-2 gap-4">
 
@@ -1983,6 +2015,16 @@ export default function CreateListingPage() {
                       <Label htmlFor="cave">Cave</Label>
                     </div>
 
+                    <div className="space-y-2">
+                      <Label htmlFor="surface_cave">Surface de la cave (m²)</Label>
+                      <Input
+                        id="surface_cave"
+                        type="number"
+                        value={formData.surface_cave}
+                        onChange={(e) => setFormData({ ...formData, surface_cave: Number(e.target.value) })}
+                      />
+                    </div>
+
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         id="parking_inclus"
@@ -1990,6 +2032,16 @@ export default function CreateListingPage() {
                         onCheckedChange={(checked) => setFormData({ ...formData, parking_inclus: checked as boolean })}
                       />
                       <Label htmlFor="parking_inclus">Parking inclus</Label>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="parking">Nombre de parkings</Label>
+                      <Input
+                        id="parking"
+                        type="number"
+                        value={formData.parking}
+                        onChange={(e) => setFormData({ ...formData, parking: Number(e.target.value) })}
+                      />
                     </div>
 
                     <div className="flex items-center space-x-2">
@@ -2021,11 +2073,83 @@ export default function CreateListingPage() {
 
                     <div className="flex items-center space-x-2">
                       <Checkbox
+                        id="vue"
+                        checked={formData.vue}
+                        onCheckedChange={(checked) => setFormData({ ...formData, vue: checked as boolean })}
+                      />
+                      <Label htmlFor="vue">Belle vue</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
                         id="vis_a_vis"
                         checked={formData.vis_a_vis}
                         onCheckedChange={(checked) => setFormData({ ...formData, vis_a_vis: checked as boolean })}
                       />
                       <Label htmlFor="vis_a_vis">Sans vis-à-vis</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="placard"
+                        checked={formData.placard}
+                        onCheckedChange={(checked) => setFormData({ ...formData, placard: checked as boolean })}
+                      />
+                      <Label htmlFor="placard">Placards</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="parquet"
+                        checked={formData.parquet}
+                        onCheckedChange={(checked) => setFormData({ ...formData, parquet: checked as boolean })}
+                      />
+                      <Label htmlFor="parquet">Parquet</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="lot_neuf"
+                        checked={formData.lot_neuf}
+                        onCheckedChange={(checked) => setFormData({ ...formData, lot_neuf: checked as boolean })}
+                      />
+                      <Label htmlFor="lot_neuf">Lot neuf</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="historique"
+                        checked={formData.historique}
+                        onCheckedChange={(checked) => setFormData({ ...formData, historique: checked as boolean })}
+                      />
+                      <Label htmlFor="historique">Historique</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="entretien"
+                        checked={formData.entretien}
+                        onCheckedChange={(checked) => setFormData({ ...formData, entretien: checked as boolean })}
+                      />
+                      <Label htmlFor="entretien">Entretien</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="handicapes"
+                        checked={formData.handicapes}
+                        onCheckedChange={(checked) => setFormData({ ...formData, handicapes: checked as boolean })}
+                      />
+                      <Label htmlFor="handicapes">Accès handicapés</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="animaux"
+                        checked={formData.animaux}
+                        onCheckedChange={(checked) => setFormData({ ...formData, animaux: checked as boolean })}
+                      />
+                      <Label htmlFor="animaux">Animaux autorisés</Label>
                     </div>
                   </div>
                 </div>
@@ -2089,6 +2213,33 @@ export default function CreateListingPage() {
 
                     <div className="flex items-center space-x-2">
                       <Checkbox
+                        id="internet"
+                        checked={formData.internet}
+                        onCheckedChange={(checked) => setFormData({ ...formData, internet: checked as boolean })}
+                      />
+                      <Label htmlFor="internet">Internet</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="telephone"
+                        checked={formData.telephone}
+                        onCheckedChange={(checked) => setFormData({ ...formData, telephone: checked as boolean })}
+                      />
+                      <Label htmlFor="telephone">Téléphone</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="equipement_bebe"
+                        checked={formData.equipement_bebe}
+                        onCheckedChange={(checked) => setFormData({ ...formData, equipement_bebe: checked as boolean })}
+                      />
+                      <Label htmlFor="equipement_bebe">Équipement bébé</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
                         id="congelateur"
                         checked={formData.congelateur}
                         onCheckedChange={(checked) => setFormData({ ...formData, congelateur: checked as boolean })}
@@ -2098,7 +2249,78 @@ export default function CreateListingPage() {
                   </div>
                 </div>
               </div>
+              <div className="mt-8">
+                <h3 className="text-xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Diagnostics énergétiques</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="dpe">DPE</Label>
+                    <Select
+                      value={formData.bilan_conso_id ? String(formData.bilan_conso_id) : ""}
+                      onValueChange={(value) => setFormData({ ...formData, bilan_conso_id: value === "none" ? 0 : Number(value) })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Sélectionner..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">Non renseigné</SelectItem>
+                        <SelectItem value="1">A</SelectItem>
+                        <SelectItem value="2">B</SelectItem>
+                        <SelectItem value="3">C</SelectItem>
+                        <SelectItem value="4">D</SelectItem>
+                        <SelectItem value="5">E</SelectItem>
+                        <SelectItem value="6">F</SelectItem>
+                        <SelectItem value="7">G</SelectItem>
+                        <SelectItem value="8">VI (vierge)</SelectItem>
+                        <SelectItem value="9">NS (Non soumis)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
+                  <div className="space-y-2">
+                    <Label htmlFor="ges">GES</Label>
+                    <Select
+                      value={formData.bilan_emission_id ? String(formData.bilan_emission_id) : ""}
+                      onValueChange={(value) => setFormData({ ...formData, bilan_emission_id: value === "none" ? 0 : Number(value) })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Sélectionner..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">Non renseigné</SelectItem>
+                        <SelectItem value="1">A</SelectItem>
+                        <SelectItem value="2">B</SelectItem>
+                        <SelectItem value="3">C</SelectItem>
+                        <SelectItem value="4">D</SelectItem>
+                        <SelectItem value="5">E</SelectItem>
+                        <SelectItem value="6">F</SelectItem>
+                        <SelectItem value="7">G</SelectItem>
+                        <SelectItem value="8">VI (vierge)</SelectItem>
+                        <SelectItem value="9">NS (Non soumis)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="consommation_energie">Consommation énergétique (kWh/m²/an)</Label>
+                    <Input
+                      id="consommation_energie"
+                      type="number"
+                      value={formData.consos}
+                      onChange={(e) => setFormData({ ...formData, consos: Number(e.target.value) })}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="emission_ges">Emission GES (kg CO2/m²/an)</Label>
+                    <Input
+                      id="emission_ges"
+                      type="number"
+                      value={formData.emissions}
+                      onChange={(e) => setFormData({ ...formData, emissions: Number(e.target.value) })}
+                    />
+                  </div>
+                </div>
+              </div>
               <div className="flex justify-between">
                 <Button onClick={handlePrevious} variant="outline">
                   Précédent
