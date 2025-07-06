@@ -396,17 +396,17 @@ export default function CreateListingPage() {
     // Vérification des champs obligatoires pour l'étape 1
     if (currentStep === 1) {
       const missingFields = [];
-      
+
       if (!formData.reference) missingFields.push("Référence");
       if (!formData.nom) missingFields.push("Nom du bien");
       if (!formData.transaction_id) missingFields.push("Type de transaction");
       if (!formData.typebien_id) missingFields.push("Type de bien");
       if (!formData.date_dispo) missingFields.push("Date de disponibilité");
-      
+
       if (missingFields.length > 0) {
         // Utiliser une alerte JavaScript standard
         // alert(`Champs obligatoires manquants : ${missingFields.join(', ')}.`);
-        
+
         // Essayer également le toast
         toast({
           title: "Champs obligatoires manquants",
@@ -416,20 +416,20 @@ export default function CreateListingPage() {
         return;
       }
     }
-    
+
     // Vérification des champs obligatoires pour l'étape 2
     if (currentStep === 2) {
       const missingFields = [];
-      
+
       if (!formData.adresse) missingFields.push("Adresse");
       if (!formData.cp) missingFields.push("Code postal");
       if (!formData.ville) missingFields.push("Ville");
       if (!formData.pays) missingFields.push("Pays");
-      
+
       if (missingFields.length > 0) {
         // Utiliser une alerte JavaScript standard
         // alert(`Champs obligatoires manquants : ${missingFields.join(', ')}.`);
-        
+
         // Essayer également le toast
         toast({
           title: "Champs obligatoires manquants",
@@ -438,22 +438,22 @@ export default function CreateListingPage() {
         });
         return;
       }
-      
+
       // Si cp_reel est vide, copier la valeur de cp
       // Si ville_reel est vide, copier la valeur de ville
       const updatedFormData = { ...formData };
       let dataUpdated = false;
-      
+
       if (!formData.cp_reel && formData.cp) {
         updatedFormData.cp_reel = formData.cp;
         dataUpdated = true;
       }
-      
+
       if (!formData.ville_reel && formData.ville) {
         updatedFormData.ville_reel = formData.ville;
         dataUpdated = true;
       }
-      
+
       if (dataUpdated) {
         setFormData(updatedFormData);
         toast({
@@ -462,7 +462,7 @@ export default function CreateListingPage() {
         });
       }
     }
-    
+
     // Si tout est valide ou si ce n'est pas l'étape 1 ou 2, passer à l'étape suivante
     setCurrentStep((prev) => Math.min(prev + 1, 5))
   }
@@ -588,7 +588,7 @@ export default function CreateListingPage() {
         setIsSubmitting(false);
         return;
       }
-      
+
       // Validate required fields
 
       // Convert form data to API format
@@ -923,6 +923,19 @@ export default function CreateListingPage() {
                       maxLength={64}
                       placeholder="Appartement lumineux, Maison de charme... (64 caractères max)"
                       required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="description">
+                      Description
+                    </Label>
+                    <Textarea
+                      id="description"
+                      value={formData.description || ""}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      placeholder="Description détaillée du bien immobilier..."
+                      className="min-h-[150px]"
                     />
                   </div>
 

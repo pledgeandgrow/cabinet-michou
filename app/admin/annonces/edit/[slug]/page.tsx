@@ -327,7 +327,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         }
         const annonceData = await annonceRes.json()
         console.log(annonceData)
-        
+
 
         // Fetch types biens
         const typesbiensRes = await fetch("/api/typesbiens")
@@ -346,7 +346,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         // Set all the data
         setTypesBien(typesbiensData)
         setTypesTransactions(typestransactionsData)
-        
+
         setFormData({
           id: Number(annonceData.id) || 0,
           transaction_id: Number(annonceData.transaction_id) || 0,
@@ -518,10 +518,10 @@ export default function EditListingPage({ params }: { params: PageParams }) {
     setIsSubmitting(true)
 
     try {
-      
+
       // Déterminer si c'est une location (transaction_id === 1) ou une vente (transaction_id === 2)
       const isLocation = Number(formData.transaction_id) === 1;
-      
+
       const requestBody = {
         // Identifiants et informations de base
         id: formData.id,
@@ -697,7 +697,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         "date_dispo",
         "adresse",
       ]
-      
+
       // Ajouter les champs de prix uniquement pour les ventes
       if (!isLocation) {
         requiredFields = [
@@ -713,7 +713,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
           "loyer_avec_charges",
         ]
       }
-      
+
       // Vérification des champs obligatoires spécifiques
       if (!formData.reference || !formData.transaction_id || !formData.typebien_id || !formData.date_dispo || !formData.adresse || !formData.cp || !formData.ville) {
         // Créer une liste des champs manquants
@@ -725,21 +725,21 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         if (!formData.adresse) specificMissingFields.push("Adresse");
         if (!formData.cp) specificMissingFields.push("Code postal");
         if (!formData.ville) specificMissingFields.push("Ville");
-        
+
         // Afficher un message d'erreur
         const errorMessage = document.createElement("div");
         errorMessage.className = "fixed top-16 right-4 bg-red-500 text-white px-6 py-3 rounded shadow-lg";
         errorMessage.textContent = `Champs obligatoires manquants : ${specificMissingFields.join(', ')}.`;
         document.body.appendChild(errorMessage);
-        
+
         setTimeout(() => {
           errorMessage.remove();
         }, 5000);
-        
+
         setIsSubmitting(false);
         return;
       }
-      
+
       const missingFields = requiredFields.filter((field) => {
         const value = requestBody[field as keyof typeof requestBody];
         return value === null || value === undefined || value === "";
@@ -792,28 +792,36 @@ export default function EditListingPage({ params }: { params: PageParams }) {
   }
 
   if (isLoading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-pulse flex flex-col items-center">
+          <div className="h-12 w-12 rounded-full bg-blue-200 mb-4"></div>
+          <div className="text-lg font-medium text-gray-700">Chargement...</div>
+        </div>
+      </div>
+    )
   }
 
   // Rest of the component (form UI) remains the same
   return (
-    <div className="max-w-5xl mx-auto py-8">
-      <div className="mb-8">
-        <div className="text-sm text-muted-foreground mb-4">
-          <span className="hover:underline cursor-pointer" onClick={() => router.push("/")}>Accueil</span>
+    <div className="max-w-5xl mx-auto py-10 px-4 sm:px-6">
+      <div className="mb-10">
+        <div className="text-sm text-muted-foreground mb-5">
+          <span className="hover:underline cursor-pointer transition-colors" onClick={() => router.push("/")}>Accueil</span>
           <span className="mx-2">/</span>
-          <span className="hover:underline cursor-pointer" onClick={() => router.push("/admin/annonces")}>Gestion des annonces</span>
+          <span className="hover:underline cursor-pointer transition-colors" onClick={() => router.push("/admin/annonces")}>Gestion des annonces</span>
           <span className="mx-2">/</span>
           <span>Modifier une annonce</span>
         </div>
-        <div className="text-orange-400 uppercase tracking-wide text-sm font-semibold mb-2">ANNONCES</div>
-        <h1 className="text-4xl font-bold text-[#00458E] mb-8">Modifier une annonce</h1>
+        <div className="text-orange-400 uppercase tracking-wide text-sm font-semibold mb-3">ANNONCES</div>
+        <h1 className="text-4xl font-bold text-[#00458E] mb-2">Modifier une annonce</h1>
+        <p className="text-gray-500">Référence: {formData.reference}</p>
       </div>
 
-      <div className="space-y-8">
-        <div>
-          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Informations Générales</h2>
-          <div className="space-y-4">
+      <div className="space-y-12 bg-gray-50 p-4 sm:p-6 rounded-lg">
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+          <h2 className="text-2xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Informations Générales</h2>
+          <div className="space-y-5 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="reference">
                 Référence <span className="text-red-500">*</span>
@@ -883,9 +891,9 @@ export default function EditListingPage({ params }: { params: PageParams }) {
           </div>
         </div>
 
-        <div>
-          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Localisation</h2>
-          <div className="space-y-4">
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+          <h2 className="text-2xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Localisation</h2>
+          <div className="space-y-5 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="adresse">
                 Adresse <span className="text-red-500">*</span>
@@ -933,9 +941,9 @@ export default function EditListingPage({ params }: { params: PageParams }) {
           </div>
         </div>
 
-        <div>
-          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Informations financières</h2>
-          <div className="grid grid-cols-2 gap-4">
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+          <h2 className="text-2xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Informations financières</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Champs pour la vente (transaction_id != 1) */}
             {formData.transaction_id !== 1 && (
               <>
@@ -1220,10 +1228,11 @@ export default function EditListingPage({ params }: { params: PageParams }) {
               </>
             )}
 
-            <div className="space-y-2 col-span-2">
+            <div className="space-y-3 col-span-2 mt-4">
               <Label htmlFor="commentaires">Détails des charges / Commentaires</Label>
               <Textarea
                 id="commentaires"
+                className="min-h-[100px]"
                 value={formData.commentaires}
                 onChange={(e) => setFormData({ ...formData, commentaires: e.target.value })}
               />
@@ -1231,9 +1240,9 @@ export default function EditListingPage({ params }: { params: PageParams }) {
           </div>
         </div>
 
-        <div>
-          <h2 className="text-2xl font-bold text-[#00458E] mb-6">Caractéristiques du bien</h2>
-          <div className="space-y-4">
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+          <h2 className="text-2xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Caractéristiques du bien</h2>
+          <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="surface">Surface (m²)</Label>
@@ -1360,8 +1369,8 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 onChange={(e) => setFormData({ ...formData, sde: Number(e.target.value) })}
               />
             </div>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="nb_lits_doubles">Nombre de lits doubles</Label>
                   <Input
@@ -1483,9 +1492,9 @@ export default function EditListingPage({ params }: { params: PageParams }) {
             <div className="space-y-2">
 
             </div>
-            <div>
-              <h3 className="text-xl font-bold text-[#00458E] mb-4 mt-6">Équipements et confort</h3>
-              <div className="grid grid-cols-2 gap-4">
+            <div className="mt-8">
+              <h3 className="text-xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Équipements et confort</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -1750,9 +1759,9 @@ export default function EditListingPage({ params }: { params: PageParams }) {
               </div>
             </div>
 
-            <div>
-              <h3 className="text-xl font-bold text-[#00458E] mb-4 mt-6">Caractéristiques supplémentaires</h3>
-              <div className="grid grid-cols-2 gap-4">
+            <div className="mt-8">
+              <h3 className="text-xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Caractéristiques supplémentaires</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -1833,76 +1842,76 @@ export default function EditListingPage({ params }: { params: PageParams }) {
 
 
 
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="proche_lac"
-                      checked={formData.proche_lac}
-                      onCheckedChange={(checked) => setFormData({ ...formData, proche_lac: checked as boolean })}
-                    />
-                    <Label htmlFor="proche_lac">Proche d'un lac</Label>
-                  </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="proche_tennis"
-                        checked={formData.proche_tennis}
-                        onCheckedChange={(checked) => setFormData({ ...formData, proche_tennis: checked as boolean })}
-                      />
-                      <Label htmlFor="proche_tennis">Proche d'un tennis</Label>
-                    </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="proche_lac"
+                    checked={formData.proche_lac}
+                    onCheckedChange={(checked) => setFormData({ ...formData, proche_lac: checked as boolean })}
+                  />
+                  <Label htmlFor="proche_lac">Proche d'un lac</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="proche_tennis"
+                    checked={formData.proche_tennis}
+                    onCheckedChange={(checked) => setFormData({ ...formData, proche_tennis: checked as boolean })}
+                  />
+                  <Label htmlFor="proche_tennis">Proche d'un tennis</Label>
+                </div>
 
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="proche_pistes"
-                        checked={formData.proche_pistes}
-                        onCheckedChange={(checked) => setFormData({ ...formData, proche_pistes: checked as boolean })}
-                      />
-                      <Label htmlFor="proche_pistes">Proche des pistes</Label>
-                    </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="proche_pistes"
+                    checked={formData.proche_pistes}
+                    onCheckedChange={(checked) => setFormData({ ...formData, proche_pistes: checked as boolean })}
+                  />
+                  <Label htmlFor="proche_pistes">Proche des pistes</Label>
+                </div>
 
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="historique"
-                        checked={formData.historique}
-                        onCheckedChange={(checked) => setFormData({ ...formData, historique: checked as boolean })}
-                      />
-                      <Label htmlFor="historique">Lieu historique</Label>
-                    </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="historique"
+                    checked={formData.historique}
+                    onCheckedChange={(checked) => setFormData({ ...formData, historique: checked as boolean })}
+                  />
+                  <Label htmlFor="historique">Lieu historique</Label>
+                </div>
 
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="entretien"
-                        checked={formData.entretien}
-                        onCheckedChange={(checked) => setFormData({ ...formData, entretien: checked as boolean })}
-                      />
-                      <Label htmlFor="entretien">Entretien mis à disposition</Label>
-                    </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="entretien"
+                    checked={formData.entretien}
+                    onCheckedChange={(checked) => setFormData({ ...formData, entretien: checked as boolean })}
+                  />
+                  <Label htmlFor="entretien">Entretien mis à disposition</Label>
+                </div>
 
 
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="travaux"
-                        checked={formData.travaux}
-                        onCheckedChange={(checked) => setFormData({ ...formData, travaux: checked as boolean })}
-                      />
-                      <Label htmlFor="travaux">Travaux</Label>
-                    </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="travaux"
+                    checked={formData.travaux}
+                    onCheckedChange={(checked) => setFormData({ ...formData, travaux: checked as boolean })}
+                  />
+                  <Label htmlFor="travaux">Travaux</Label>
+                </div>
 
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="lot_neuf"
-                        checked={formData.lot_neuf}
-                        onCheckedChange={(checked) => setFormData({ ...formData, lot_neuf: checked as boolean })}
-                      />
-                      <Label htmlFor="lot_neuf">Lot neuf</Label>
-                    </div>
-                
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="lot_neuf"
+                    checked={formData.lot_neuf}
+                    onCheckedChange={(checked) => setFormData({ ...formData, lot_neuf: checked as boolean })}
+                  />
+                  <Label htmlFor="lot_neuf">Lot neuf</Label>
+                </div>
+
               </div>
             </div>
 
 
-            <div>
-              <h3 className="text-xl font-bold text-[#00458E] mb-4 mt-6">Orientation</h3>
-              <div className="grid grid-cols-2 gap-4">
+            <div className="mt-8">
+              <h3 className="text-xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Orientation</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -1949,9 +1958,9 @@ export default function EditListingPage({ params }: { params: PageParams }) {
               </div>
             </div>
 
-            <div>
-              <h3 className="text-xl font-bold text-[#00458E] mb-4 mt-6">Diagnostics énergétiques</h3>
-              <div className="grid grid-cols-2 gap-4">
+            <div className="mt-8">
+              <h3 className="text-xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Diagnostics énergétiques</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="dpe">DPE</Label>
                   <Select
@@ -2021,17 +2030,17 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 </div>
               </div>
             </div>
-            <div>
-              <h3 className="text-xl font-bold text-[#00458E] mb-4 mt-6">Équipements extérieurs</h3>
-              <div className="grid grid-cols-2 gap-4">
+            <div className="mt-8">
+              <h3 className="text-xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Équipements extérieurs</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
-                      id="piscine"
+                      id="piscine_ext"
                       checked={formData.piscine}
                       onCheckedChange={(checked) => setFormData({ ...formData, piscine: checked as boolean })}
                     />
-                    <Label htmlFor="piscine">Piscine</Label>
+                    <Label htmlFor="piscine_ext">Piscine</Label>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -2069,18 +2078,18 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
-                      id="vue"
+                      id="vue_ext"
                       checked={formData.vue}
                       onCheckedChange={(checked) => setFormData({ ...formData, vue: checked as boolean })}
                     />
-                    <Label htmlFor="vue">Belle vue</Label>
+                    <Label htmlFor="vue_ext">Belle vue</Label>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="parking">Nombre de parkings</Label>
+                  <Label htmlFor="parking_nb">Nombre de parkings</Label>
                   <Input
-                    id="parking"
+                    id="parking_nb"
                     type="number"
                     value={formData.parking}
                     onChange={(e) => setFormData({ ...formData, parking: Number(e.target.value) })}
@@ -2097,22 +2106,26 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                   />
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-4">
                   <div className="flex items-center space-x-2">
                     <Checkbox
-                      id="nb_balcons"
+                      id="has_balcons"
                       checked={formData.nb_balcons > 0}
                       onCheckedChange={(checked) => setFormData({ ...formData, nb_balcons: checked ? 1 : 0 })}
                     />
-                    <Label htmlFor="nb_balcons">Balcon</Label>
+                    <Label htmlFor="has_balcons">Balcon</Label>
                   </div>
-                  <Label htmlFor="nb_balcons">Nombre de balcons</Label>
-                  <Input
-                    id="nb_balcons"
-                    type="number"
-                    value={formData.nb_balcons}
-                    onChange={(e) => setFormData({ ...formData, nb_balcons: Number(e.target.value) })}
-                  />
+                  {formData.nb_balcons > 0 && (
+                    <div className="space-y-2 pl-6">
+                      <Label htmlFor="nb_balcons">Nombre de balcons</Label>
+                      <Input
+                        id="nb_balcons"
+                        type="number"
+                        value={formData.nb_balcons}
+                        onChange={(e) => setFormData({ ...formData, nb_balcons: Number(e.target.value) })}
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -2126,7 +2139,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 </div>
 
                 {formData.cave && (
-                  <div className="space-y-2">
+                  <div className="space-y-2 pl-6">
                     <Label htmlFor="surface_cave">Surface de la cave (m²)</Label>
                     <Input
                       id="surface_cave"
@@ -2153,10 +2166,10 @@ export default function EditListingPage({ params }: { params: PageParams }) {
 
 
           </div>
-          <div>
-            <h2 className="text-2xl font-bold text-[#00458E] mb-6">Caractéristiques du terrain</h2>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mt-12">
+            <h2 className="text-2xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Caractéristiques du terrain</h2>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="surface_terrain">Surface du terrain (m²)</Label>
                   <Input
@@ -2166,27 +2179,6 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                     onChange={(e) => setFormData({ ...formData, surface_terrain: Number(e.target.value) })}
                   />
                 </div>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="terrain_agricole"
-                    checked={formData.terrain_agricole}
-                    onCheckedChange={(checked) => setFormData({ ...formData, terrain_agricole: checked as boolean })}
-                  />
-                  <Label htmlFor="terrain_agricole">Terrain agricole</Label>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="terrain_agricole"
-                    checked={formData.terrain_agricole}
-                    onCheckedChange={(checked) => setFormData({ ...formData, terrain_agricole: checked as boolean })}
-                  />
-                  <Label htmlFor="terrain_agricole">Terrain agricole</Label>
-                </div>
-
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="terrain_constructible"
@@ -2196,8 +2188,8 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                   <Label htmlFor="terrain_constructible">Terrain constructible</Label>
                 </div>
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="terrain_rue"
@@ -2206,7 +2198,9 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                   />
                   <Label htmlFor="terrain_rue">Terrain donnant sur rue</Label>
                 </div>
+              </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="terrain_viabilise"
@@ -2215,118 +2209,135 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                   />
                   <Label htmlFor="terrain_viabilise">Terrain viabilisé</Label>
                 </div>
+
+                {/* <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="jardin"
+                    checked={formData.jardin}
+                    onCheckedChange={(checked) => setFormData({ ...formData, jardin: checked as boolean })}
+                  />
+                  <Label htmlFor="jardin">Jardin</Label>
+                </div> */}
               </div>
             </div>
           </div>
-          <div>
-            <h2 className="text-2xl font-bold text-[#00458E] mb-6">Informations supplémentaires</h2>
-            <div className="space-y-4">
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mt-12">
+            <h2 className="text-2xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Informations supplémentaires</h2>
+            <div className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="nom">Titre de l'annonce</Label>
+                <Label htmlFor="nom" className="font-medium">Titre de l'annonce</Label>
                 <Input
                   id="nom"
                   value={formData.nom}
                   onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
+                  className="font-medium"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+              <div className="space-y-3 mt-4">
+                <Label htmlFor="description" className="font-medium">Description</Label>
                 <Textarea
                   id="description"
-                  className="min-h-[150px]"
+                  className="min-h-[200px]"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Décrivez le bien en détail..."
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 mt-4 bg-orange-50 p-4 rounded-md border border-orange-100">
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="publie"
                     checked={formData.publie}
                     onCheckedChange={(checked) => setFormData({ ...formData, publie: checked as boolean })}
                   />
-                  <Label htmlFor="publie">Publié</Label>
+                  <Label htmlFor="publie" className="font-medium">Publié</Label>
                 </div>
+                <p className="text-sm text-gray-500 mt-1 pl-6">Cochez cette case pour rendre l'annonce visible sur le site</p>
               </div>
             </div>
           </div>
 
-          <div>
-            <h2 className="text-2xl font-bold text-[#00458E] mb-6">Options spéciales</h2>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center space-x-2">
+          {/* <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mt-12">
+            <h2 className="text-2xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Options spéciales</h2>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex items-center space-x-2 bg-yellow-50 p-3 rounded-md border border-yellow-100">
                   <Checkbox
                     id="coup_de_coeur"
                     checked={formData.coup_de_coeur}
                     onCheckedChange={(checked) => setFormData({ ...formData, coup_de_coeur: checked as boolean })}
                   />
-                  <Label htmlFor="coup_de_coeur">Coup de cœur</Label>
+                  <Label htmlFor="coup_de_coeur" className="font-medium">Coup de cœur</Label>
                 </div>
 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 bg-blue-50 p-3 rounded-md border border-blue-100">
                   <Checkbox
                     id="exclusivite"
                     checked={formData.exclusivite}
                     onCheckedChange={(checked) => setFormData({ ...formData, exclusivite: checked as boolean })}
                   />
-                  <Label htmlFor="exclusivite">Exclusivité</Label>
+                  <Label htmlFor="exclusivite" className="font-medium">Exclusivité</Label>
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
-          <div>
-            <h2 className="text-2xl font-bold text-[#00458E] mb-6">Informations copropriété</h2>
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mt-12">
+            <h2 className="text-2xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Informations copropriété</h2>
+            <div className="space-y-6">
+              <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-md">
                 <Checkbox
                   id="copro"
                   checked={formData.copro}
                   onCheckedChange={(checked) => setFormData({ ...formData, copro: checked as boolean })}
                 />
-                <Label htmlFor="copro">Copropriété</Label>
+                <Label htmlFor="copro" className="font-medium">Copropriété</Label>
               </div>
 
 
               {formData.copro && (
                 <>
-                  <div className="space-y-2">
-                    <Label htmlFor="lots">Nombre de lots</Label>
-                    <Input
-                      id="lots"
-                      type="number"
-                      value={formData.lots}
-                      onChange={(e) => setFormData({ ...formData, lots: Number(e.target.value) })}
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="lots">Nombre de lots</Label>
+                      <Input
+                        id="lots"
+                        type="number"
+                        value={formData.lots}
+                        onChange={(e) => setFormData({ ...formData, lots: Number(e.target.value) })}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="quote_part">Quote-part</Label>
+                      <Input
+                        id="quote_part"
+                        type="number"
+                        value={formData.quote_part}
+                        onChange={(e) => setFormData({ ...formData, quote_part: Number(e.target.value) })}
+                      />
+                    </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="quote_part">Quote-part</Label>
-                    <Input
-                      id="quote_part"
-                      type="number"
-                      value={formData.quote_part}
-                      onChange={(e) => setFormData({ ...formData, quote_part: Number(e.target.value) })}
-                    />
-                  </div>
-
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="procedure_syndic"
-                      checked={formData.procedure_syndic}
-                      onCheckedChange={(checked) => setFormData({ ...formData, procedure_syndic: checked as boolean })}
-                    />
-                    <Label htmlFor="procedure_syndic">Procédure syndic en cours</Label>
+                  <div className="mt-4">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="procedure_syndic"
+                        checked={formData.procedure_syndic}
+                        onCheckedChange={(checked) => setFormData({ ...formData, procedure_syndic: checked as boolean })}
+                      />
+                      <Label htmlFor="procedure_syndic">Procédure syndic en cours</Label>
+                    </div>
                   </div>
 
                   {formData.procedure_syndic && (
-                    <div className="space-y-2">
+                    <div className="space-y-2 mt-4 pl-6">
                       <Label htmlFor="detail_procedure">Détail de la procédure</Label>
                       <Textarea
                         id="detail_procedure"
+                        className="min-h-[100px]"
                         value={formData.detail_procedure}
                         onChange={(e) => setFormData({ ...formData, detail_procedure: e.target.value })}
                       />
@@ -2337,13 +2348,13 @@ export default function EditListingPage({ params }: { params: PageParams }) {
             </div>
           </div>
 
-          <div className="flex justify-end space-x-4">
-            <Button variant="outline" onClick={() => router.push("/annonces")}>
+          <div className="flex justify-end space-x-4 mt-12 pt-6 border-t border-gray-200">
+            <Button variant="outline" onClick={() => router.push("/admin/annonces")} className="px-6 py-2">
               Annuler
             </Button>
             <Button
               onClick={handleSubmit}
-              className="bg-[#00458E] hover:bg-[#003366]"
+              className="bg-[#00458E] hover:bg-[#003366] px-8 py-2"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Enregistrement..." : "Enregistrer"}
@@ -2351,7 +2362,7 @@ export default function EditListingPage({ params }: { params: PageParams }) {
           </div>
         </div>
 
-        <div className="mt-4 text-right text-sm text-gray-500">* champs obligatoires</div>
+        <div className="mt-6 text-right text-sm text-gray-500 italic pb-4">* champs obligatoires</div>
       </div>
     </div>
 

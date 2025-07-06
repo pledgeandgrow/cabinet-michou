@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 type Annonce = {
   id: number;
   titre: string;
+  nom?: string;
   prix: number | string;
   surface: number;
   nb_pieces: number;
@@ -228,7 +229,7 @@ export function Case({ items }: CaseProps) {
                     )}
 
                     <CardHeader>
-                      <CardTitle className="line-clamp-1">{annonce.reference || "Réf. non disponible"}</CardTitle>
+                      <CardTitle className="line-clamp-1">{annonce.nom || "Titre non disponible"}</CardTitle>
                       <CardDescription className="flex items-center gap-2">
                         <MapPin className="h-4 w-4" />
                         {annonce.ville} ({annonce.code_postal})

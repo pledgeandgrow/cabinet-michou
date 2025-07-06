@@ -24,6 +24,7 @@ export async function GET() {
       return {
         id: annonce.id,
         titre: annonce.nom || 'N/C',
+        nom: annonce.nom || 'N/C',
         reference: annonce.reference || 'N/C',
         prix: annonce.transaction_id === 1 
           ? annonce.loyer_avec_charges || 'N/C'
