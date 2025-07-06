@@ -1812,16 +1812,6 @@ export default function CreateListingPage() {
                       />
                       <Label htmlFor="box">Box</Label>
                     </div>
-
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="parking"
-                        checked={formData.parking === 1}
-                        onCheckedChange={(checked) => setFormData({ ...formData, parking: checked ? 1 : 0 })}
-                      />
-                      <Label htmlFor="parking">Parking</Label>
-                    </div>
-
                     <div className="space-y-2">
                       <Label htmlFor="nb_balcons">Nombre de balcons</Label>
                       <Input
@@ -1905,24 +1895,6 @@ export default function CreateListingPage() {
                         onCheckedChange={(checked) => setFormData({ ...formData, piscine: checked as boolean })}
                       />
                       <Label htmlFor="piscine">Piscine</Label>
-                    </div>
-
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="parking_inclus"
-                        checked={formData.parking_inclus}
-                        onCheckedChange={(checked) => setFormData({ ...formData, parking_inclus: checked as boolean })}
-                      />
-                      <Label htmlFor="parking_inclus">Parking inclus</Label>
-                    </div>
-
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="cave"
-                        checked={formData.cave}
-                        onCheckedChange={(checked) => setFormData({ ...formData, cave: checked as boolean })}
-                      />
-                      <Label htmlFor="cave">Cave</Label>
                     </div>
                   </div>
                 </div>
