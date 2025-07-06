@@ -3,11 +3,11 @@ import { mkdir } from 'fs/promises';
 import * as fs from 'fs';
 import { createWriteStream } from 'fs';
 import * as path from 'path';
-import { Client } from 'basic-ftp';
 import archiver from 'archiver';
 import { cookies } from 'next/headers';
 import { createClient } from '@/utils/supabase/server';
 import { getListing, getListings } from '@/lib/db';
+import { uploadZipToFtp } from '@/lib/uploadToFtp';
 
 // Types pour les annonces
 interface Annonce {
@@ -50,12 +50,11 @@ interface AnnoncesPhotos {
   principale: boolean;
 }
 
-
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
   try {
-    const { annonceId } = await request.json() as { annonceId?: number };
+    const { annonceId, sendToSeLoger } = await request.json() as { annonceId?: number, sendToSeLoger?: boolean };
     
     // Ajouter des en-têtes pour désactiver la mise en cache
     const headers = {
@@ -116,6 +115,29 @@ export async function POST(request: Request) {
     // Créer le fichier ZIP
     await createZipArchive(tempDir, zipPath, ['Annonces.csv', 'Config.txt', 'Photos.cfg']);
     
+    // Si l'option d'envoi direct à SeLoger est activée
+    if (sendToSeLoger) {
+      try {
+        // Utiliser la fonction uploadZipToFtp pour envoyer le fichier à SeLoger
+        await uploadZipToFtp(zipPath, zipFilename);
+        
+        // Nettoyer les fichiers temporaires après l'envoi
+        cleanupTempFiles(tempDir);
+        
+        // Retourner une réponse de succès
+        return NextResponse.json({
+          success: true,
+          message: "Fichier envoyé avec succès à SeLoger via FTP"
+        }, { headers });
+      } catch (error) {
+        console.error("Erreur lors de l'envoi FTP:", error);
+        return NextResponse.json({
+          success: false,
+          message: `Erreur lors de l'envoi FTP: ${error instanceof Error ? error.message : String(error)}`
+        }, { headers });
+      }
+    }
+    
     // Lire le contenu du fichier ZIP en mémoire
     const zipContent = fs.readFileSync(zipPath);
     
@@ -127,9 +149,7 @@ export async function POST(request: Request) {
       headers: {
         'Content-Type': 'application/zip',
         'Content-Disposition': `attachment; filename="${zipFilename}"`,
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
+        ...headers
       }
     });
   } catch (error) {
@@ -143,50 +163,58 @@ export async function POST(request: Request) {
 
 // Fonction pour générer le contenu CSV au format SeLoger
 export function generateSeLogerCSV(
-  annonces: Annonce[],
-  annonces_photos: AnnoncesPhotos[]
+  annonces: any[],
+  annonces_photos: any[]
 ): string {
   let csvContent = '';
 
   annonces.forEach((annonce) => {
     const fields = new Array(334).fill('""');
 
-    // Champs obligatoires
+    // Champs obligatoires de base
     fields[0] = '"PLEDGEANDGROW"';
     fields[1] = `"${annonce.reference}"`;
-    fields[2] = annonce.transaction_id === 1 ? '"Vente"' : '"Location"';
-    fields[3] = `"${mapTypeBien(annonce.typebien)}"`;
+    fields[2] = annonce.transaction_id === 2 ? '"Vente"' : '"Location"';
+    fields[3] = `"${mapTypeBien(annonce.typebien_id)}"`;
     fields[4] = `"${annonce.cp}"`;
     fields[5] = `"${annonce.ville}"`;
     fields[6] = '"France"';
-    fields[7] = `"${annonce.adresse}"`;
+    fields[7] = `"${annonce.adresse || ''}"`;
     fields[8] = `"${annonce.quartier || ''}"`;
-    fields[10] = `"${annonce.prix_avec_honoraires}"`;
-    fields[12] = '"OUI"';
-    fields[13] = '"NON"';
-    fields[14] = `"${annonce.honoraires_locataire || annonce.honoraires_acheteur || ''}"`;
+
+    if (annonce.transaction_id === 1) {
+      // Location
+      fields[10] = `"${annonce.loyer_hors_charges || annonce.loyer_avec_charges}"`;
+      fields[14] = `"${annonce.honoraires_locataire || ''}"`;
+      fields[22] = `"${annonce.date_dispo || ''}"`;
+      fields[23] = `"${annonce.charges || ''}"`;
+    } else {
+      // Vente
+      fields[10] = `"${annonce.prix_avec_honoraires}"`;
+      fields[14] = `"${annonce.honoraires_acheteur || ''}"`;
+    }
+
     fields[15] = `"${annonce.surface}"`;
     fields[16] = `"${annonce.surface_terrain || ''}"`;
     fields[17] = `"${annonce.pieces || '0'}"`;
     fields[18] = `"${annonce.chambres || ''}"`;
     fields[19] = `"${annonce.nom}"`;
-    fields[20] = `"${(annonce.description || '').replace(/"/g, "'").replace(/\n/g, '<BR>')}"`;
-    fields[22] = `"${annonce.charges || ''}"`;
-    fields[23] = `"${annonce.etage || ''}"`;
+    fields[20] = `"${(annonce.description || '').replace(/\"/g, "'").replace(/\n/g, '<BR>')}"`;
+
     fields[25] = `"${annonce.meuble ? 'OUI' : 'NON'}"`;
     fields[26] = `"${annonce.construction || ''}"`;
     fields[33] = `"${annonce.ascenseur ? 'OUI' : 'NON'}"`;
     fields[40] = `"${mapChauffage(annonce.chauffage_id)}"`;
     fields[44] = `"${mapCuisine(annonce.cuisine_id)}"`;
-    fields[45] = `"${annonce.securite || ''}"`;
+    fields[45] = `"${annonce.securite ? 'OUI' : 'NON'}"`;
     fields[79] = `"${annonce.digicode ? 'OUI' : 'NON'}"`;
     fields[81] = `"${annonce.interphone ? 'OUI' : 'NON'}"`;
     fields[104] = `"${annonce.visite_virtuelle || ''}"`;
     fields[174] = `"${annonce.id}"`;
-    fields[331] = `"${annonce.se_loger ? 'OUI' : 'NON'}"`;
+    fields[331] = '"OUI"';
     fields[333] = `"${annonce.publie ? 'OUI' : 'NON'}"`;
 
-    // 📸 Ajout des photos (85 → 104)
+    // PHOTOS : colonnes 85 à 104
     const photosAnnonce = annonces_photos
       .filter(p => p.annonce_id === annonce.id)
       .sort((a, b) => (a.principale === b.principale ? 0 : a.principale ? -1 : 1));
@@ -225,11 +253,11 @@ function mapTypeBien(typeBien: string): string {
   const mapping: Record<string, string> = {
     'Appartement': 'Appartement',
     'Maison': 'Maison/villa',
-    'Studio': 'Appartement',
+    'Parking': 'Parking/box',
     'Terrain': 'Terrain',
+    'Boutique': 'Boutique',
     'Local commercial': 'Local',
-    'Bureau': 'Bureaux',
-    'Parking': 'Parking/box'
+    'Bureau': 'Bureaux'
   };
   
   return mapping[typeBien] || 'Appartement';
@@ -295,40 +323,7 @@ async function createZipArchive(sourceDir: string, outputPath: string, files: st
   });
 }
 
-// Fonction pour envoyer le fichier via FTP
-async function sendToFTP(filePath: string): Promise<boolean> {
-  const client = new Client();
-  
-  try {
-    await client.access({
-      host: process.env.FTP_HOST,
-      port: parseInt(process.env.FTP_PORT || '990'),
-      user: process.env.FTP_USER,
-      password: process.env.FTP_PASSWORD,
-      secure: process.env.FTP_SECURE === 'true',
-      secureOptions: { rejectUnauthorized: false }
-    });
-    
-    console.log('Connexion FTP établie');
-    
-    // Définir le mode passif si nécessaire
-    if (process.env.FTP_PASSIVE === 'true') {
-      // La bibliothèque basic-ftp gère automatiquement le mode passif
-      // Pas besoin de configuration supplémentaire
-    }
-    
-    // Envoyer le fichier
-    await client.uploadFrom(filePath, path.basename(filePath));
-    console.log('Fichier envoyé avec succès');
-    
-    return true;
-  } catch (err) {
-    console.error('Erreur lors de l\'envoi FTP:', err);
-    throw err;
-  } finally {
-    client.close();
-  }
-}
+
 
 // Fonction pour nettoyer les fichiers temporaires
 function cleanupTempFiles(tempDir: string): void {

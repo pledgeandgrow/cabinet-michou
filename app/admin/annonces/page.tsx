@@ -104,6 +104,7 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
   const router = useRouter();
   const [isPublishingToSeLoger, setIsPublishingToSeLoger] = useState(false);
   const [publishMessage, setPublishMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [sendDirectToSeLoger, setSendDirectToSeLoger] = useState(false);
 
   const [currentAnnonce, setCurrentAnnonce] = useState<Annonce | null>(null)
 
@@ -231,11 +232,24 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({}), // Envoyer toutes les annonces publiées
+        body: JSON.stringify({ 
+          sendToSeLoger: sendDirectToSeLoger // Ajouter l'option d'envoi direct à SeLoger
+        }), // Envoyer toutes les annonces publiées
       });
       
       // Vérifier si la réponse est OK
       if (response.ok) {
+        // Si l'envoi direct est activé, afficher simplement le message de succès
+        if (sendDirectToSeLoger) {
+          const result = await response.json();
+          setPublishMessage({ 
+            type: result.success ? 'success' : 'error', 
+            text: result.message || (result.success ? 'Fichier envoyé avec succès à SeLoger' : 'Erreur lors de l\'envoi à SeLoger')
+          });
+          return;
+        }
+        
+        // Sinon, télécharger le fichier comme avant
         // Récupérer le nom du fichier depuis l'en-tête Content-Disposition
         const contentDisposition = response.headers.get('Content-Disposition');
         let filename = 'SeLogerExport.zip';
@@ -310,19 +324,27 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
               </div>
             )}
           </div>
-          <div className="flex gap-4">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <input 
+                type="checkbox" 
+                id="sendDirectToSeLoger"
+                checked={sendDirectToSeLoger}
+                onChange={(e) => setSendDirectToSeLoger(e.target.checked)}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <label htmlFor="sendDirectToSeLoger" className="text-sm text-gray-700">
+                Envoyer directement à SeLoger via FTP
+              </label>
+            </div>
             <Link href={'/admin/create-annonce'} className={`bg-[#F5A623] ${buttonVariants()} hover:bg-[#E59512] text-white`}>Créer une annonce</Link>
-            
             <Button 
-              className="bg-[#F5A623] hover:bg-[#E59512] text-white" 
-              onClick={publishToSeLoger}
+              onClick={publishToSeLoger} 
               disabled={isPublishingToSeLoger}
+              className="bg-[#F5A623] hover:bg-[#E59512] text-white"
             >
               {isPublishingToSeLoger ? (
-                <>
-                  <span className="mr-2">Publication en cours...</span>
-                  <span className="animate-spin">⏳</span>
-                </>
+                'Envoi en cours...'
               ) : (
                 'Publier sur Se Loger'
               )}
