@@ -1772,19 +1772,6 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                     <Label htmlFor="calme">Calme</Label>
                   </div>
                 </div>
-
-
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="entree"
-                      checked={formData.entree}
-                      onCheckedChange={(checked) => setFormData({ ...formData, entree: checked as boolean })}
-                    />
-                    <Label htmlFor="entree">Entrée</Label>
-                  </div>
-                </div>
-
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox

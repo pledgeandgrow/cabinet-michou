@@ -463,7 +463,7 @@ export async function createListing(data: any) {
   
   try {
     // Filtrer les colonnes qui n'existent pas dans la table annonces
-    const columnsToExclude = ['balcon', 'terrasse', 'jardin', 'parking', 'ascenseur'];
+    const columnsToExclude = ['balcon', 'jardin'];
     const filteredData = { ...data };
     
     columnsToExclude.forEach(column => {

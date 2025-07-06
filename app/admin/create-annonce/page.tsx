@@ -1567,15 +1567,6 @@ export default function CreateListingPage() {
                     />
                   </div>
 
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="se_loger"
-                      checked={formData.se_loger === "1"}
-                      onCheckedChange={(checked) => setFormData({ ...formData, se_loger: checked ? "1" : "0" })}
-                    />
-                    <Label htmlFor="se_loger">SeLoger</Label>
-                  </div>
-
                   <div className="space-y-2">
                     <Label htmlFor="panoramique">URL Panoramique</Label>
                     <Input
@@ -1645,6 +1636,26 @@ export default function CreateListingPage() {
                       type="number"
                       value={formData.wc}
                       onChange={(e) => setFormData({ ...formData, wc: Number(e.target.value) })}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="nb_lits_doubles">Nombre de lits doubles</Label>
+                    <Input
+                      id="nb_lits_doubles"
+                      type="number"
+                      value={formData.nb_lits_doubles}
+                      onChange={(e) => setFormData({ ...formData, nb_lits_doubles: Number(e.target.value) })}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="nb_lits_simples">Nombre de lits simples</Label>
+                    <Input
+                      id="nb_lits_simples"
+                      type="number"
+                      value={formData.nb_lits_simples}
+                      onChange={(e) => setFormData({ ...formData, nb_lits_simples: Number(e.target.value) })}
                     />
                   </div>
 

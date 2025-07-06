@@ -950,6 +950,37 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
             </CardContent>
           </Card>
 
+          {/* Visites virtuelles */}
+          {(annonce.panoramique || annonce.visite_virtuelle) && (
+            <Card className="shadow-sm">
+              <CardHeader className="pb-1 px-2 pt-2 md:pb-2 md:px-4 md:pt-4">
+                <CardTitle className="text-xs md:text-lg">Visites virtuelles</CardTitle>
+              </CardHeader>
+              <CardContent className="px-2 pb-2 md:px-4 md:pb-4 space-y-3">
+                {annonce.panoramique && (
+                  <div>
+                    <h3 className="text-xs md:text-sm font-semibold mb-1">Visite panoramique</h3>
+                    <Button variant="outline" size="sm" className="text-xs" asChild>
+                      <a href={annonce.panoramique} target="_blank" rel="noopener noreferrer">
+                        <Eye className="h-3 w-3 mr-1" /> Voir la visite panoramique
+                      </a>
+                    </Button>
+                  </div>
+                )}
+                {annonce.visite_virtuelle && (
+                  <div>
+                    <h3 className="text-xs md:text-sm font-semibold mb-1">Visite virtuelle</h3>
+                    <Button variant="outline" size="sm" className="text-xs" asChild>
+                      <a href={annonce.visite_virtuelle} target="_blank" rel="noopener noreferrer">
+                        <Eye className="h-3 w-3 mr-1" /> Voir la visite virtuelle
+                      </a>
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
           {/* Contact Buttons */}
           <div className="hidden md:flex justify-end gap-4">
             <Button size="lg" asChild>
