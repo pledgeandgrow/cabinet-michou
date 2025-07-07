@@ -45,7 +45,7 @@ export async function POST(request: Request) {
           },
           To: [
             {
-              Email: 'baboz@cabinet-michou.com',
+              Email: 'cabinet@cabinet-michou.com',
               Name: 'Alexandre Baboz'
             }
           ],
