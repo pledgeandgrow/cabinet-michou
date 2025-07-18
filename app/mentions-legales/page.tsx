@@ -68,7 +68,7 @@ export default function MentionsLegales() {
               <p className="font-medium text-foreground">PLEDGE AND GROW</p>
               <p>4bis rue Alfred Nobel - 77420 Champs-sur-Marne - France</p>
               <p>Tél : +33.7.53.69.58.40</p>
-              <p>Adresse e-mail : contact@pledgeandgrow.com</p>
+              <p>Adresse e-mail : commercial@pledgeandgrow.com </p>
               <p>Site web : <a href="https://pledgeandgrow.com/" className="text-primary hover:underline">pledgeandgrow.com/</a></p>
             </div>
           </CardContent>

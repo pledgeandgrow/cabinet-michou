@@ -145,14 +145,14 @@ export function Case({ items }: CaseProps) {
     <section className="py-12 px-4 md:px-12 lg:px-24 mt-10 mx-4 md:mx-0">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-center gap-4 mb-8">
-          <Button
+          {/* <Button
             variant={filters.transaction === "all" ? "default" : "outline"}
             onClick={() => setFilters({ ...filters, transaction: "all" })}
           >
             Tous les biens
-          </Button>
+          </Button>  */}
           {/* Utiliser des boutons simples pour le filtrage local */}
-          <Button
+          {/* <Button
             variant={filters.transaction === "Vente" ? "default" : "outline"}
             onClick={() => setFilters({ ...filters, transaction: "Vente" })}
           >
@@ -163,7 +163,7 @@ export function Case({ items }: CaseProps) {
             onClick={() => setFilters({ ...filters, transaction: "Location" })}
           >
             Location
-          </Button>
+          </Button> */}
           {/* Ajouter un bouton pour voir toutes les annonces */}
           <Link href="/annonces">
             <Button variant="outline">

@@ -89,7 +89,7 @@ export default function AnimatedHero() {
               Toutes nos annonces <Home className="w-4 h-4" />
             </Link>
           </Button>
-          <Button size="lg" className="gap-2 w-full sm:w-auto" variant="outline">
+          {/* <Button size="lg" className="gap-2 w-full sm:w-auto" variant="outline">
             <Link href="/annonces?transaction=Vente" className="flex items-center gap-2 w-full justify-center">
               Nos biens à vendre <MoveRight className="w-4 h-4" />
             </Link>
@@ -98,7 +98,7 @@ export default function AnimatedHero() {
             <Link href="/annonces?transaction=Location" className="flex items-center gap-2 w-full justify-center">
               Nos biens à louer <MoveRight className="w-4 h-4" />
             </Link>
-          </Button>
+          </Button> */}
           <Button size="lg" className="gap-2 w-full sm:w-auto">
             <Link href="https://michou.neotimm.com/extranet/#/login" className="flex items-center gap-2 w-full justify-center">
               Extranet client <UserCheck2 className="w-4 h-4" />
