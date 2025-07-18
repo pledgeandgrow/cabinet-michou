@@ -252,7 +252,7 @@ export default function RealEstateTable({ items }: { items?: Annonce[] }) {
         // Sinon, télécharger le fichier comme avant
         // Récupérer le nom du fichier depuis l'en-tête Content-Disposition
         const contentDisposition = response.headers.get('Content-Disposition');
-        let filename = 'SeLogerExport.zip';
+        let filename = 'cabmichou.zip';
         
         if (contentDisposition) {
           const filenameMatch = contentDisposition.match(/filename="(.+)"/i);

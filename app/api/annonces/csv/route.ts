@@ -109,7 +109,7 @@ export async function POST(request: Request) {
     
     // Générer un nom de fichier unique avec timestamp
     const timestamp = new Date().getTime();
-    const zipFilename = `SeLogerExport_${timestamp}.zip`;
+    const zipFilename = "cabmichou.zip";
     const zipPath = path.join(exportDir, zipFilename);
     
     // Créer le fichier ZIP
