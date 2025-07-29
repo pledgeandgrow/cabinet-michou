@@ -95,7 +95,7 @@ export async function POST(request: Request) {
     // Générer le fichier CSV
     const csvPath = path.join(tempDir, 'Annonces.csv');
     const csvContent = generateSeLogerCSV(annonces, photos);
-    fs.writeFileSync(csvPath, csvContent);
+    fs.writeFileSync(csvPath, csvContent, { encoding: 'utf8' });
     
     // Créer le fichier de configuration
     const configPath = path.join(tempDir, 'Config.txt');
@@ -199,20 +199,23 @@ export function generateSeLogerCSV(
     fields[17] = `"${annonce.pieces || '0'}"`;
     fields[18] = `"${annonce.chambres || ''}"`;
     fields[19] = `"${annonce.nom}"`;
-    fields[20] = `"${(annonce.description || '').replace(/\"/g, "'").replace(/\n/g, '<BR>')}"`;
+    fields[20] = `"${(annonce.description || '').replace(/\"/g, "'").replace(/\n/g, '<BR>').normalize('NFC')}"`;
 
     fields[25] = `"${annonce.meuble ? 'OUI' : 'NON'}"`;
     fields[26] = `"${annonce.construction || ''}"`;
-    fields[33] = `"${annonce.ascenseur ? 'OUI' : 'NON'}"`;
+    fields[39] = `"${annonce.ascenseur ? 'OUI' : 'NON'}"`;
     fields[40] = `"${mapChauffage(annonce.chauffage_id)}"`;
     fields[44] = `"${mapCuisine(annonce.cuisine_id)}"`;
     fields[45] = `"${annonce.securite ? 'OUI' : 'NON'}"`;
-    fields[79] = `"${annonce.digicode ? 'OUI' : 'NON'}"`;
-    fields[81] = `"${annonce.interphone ? 'OUI' : 'NON'}"`;
-    fields[104] = `"${annonce.visite_virtuelle || ''}"`;
+    fields[44] = `"${annonce.digicode ? 'OUI' : 'NON'}"`;
+    fields[103] = `"${annonce.visite_virtuelle || ''}"`;
+    
+    // Champs de contact
+    fields[104] = `"${annonce.telephone_contact || ''}"`;
+    fields[105] = `"${annonce.nom_contact || ''}"`;
+    fields[106] = `"${annonce.email_contact || ''}"`;
+    
     fields[174] = `"${annonce.id}"`;
-    fields[331] = '"OUI"';
-    fields[333] = `"${annonce.publie ? 'OUI' : 'NON'}"`;
 
     // PHOTOS : colonnes 85 à 104
     const photosAnnonce = annonces_photos

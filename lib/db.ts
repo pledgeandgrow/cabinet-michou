@@ -473,6 +473,27 @@ export async function createListing(data: any) {
       }
     });
     
+    // S'assurer que les champs de contact sont bien traités comme des chaînes de caractères
+    const stringFields = ['telephone_contact', 'nom_contact', 'email_contact'];
+    stringFields.forEach(field => {
+      if (filteredData.hasOwnProperty(field)) {
+        if (filteredData[field] === undefined || filteredData[field] === '') {
+          filteredData[field] = null;
+          console.log(`Setting empty contact field ${field} to null in create`);
+        } else {
+          filteredData[field] = String(filteredData[field]);
+          console.log(`Converting contact field ${field} to string in create: ${filteredData[field]}`);
+        }
+      }
+    });
+    
+    // Log pour déboguer les champs de contact lors de la création
+    console.log('Données de contact lors de la création:', JSON.stringify({
+      telephone_contact: filteredData.telephone_contact,
+      nom_contact: filteredData.nom_contact,
+      email_contact: filteredData.email_contact
+    }));
+    
     // Insérer l'annonce
     const { data: result, error } = await supabase
       .from('annonces')
@@ -538,6 +559,19 @@ export async function updateListing(id: number, data: any) {
         // Si c'est une chaîne vide ou 'N/C', mettre à null
         else if (filteredData[field] === '' || filteredData[field] === 'N/C') {
           filteredData[field] = null;
+        }
+      }
+    });
+    
+    // S'assurer que les champs de contact sont bien traités comme des chaînes de caractères
+    const stringFields = ['telephone_contact', 'nom_contact', 'email_contact'];
+    stringFields.forEach(field => {
+      if (filteredData.hasOwnProperty(field)) {
+        // S'assurer que c'est une chaîne de caractères ou null
+        if (filteredData[field] === undefined || filteredData[field] === '') {
+          filteredData[field] = null;
+        } else {
+          filteredData[field] = String(filteredData[field]);
         }
       }
     });

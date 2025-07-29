@@ -323,6 +323,27 @@ export async function updateListingFixed(id: number, data: any) {
       }
     });
     
+    // S'assurer que les champs de contact sont bien traités comme des chaînes de caractères
+    const stringFields = ['telephone_contact', 'nom_contact', 'email_contact'];
+    stringFields.forEach(field => {
+      if (filteredData.hasOwnProperty(field)) {
+        if (filteredData[field] === undefined || filteredData[field] === '') {
+          filteredData[field] = null;
+          console.log(`Setting empty contact field ${field} to null`);
+        } else {
+          filteredData[field] = String(filteredData[field]);
+          console.log(`Converting contact field ${field} to string: ${filteredData[field]}`);
+        }
+      }
+    });
+    
+    // Log pour déboguer les champs de contact
+    console.log('Données après traitement des champs de contact:', JSON.stringify({
+      telephone_contact: filteredData.telephone_contact,
+      nom_contact: filteredData.nom_contact,
+      email_contact: filteredData.email_contact
+    }));
+    
     // Liste complète des colonnes de la table annonces (fournie par l'utilisateur)
     const knownColumns = [
       'id', 'transaction_id', 'typebien_id', 'sous_typebien_id', 'reference', 'date_dispo',
@@ -353,6 +374,8 @@ export async function updateListingFixed(id: number, data: any) {
       'description', 'panoramique', 'visite_virtuelle', 'valeur_achat', 'montant_rapport',
       'activites_commerciales', 'chiffre_affaire', 'longueur_facade', 'si_viager_vendu_libre',
       'immeuble_type_bureaux', 'commentaires', 'negociateur', 'se_loger', 'selection', 'publie',
+      // Champs de contact
+      'telephone_contact', 'nom_contact', 'email_contact',
       // Utiliser les noms corrects des colonnes dans la base de données
       // (pas de préfixe 'nb_' pour pieces, chambres, sdb, wc)
     ];

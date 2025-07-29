@@ -981,6 +981,51 @@ export default async function AnnoncePage({ params }: { params: { id: string } }
             </Card>
           )}
 
+          {/* Informations de contact */}
+          {(annonce.nom_contact || annonce.telephone_contact || annonce.email_contact) && (
+            <Card className="shadow-sm">
+              <CardHeader className="pb-1 px-2 pt-2 md:pb-2 md:px-4 md:pt-4">
+                <CardTitle className="text-xs md:text-lg flex items-center gap-2">
+                  <Phone className="h-4 w-4" />
+                  Informations de contact
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-2 pb-2 md:px-4 md:pb-4 space-y-3">
+                {annonce.nom_contact && (
+                  <div className="flex items-center gap-2">
+                    <Info className="h-4 w-4 text-gray-500 flex-shrink-0" />
+                    <div>
+                      <span className="text-xs md:text-sm font-medium">Contact : </span>
+                      <span className="text-xs md:text-sm">{annonce.nom_contact}</span>
+                    </div>
+                  </div>
+                )}
+                {annonce.telephone_contact && (
+                  <div className="flex items-center gap-2">
+                    <Phone className="h-4 w-4 text-gray-500 flex-shrink-0" />
+                    <div>
+                      <span className="text-xs md:text-sm font-medium">Téléphone : </span>
+                      <a href={`tel:${annonce.telephone_contact}`} className="text-xs md:text-sm text-blue-600 hover:underline">
+                        {annonce.telephone_contact}
+                      </a>
+                    </div>
+                  </div>
+                )}
+                {annonce.email_contact && (
+                  <div className="flex items-center gap-2">
+                    <Info className="h-4 w-4 text-gray-500 flex-shrink-0" />
+                    <div>
+                      <span className="text-xs md:text-sm font-medium">Email : </span>
+                      <a href={`mailto:${annonce.email_contact}`} className="text-xs md:text-sm text-blue-600 hover:underline">
+                        {annonce.email_contact}
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
           {/* Contact Buttons */}
           <div className="hidden md:flex justify-end gap-4">
             <Button size="lg" asChild>

@@ -155,6 +155,9 @@ interface FormData {
   commentaires: string;
   se_loger: string;
   publie: boolean;
+  telephone_contact: string;
+  nom_contact: string;
+  email_contact: string;
 }
 
 interface PageParams {
@@ -312,6 +315,9 @@ export default function EditListingPage({ params }: { params: PageParams }) {
     valeur_achat: 0,
     commentaires: "",
     se_loger: "",
+    telephone_contact: "",
+    nom_contact: "",
+    email_contact: ""
   })
 
   const router = useRouter()
@@ -492,6 +498,9 @@ export default function EditListingPage({ params }: { params: PageParams }) {
           commentaires: annonceData.commentaires || "",
           se_loger: annonceData.se_loger || "",
           publie: Boolean(annonceData.publie) || false,
+          telephone_contact: annonceData.telephone_contact || "",
+          nom_contact: annonceData.nom_contact || "",
+          email_contact: annonceData.email_contact || ""
         })
       } catch (err) {
         console.error("Error fetching data:", err)
@@ -687,6 +696,11 @@ export default function EditListingPage({ params }: { params: PageParams }) {
         valeur_achat: formData.valeur_achat ? Number(formData.valeur_achat) : null,
 
         se_loger: formData.se_loger,
+        
+        // Informations de contact
+        telephone_contact: formData.telephone_contact,
+        nom_contact: formData.nom_contact,
+        email_contact: formData.email_contact,
       }
 
       // Validate required fields
@@ -937,6 +951,45 @@ export default function EditListingPage({ params }: { params: PageParams }) {
                 onChange={(e) => setFormData({ ...formData, ville: e.target.value })}
                 required
               />
+            </div>
+            
+            <div className="mt-8">
+              <h3 className="text-xl font-bold text-[#00458E] mb-6 pb-2 border-b border-gray-100">Informations de contact</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="nom_contact">Nom du contact</Label>
+                  <Input
+                    id="nom_contact"
+                    value={formData.nom_contact}
+                    onChange={(e) => setFormData({ ...formData, nom_contact: e.target.value.slice(0, 100) })}
+                    maxLength={100}
+                    placeholder="Nom de la personne à contacter (100 caractères max)"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="telephone_contact">Téléphone de contact</Label>
+                  <Input
+                    id="telephone_contact"
+                    value={formData.telephone_contact}
+                    onChange={(e) => setFormData({ ...formData, telephone_contact: e.target.value.slice(0, 20) })}
+                    maxLength={20}
+                    placeholder="Numéro de téléphone (20 caractères max)"
+                  />
+                </div>
+
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="email_contact">Email de contact</Label>
+                  <Input
+                    id="email_contact"
+                    type="email"
+                    value={formData.email_contact}
+                    onChange={(e) => setFormData({ ...formData, email_contact: e.target.value.slice(0, 100) })}
+                    maxLength={100}
+                    placeholder="Adresse email (100 caractères max)"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
